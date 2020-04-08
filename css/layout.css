@@ -1,0 +1,239 @@
+﻿/* ReportViewer 隱藏blank.gif */
+body:nth-of-type(1) img[src*="Blank.gif"] {
+    display: none;
+}
+
+
+/* Bootstrap 自定義 Start
+----------------------------------*/
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, "Microsoft JhengHei", "Microsoft YaHei", PMingLiU, Verdana, sans-serif !important;
+    color: #555 !important;
+}
+
+/*.table tr:first-child td {
+    border-top: 0;
+}*/
+
+
+.myStriped li.list-group-item:nth-child(even) {
+    background-color: #f8f8f8 !important;
+}
+
+/* 垂直置中 */
+.vertical-container .row {
+    display: table;
+    width: 100%;
+}
+
+    .vertical-container .row > .vcenter {
+        display: table-cell;
+        vertical-align: middle;
+        float: none;
+    }
+
+/* 複寫page-header */
+.page-header {
+    margin: 20px 0 20px !important;
+}
+
+.myBody {
+    background: #fff !important;
+}
+/* Bootstrap 自定義 End
+----------------------------------*/
+
+/* 自訂Label Start
+----------------------------------*/
+.alert {
+    padding: 10px;
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.notify-row .badge {
+    position: absolute;
+    top: 1px;
+    z-index: 100;
+    right: 1px;
+}
+
+@media screen and (max-width: 767px) {
+    .notify-row .badge {
+        position: relative;
+        top: 0px;
+        right: 0px;
+    }
+}
+
+.badge {
+    -webkit-border-radius: 10px !important;
+    -moz-border-radius: 10px !important;
+    border-radius: 10px !important;
+    padding: 2px 6px;
+}
+
+.label {
+    -webkit-border-radius: 0px !important;
+    -moz-border-radius: 0px !important;
+    border-radius: 0px !important;
+    text-shadow: none !important;
+    padding: 6px 7px 6px 7px !important;
+    line-height: 1.8 !important;
+}
+
+.label-default,
+.badge-default {
+    background-color: #abbac3;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #abbac3), color-stop(100%, #abbac3));
+    background-image: -webkit-linear-gradient(top, #abbac3, #abbac3);
+    background-image: -moz-linear-gradient(top, #abbac3, #abbac3);
+    background-image: -ms-linear-gradient(top, #abbac3, #abbac3);
+    background-image: -o-linear-gradient(top, #abbac3, #abbac3);
+    background-image: linear-gradient(top, #abbac3, #abbac3);
+}
+
+.label-success,
+.badge-success {
+    background-color: #82af6f;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #82af6f), color-stop(100%, #82af6f));
+    background-image: -webkit-linear-gradient(top, #82af6f, #82af6f);
+    background-image: -moz-linear-gradient(top, #82af6f, #82af6f);
+    background-image: -ms-linear-gradient(top, #82af6f, #82af6f);
+    background-image: -o-linear-gradient(top, #82af6f, #82af6f);
+    background-image: linear-gradient(top, #82af6f, #82af6f);
+}
+
+.label-danger,
+.badge-danger {
+    background-color: #d15b47;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #d15b47), color-stop(100%, #d15b47));
+    background-image: -webkit-linear-gradient(top, #d15b47, #d15b47);
+    background-image: -moz-linear-gradient(top, #d15b47, #d15b47);
+    background-image: -ms-linear-gradient(top, #d15b47, #d15b47);
+    background-image: -o-linear-gradient(top, #d15b47, #d15b47);
+    background-image: linear-gradient(top, #d15b47, #d15b47);
+}
+
+.label-warning,
+.badge-warning {
+    background-color: #f89406;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f89406), color-stop(100%, #f89406));
+    background-image: -webkit-linear-gradient(top, #f89406, #f89406);
+    background-image: -moz-linear-gradient(top, #f89406, #f89406);
+    background-image: -ms-linear-gradient(top, #f89406, #f89406);
+    background-image: -o-linear-gradient(top, #f89406, #f89406);
+    background-image: linear-gradient(top, #f89406, #f89406);
+}
+
+.label-info,
+.badge-info {
+    background-color: #3a87ad;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #3a87ad), color-stop(100%, #3a87ad));
+    background-image: -webkit-linear-gradient(top, #3a87ad, #3a87ad);
+    background-image: -moz-linear-gradient(top, #3a87ad, #3a87ad);
+    background-image: -ms-linear-gradient(top, #3a87ad, #3a87ad);
+    background-image: -o-linear-gradient(top, #3a87ad, #3a87ad);
+    background-image: linear-gradient(top, #3a87ad, #3a87ad);
+}
+
+/* 自訂Label End
+----------------------------------*/
+
+/* 引用區塊 Start
+    使用:bq-callout 顏色
+    顏色:green / blue / red / purple / yellow / orange
+----------------------------------*/
+.bq-callout {
+    padding: 20px;
+    margin: 20px 0;
+    border: 1px solid #eee;
+    border-left-width: 5px;
+    border-radius: 3px;
+}
+
+    .bq-callout h4 {
+        margin-top: 0;
+        margin-bottom: 5px;
+    }
+
+    .bq-callout footer:before {
+        content: '\2014 \00A0';
+    }
+
+    .bq-callout footer {
+        display: block;
+        font-size: 80%;
+        line-height: 1.42857143;
+        color: #777;
+    }
+
+    .bq-callout p:last-child {
+        margin-bottom: 0;
+    }
+
+    .bq-callout code {
+        border-radius: 3px;
+    }
+
+    .bq-callout + .bq-callout {
+        margin-top: -5px;
+    }
+
+    .bq-callout.green {
+        border-left-color: #74B749;
+    }
+
+        .bq-callout.green h4 {
+            color: #74B749;
+            font-weight: bold;
+        }
+
+    .bq-callout.blue {
+        border-left-color: #4A8BC2;
+    }
+
+        .bq-callout.blue h4 {
+            color: #4A8BC2;
+            font-weight: bold;
+        }
+
+    .bq-callout.purple {
+        border-left-color: #9D4A9C;
+    }
+
+        .bq-callout.purple h4 {
+            color: #9D4A9C;
+            font-weight: bold;
+        }
+
+    .bq-callout.yellow {
+        border-left-color: #FFB400;
+    }
+
+        .bq-callout.yellow h4 {
+            color: #FFB400;
+            font-weight: bold;
+        }
+
+    .bq-callout.orange {
+        border-left-color: #F37B53;
+    }
+
+        .bq-callout.orange h4 {
+            color: #F37B53;
+            font-weight: bold;
+        }
+
+    .bq-callout.red {
+        border-left-color: #DE577B;
+    }
+
+        .bq-callout.red h4 {
+            color: #DE577B;
+            font-weight: bold;
+        }
+
+
+/* 引用區塊 End
+----------------------------------*/

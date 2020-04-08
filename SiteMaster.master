@@ -1,0 +1,66 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeFile="SiteMaster.master.cs" Inherits="SiteMaster" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PK-Site</title>
+    <link href="<%=Application["CDN_Url"] %>plugin/google-icon/material-icons.css?family=Material+Icons" rel="stylesheet" />
+    <link href="<%=Application["CDN_Url"] %>plugin/Materialize/v0.97.8/css/materialize.min.css" rel="stylesheet" />
+    <link href="<%=Application["CDN_Url"] %>plugin/Materialize/v0.97.8/css/style.css?v=20161123" rel="stylesheet" />
+    <style>
+        /* 先移除padding-left, 未來改版再移除此段 */
+        #main, footer {
+            padding-left: 0px;
+        }
+    </style>
+    <asp:ContentPlaceHolder ID="CssContent" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form id="form1" runat="server" autocomplete="off">
+        <div class="page-flexbox-wrapper">
+            <!-- Body Start -->
+            <div id="main">
+                <section id="content">
+                    <asp:ContentPlaceHolder ID="MainContent" runat="server">
+                    </asp:ContentPlaceHolder>
+                </section>
+            </div>
+            <!-- Body End -->
+            <!-- Bottom Content Start -->
+            <asp:ContentPlaceHolder ID="BottomContent" runat="server">
+            </asp:ContentPlaceHolder>
+            <!-- Bottom Content End -->
+            <!-- Footer Start -->
+            <footer class="page-footer pkColor">
+                <div class="footer-copyright">
+                    <div class="container">
+                        &copy; <%=DateTime.Now.Year %> Prokits Industries Co., LTD.
+                    </div>
+                </div>
+            </footer>
+            <!-- Footer End -->
+        </div>
+        <!-- Scripts Start -->
+        <asp:PlaceHolder runat="server">
+            <script src="<%=Application["CDN_Url"] %>plugin/jQuery/jquery.min.js"></script>
+            <script src="<%=Application["CDN_Url"] %>plugin/Materialize/v0.97.8/js/materialize.min.js"></script>
+            <script>
+                (function ($) {
+                    $(function () {
+
+
+                    }); // end of document ready
+                })(jQuery); // end of jQuery name space
+            </script>
+        </asp:PlaceHolder>
+
+        <asp:ContentPlaceHolder ID="ScriptContent" runat="server">
+        </asp:ContentPlaceHolder>
+        <!-- Scripts End -->
+    </form>
+</body>
+</html>

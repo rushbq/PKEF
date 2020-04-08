@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<discovery xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/disco/">
+  <contractRef ref="http://api.prokits.com.tw/WebService/ws_GetPrice.asmx?wsdl" docRef="http://api.prokits.com.tw/WebService/ws_GetPrice.asmx" xmlns="http://schemas.xmlsoap.org/disco/scl/" />
+  <soap address="http://api.prokits.com.tw/WebService/ws_GetPrice.asmx" xmlns:q1="http://www.prokits.com.tw/" binding="q1:ws_GetPriceSoap" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+  <soap address="http://api.prokits.com.tw/WebService/ws_GetPrice.asmx" xmlns:q2="http://www.prokits.com.tw/" binding="q2:ws_GetPriceSoap12" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+</discovery>

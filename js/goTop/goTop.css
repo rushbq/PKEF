@@ -1,0 +1,18 @@
+﻿
+#abgne_float_Top
+{
+	display: none;
+	position: absolute;
+}
+#abgne_float_Top .abgne_close_Top
+{
+	display: block;
+	text-align: right;
+	cursor: pointer;
+	margin-right: 4px;
+	margin-bottom: 1px;
+}
+#abgne_float_Top a img
+{
+	border: none;
+}

@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<DiscoveryClientResultsFile xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Results>
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.DiscoveryDocumentReference" url="http://api.prokits.com.tw/WebService/ws_GetPrice.asmx?disco" filename="ws_GetPrice.disco" />
+    <DiscoveryClientResult referenceType="System.Web.Services.Discovery.ContractReference" url="http://api.prokits.com.tw/WebService/ws_GetPrice.asmx?wsdl" filename="ws_GetPrice.wsdl" />
+  </Results>
+</DiscoveryClientResultsFile>

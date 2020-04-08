@@ -1,0 +1,3408 @@
+﻿
+
+body, div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, fieldset, input, textarea, p, blockquote, th, td {
+    word-break: break-all;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-size: 100%;
+    font-weight: normal;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: url('../images/System/TopBg.jpg') repeat-x top;
+    color: #333;
+    font-family: "Helvetica Neue",Helvetica,Arial,"Microsoft JhengHei","Microsoft YaHei",PMingLiU,Verdana,sans-serif;
+    font-size: 14px;
+    line-height: 1.42857143;
+    margin: 0;
+    padding: 0;
+    vertical-align: middle;
+}
+
+input, textarea, select {
+    /*font-family: Verdana, Arial, Helvetica, sans-serif, "新細明體";*/
+    font-family: "Helvetica Neue",Helvetica,Arial,"Microsoft JhengHei","Microsoft YaHei",PMingLiU,Verdana,sans-serif !important;
+    font-size: 14px !important;
+}
+
+.ImgBorder {
+    border: 1px solid #ccc;
+    padding: 2px;
+}
+
+.input01 {
+    background-color: #fbfdb5;
+    border: #666666 1px solid;
+    color: #300;
+    font-family: "Arial", "Helvetica", "sans-serif";
+    font-size: 12px;
+}
+
+.input02 {
+    background-color: #e6f4f8;
+    border: #aaaaaa 1px solid;
+    color: #300;
+    font-size: 12px;
+    padding: 2px 0px 2px 2px;
+}
+
+div {
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    color: #4e9824;
+    text-decoration: none;
+}
+
+    a:hover {
+        color: #00a0e9;
+        text-decoration: underline;
+    }
+
+.clear {
+    clear: both;
+    line-height: 0;
+}
+
+.Header {
+    color: #fff;
+    display: block;
+}
+
+.SystemLogo {
+    float: left;
+    height: 55px;
+}
+
+    .SystemLogo a {
+        color: #fff;
+        display: block;
+        float: left;
+        font-size: 24px;
+        font-weight: bold;
+        padding: 15px;
+        padding: 20px \9;
+    }
+
+/* TopFastLink
+----------------------------------*/
+.TopFastLink {
+    display: block;
+    float: right;
+}
+
+    .TopFastLink ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .TopFastLink li {
+        display: inline;
+        float: left;
+        margin: 0 8px;
+        padding: 0;
+    }
+
+        .TopFastLink li a {
+            background: url('../images/System/FastLinkIcon.png') no-repeat;
+            color: #fff;
+            display: block;
+            font-size: 11px;
+            padding-top: 35px;
+        }
+
+            .TopFastLink li a:hover {
+                padding-top: 35px;
+                text-decoration: none;
+            }
+
+    .TopFastLink .Fast1 a {
+        background-position: 2px -2px;
+    }
+
+        .TopFastLink .Fast1 a:hover {
+            background-position: 2px -71px;
+        }
+
+    .TopFastLink .Fast2 a {
+        background-position: -80px -2px;
+    }
+
+        .TopFastLink .Fast2 a:hover {
+            background-position: -80px -71px;
+        }
+
+    .TopFastLink .Fast3 a {
+        background-position: -156px -2px;
+    }
+
+        .TopFastLink .Fast3 a:hover {
+            background-position: -156px -71px;
+        }
+
+    .TopFastLink .Fast4 a {
+        background-position: -230px -2px;
+    }
+
+        .TopFastLink .Fast4 a:hover {
+            background-position: -230px -71px;
+        }
+
+    .TopFastLink .Fast5 a {
+        background-position: -305px -2px;
+    }
+
+        .TopFastLink .Fast5 a:hover {
+            background-position: -305px -71px;
+        }
+
+    .TopFastLink .Fast6 a {
+        background-position: -365px -2px;
+    }
+
+        .TopFastLink .Fast6 a:hover {
+            background-position: -365px -71px;
+        }
+
+/* Menu
+----------------------------------*/
+.SysInfoControlCon {
+    clear: both;
+}
+
+.MenuFirstControl {
+    background: url('../images/System/Menu.jpg') no-repeat top left;
+    display: block;
+    float: left;
+    height: 24px;
+    padding-left: 125px;
+    width: 55px;
+}
+
+    .MenuFirstControl a {
+        background: url('../images/System/MenuControl.png') no-repeat;
+        display: block;
+        display: inline-block;
+        float: left;
+        height: 18px;
+        margin-top: 4px;
+        text-indent: -5000px;
+        width: 18px;
+    }
+
+        .MenuFirstControl a.Menu12Hide:hover {
+            background-position: 0 -25px;
+        }
+
+        .MenuFirstControl a.Menu12Show {
+            background-position: -30px 0;
+        }
+
+            .MenuFirstControl a.Menu12Show:hover {
+                background-position: -30px -25px;
+            }
+
+.SystemFastNews {
+    color: #333;
+    display: inline-block;
+    float: left;
+    /*font-size: 13px;*/
+    height: 15px;
+    margin: 4px 0 0 10px;
+    margin: 7px 0 0 10px \9;
+    overflow: hidden;
+    width: 600px;
+}
+
+    .SystemFastNews a {
+        padding: 0 2px;
+    }
+
+.FastPageBack {
+    color: #444;
+    display: inline-table;
+    float: right;
+    height: 21px;
+    padding: 5px 10px 0 10px;
+}
+
+    .FastPageBack a {
+        color: #444;
+        padding: 0 5px;
+    }
+
+        .FastPageBack a:hover {
+            color: #00a0e9;
+            text-decoration: none;
+        }
+
+/* Left Menu
+----------------------------------*/
+.MenuFirstPage {
+    background: #efefef;
+    min-width: 1px;
+}
+
+.MenuFirst {
+    float: left;
+    width: 157px;
+}
+
+    .MenuFirst ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .MenuFirst li {
+        background: url('../images/System/Menu12Bg.jpg') repeat-x;
+        height: 27px;
+        line-height: 27px;
+        padding-left: 5px;
+    }
+
+        .MenuFirst li:hover {
+            background-position: 0 -27px;
+        }
+
+    .MenuFirst .FreeLi {
+        padding: 0;
+    }
+
+        .MenuFirst .FreeLi a {
+            background: none;
+            border: 0;
+            padding-left: 7px;
+        }
+
+            .MenuFirst .FreeLi a img {
+                border: 0;
+                margin-bottom: -3px;
+                padding: 0 8px 0 0;
+            }
+
+    .MenuFirst li a {
+        background: url('../images/System/Menu1Icon.png') no-repeat;
+        color: #222;
+        display: block;
+        font-weight: bold;
+        height: 27px;
+        padding-left: 25px;
+    }
+
+    .MenuFirst li:hover a {
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .MenuFirst li a:hover {
+        color: #fff;
+        text-decoration: none;
+    }
+
+    .MenuFirst .Menu1Active {
+        background-position: 0 -27px;
+    }
+
+        .MenuFirst .Menu1Active a {
+            color: #fff;
+        }
+
+    .MenuFirst .GroupNews a {
+        background-position: 0 0;
+    }
+
+    .MenuFirst .GroupMember a {
+        background-position: 0 -27px;
+    }
+
+    .MenuFirst .AdService a {
+        background-position: 0 -54px;
+    }
+
+    .MenuFirst .GroupAddBook a {
+        background-position: 0 -81px;
+    }
+
+    .MenuFirst .ProductChange a {
+        background-position: 0 -108px;
+    }
+
+    .MenuFirst .Invest a {
+        background-position: 0 -135px;
+    }
+
+    .MenuFirst .MessageSent a {
+        background-position: 0 -162px;
+    }
+
+    .MenuFirst .GroupCalendar a {
+        background-position: 0 -189px;
+    }
+
+    .MenuFirst .GroupDiscuss a {
+        background-position: 0 -216px;
+    }
+
+    .MenuFirst .Links a {
+        background-position: 0 -243px;
+    }
+
+    .MenuFirst .Hinder a {
+        background-position: 0 -270px;
+    }
+
+    .MenuFirst .Buy a {
+        background-position: 0 -297px;
+    }
+
+    .MenuFirst .Rules a {
+        background-position: 0 -324px;
+    }
+
+    .MenuFirst .Wiki a {
+        background-position: 0 -351px;
+    }
+
+    .MenuFirst .LifeNews a {
+        background-position: 0 -378px;
+    }
+
+    .MenuFirst .Activity a {
+        background-position: 0 -405px;
+    }
+
+    .MenuFirst .Album a {
+        background-position: 0 -432px;
+    }
+
+    .MenuFirst .Charge a {
+        background-position: 0 -459px;
+    }
+
+    .MenuFirst .PublicManager a {
+        background-position: 0 -486px;
+    }
+
+    .MenuFirst .Gather a {
+        background-position: 0 -513px;
+    }
+
+    .MenuFirst .FlowRate a {
+        background-position: 0 -540px;
+    }
+
+    .MenuFirst .ManagerService a {
+        background-position: 0 -567px;
+    }
+
+    .MenuFirst .GroupIntro a {
+        background-position: 0 -594px;
+    }
+
+    .MenuFirst .SystemSet a {
+        background-position: 0 -621px;
+    }
+
+    .MenuFirst .SystemLimit a {
+        background-position: 0 -648px;
+    }
+
+    .MenuFirst .End {
+        background: url('../images/System/Menu1End.png') repeat-x;
+    }
+
+li.MenuFirst2 {
+    background: #fff;
+    background: none;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    padding-left: 5px;
+}
+
+    li.MenuFirst2 ul {
+        background: #fff;
+        display: inline-block;
+        margin: 0;
+        padding: 3px 0 8px;
+        width: 100%;
+    }
+
+        li.MenuFirst2 ul li {
+            background: #fff;
+            display: inline-block;
+            height: auto;
+            line-height: 1.2;
+            margin: 0;
+            padding: 0;
+            padding-bottom: 3px;
+            padding-top: 5px;
+            width: 100%;
+        }
+
+    li.MenuFirst2 li a, .MenuFirst li.MenuFirst2:hover li a {
+        background: url('../images/System/Menu2Icon.gif') no-repeat 12px 4px;
+        color: #72993e;
+        font-size: 12px;
+        font-weight: normal;
+        height: auto;
+    }
+
+.MenuFirst li.MenuFirst2:hover ul li a:hover {
+    color: #060;
+    text-decoration: underline;
+}
+
+.MenuFirst li.MenuFirst2 li.AcFirst a {
+    color: green;
+    font-weight: bold;
+}
+
+/* Left SubMenu 
+----------------------------------*/
+.MenuSecondPage {
+    background: #eaf4dc;
+    float: left;
+    min-width: 1px;
+    padding-top: 5px;
+    width: auto;
+}
+
+.MenuSecondArea {
+    display: inline-block;
+    float: left;
+}
+
+.MenuSecControl {
+    font-size: 12px;
+    padding: 0 10px;
+}
+
+.MenuSecondHr {
+    background: url('../images/System/Menu2Line.gif') repeat-x;
+    border: 0;
+    height: 2px;
+    margin: 10px 0;
+}
+
+/* Body Style
+----------------------------------*/
+.MainArea {
+    background: #fff;
+    background: none;
+    padding: 15px 10px 10px;
+}
+
+.h2Head {
+    background: url('../images/System/HeadL.png') left top no-repeat;
+}
+
+.MainArea h2 {
+    background: url('../images/System/HeadR.png') right no-repeat;
+    color: #4e9824;
+    font-size: 15px;
+    font-weight: bold;
+    height: 28px;
+    line-height: 28px;
+    margin: 0 0 10px 15px;
+    padding: 0;
+}
+
+.h2Head .title {
+    background: url('../images/System/HeadR.png') right no-repeat;
+    height: 28px;
+    margin: 0 0 20px 15px;
+    padding: 0;
+}
+
+    .h2Head .title .head {
+        color: #4e9824;
+        font-size: 15px;
+        font-weight: bold;
+        line-height: 28px;
+    }
+
+
+.MainItemHead {
+}
+
+/* Table List Style
+----------------------------------*/
+.List2 {
+    border-collapse: separate;
+    border-spacing: 1px;
+    clear: both;
+    display: inline-table;
+    line-height: 16px;
+    padding: 0;
+    text-align: left;
+    width: 100%;
+}
+
+.List1 .List2 td {
+    padding: 0;
+}
+
+.List2 td {
+    padding: 0;
+}
+
+.L2Img {
+    padding: 5px 10px;
+    text-align: right;
+}
+
+    .L2Img img {
+        border: 1px solid #efefef;
+        margin-right: 10px;
+        max-height: 110px;
+        max-width: 110px !important;
+        padding: 5px;
+    }
+
+.L2Info {
+    padding-bottom: 5px;
+    vertical-align: top;
+}
+
+.L2MainHead {
+    color: #f15b61;
+    /*font-size: 13px;*/
+    font-weight: bold;
+    padding-bottom: 5px;
+}
+
+.L2Msghead {
+    color: #555;
+    /*font-size: 13px;*/
+    font-weight: bold;
+    padding-bottom: 5px;
+    padding-top: 10px;
+}
+
+.PreView {
+    border: 0;
+    margin-top: 5px;
+    min-width: 270px;
+}
+
+    .PreView em {
+        color: #999;
+        float: left;
+        font-style: normal;
+        padding-top: 3px;
+    }
+
+.PreView_FB {
+    background: url("../images/System/icon_facebook.png") no-repeat scroll 0 0 #F9F9F9;
+    border: 1px solid #eee;
+    color: #666;
+    display: inline-block;
+    float: left;
+    line-height: 1.3;
+    margin: 0 2px;
+    padding: 2px 5px 2px 22px;
+}
+
+    .PreView_FB:hover {
+        border: 1px solid #70B100;
+        color: #333;
+        text-decoration: none;
+    }
+
+.PreView_Sina {
+    background: url("../images/System/icon_sina.png") no-repeat scroll 0 0 #F9F9F9;
+    border: 1px solid #eee;
+    color: #666;
+    display: inline-block;
+    float: left;
+    line-height: 1.3;
+    margin: 0 2px;
+    padding: 2px 5px 2px 25px;
+}
+
+    .PreView_Sina:hover {
+        border: 1px solid #70B100;
+        color: #333;
+        text-decoration: none;
+    }
+
+.PreView_Twitter {
+    background: url("../images/System/icon_twitter.png") no-repeat scroll 0 0 #F9F9F9;
+    border: 1px solid #eee;
+    color: #666;
+    display: inline-block;
+    float: left;
+    line-height: 1.3;
+    margin: 0 2px;
+    padding: 2px 5px 2px 25px;
+}
+
+    .PreView_Twitter:hover {
+        border: 1px solid #70B100;
+        color: #333;
+        text-decoration: none;
+    }
+
+.MamberStatusY {
+    background: url('../images/System/IconProof.png') no-repeat;
+    display: block;
+    display: inline-block;
+    float: left;
+    height: 13px;
+    text-indent: -5000px;
+    width: 20px;
+}
+
+.MamberStatusN {
+    background: url('../images/System/IconProof.png') no-repeat bottom;
+    display: block;
+    display: inline-block;
+    float: left;
+    height: 13px;
+    text-indent: -5000px;
+    width: 20px;
+}
+
+.PostStatusY {
+    background: url('../images/System/IconPost.png') no-repeat 2px 0px;
+    display: block;
+    display: inline-block;
+    float: left;
+    height: 16px;
+    text-indent: -5000px;
+    width: 20px;
+}
+
+.PostStatusN {
+    background: url('../images/System/IconPost.png') no-repeat 2px -28px;
+    display: block;
+    display: inline-block;
+    float: left;
+    height: 16px;
+    text-indent: -5000px;
+    width: 20px;
+}
+
+.OnLineStatusY {
+    background: url('../images/System/IconOnLine.png') no-repeat 3px 0;
+    display: block;
+    display: inline-block;
+    float: left;
+    height: 16px;
+    text-indent: -5000px;
+    width: 20px;
+}
+
+.OnLineStatusN {
+    background: url('../images/System/IconOnLine.png') no-repeat 3px -28px;
+    display: block;
+    display: inline-block;
+    float: left;
+    height: 16px;
+    text-indent: -5000px;
+    width: 20px;
+}
+
+.AdImg {
+    border: 2px solid #efefef;
+    margin: 2px 0;
+}
+
+.TableS1 {
+    background-color: #d6eba8;
+    border: 0 !important;
+    border-collapse: separate !important;
+    border-spacing: 1px;
+    color: #666;
+    line-height: 16px;
+}
+
+    .TableS1 .TableS1TdHead {
+        background: #f2f8e6;
+        color: #333333;
+        font-size: 11px;
+        font-weight: normal;
+        padding: 3px 3px;
+        text-align: right;
+        vertical-align: top;
+    }
+
+    .TableS1 .TableS1TdHeadC {
+        background: #f2f8e6;
+        color: #333333;
+        font-size: 11px;
+        font-weight: normal;
+        padding: 3px 3px;
+        text-align: center;
+    }
+
+    .TableS1 td {
+        padding: 2px 3px;
+    }
+
+.TableS2 {
+    background: url('../images/System/IconArrow2List.png') no-repeat 1px 9px;
+    padding: 2px 0 2px 12px;
+}
+
+.TableS3 {
+    border-bottom: 3px solid #d6eba8;
+    border-collapse: collapse;
+    border-right: 2px solid #d6eba8;
+}
+
+    .TableS3 td {
+        border-left: 1px solid #d6eba8;
+        border-top: 1px solid #d6eba8;
+        padding: 4px 5px;
+    }
+
+.TS3Head {
+    text-align: center;
+}
+
+.TableS3Dark {
+    background: #f5f8f0;
+}
+
+.TableS3DarkHead {
+    background: #DFEAC3;
+}
+
+/* Table Edit Style
+----------------------------------*/
+.TableModify {
+    background: #dfebc7;
+    border-spacing: 1px;
+    /*line-height: 18px;*/
+    width: 100%;
+}
+
+    .TableModify td {
+    }
+
+.TableModifyTd {
+    background: #fff;
+    padding: 5px;
+}
+
+.TableModifyTdHead {
+    background: #f5f9e8;
+    border-left: 4px solid #dfeac3;
+    color: #72993e;
+    font-weight: normal;
+    padding-right: 5px;
+    text-align: right;
+}
+
+.TableEditHr {
+    border: 0;
+    border-top: 1px dashed #ccc;
+    height: 1px;
+    margin: 10px auto;
+    width: 98%;
+}
+
+a.SysLink {
+    border: 1px solid #dfeac3;
+    padding: 2px 5px;
+}
+
+.TableModify a:hover {
+    background: #4E9824;
+    border: #4E9824;
+    color: #fff;
+    text-decoration: none;
+}
+
+tr.Must .TableModifyTdHead {
+    border-left: 4px solid #c6ed06;
+}
+
+.ModifyTdItem {
+    clear: both;
+    padding: 5px;
+}
+
+.EditItem {
+    float: left;
+    padding: 5px;
+}
+
+em.Must {
+    color: #ff3333;
+    display: inline-block;
+    font-size: 11px;
+    font-style: normal;
+    padding: 0 3px;
+}
+
+tr.Must em {
+    color: #ff3333;
+    display: inline-block;
+    font-size: 11px;
+    font-style: normal;
+    padding: 0 3px;
+}
+
+tr.ModifyHead td {
+    background: #dfeac3;
+    border: 2px solid #fff;
+    border-left: 0;
+    border-right: 0;
+    color: #333;
+    font-size: 15px;
+    font-weight: bold;
+    padding: 6px 15px 4px;
+}
+
+tr.ModifyHead {
+    color: #0033ff;
+    font-size: 13px;
+    font-weight: normal;
+    padding-left: 15px;
+}
+
+.TableModify span em {
+    background: #f5f9e8;
+    color: #4bae10;
+    font-style: normal;
+    padding: 2px 5px;
+}
+
+em.TableModifyTitleIcon {
+    background: url('../images/System/IconArrow3EditHead.png') no-repeat right;
+    display: inline-block;
+    height: 8px;
+    text-indent: -5000px;
+    width: 25px;
+}
+
+
+a.SysOutLink {
+    background: #dbecb7;
+    border: 0;
+    border-left: 3px solid #addf42;
+    margin-left: 10px;
+    padding: 2px 10px;
+}
+
+    a.SysOutLink:hover {
+        background: #5fb61a;
+        border-left: 3px solid #addf42;
+        color: #fff;
+        text-decoration: none;
+    }
+
+.MoreInfoSet {
+    color: #999;
+    margin-left: 25px;
+}
+
+    .MoreInfoSet span {
+    }
+
+    .MoreInfoSet em {
+        font-weight: bold;
+    }
+
+span.TableEditWarm {
+    color: #F33;
+    margin: 0;
+    padding: 0 2px;
+}
+
+span.TableEditWarmBlue {
+    color: #06C;
+    margin: 0;
+    padding: 0 2px;
+}
+
+.BtnAngle {
+    background: url(../images/System/IconArrow2List.png) no-repeat 0 4px;
+    padding-bottom: 2px;
+    padding-left: 10px;
+}
+
+.Useless {
+    background: #ddd;
+    color: #fff;
+}
+
+.MoreOpenCon {
+    background: #efefef;
+    text-align: center;
+}
+
+.MoreOpen {
+    background: url(../images/System/AarowDown.png) 0 2px no-repeat;
+    color: #666;
+    font-size: 11px;
+    padding: 0 10px;
+    padding-left: 15px;
+    width: 100%;
+}
+
+.TableModify a.MoreOpen:hover {
+    background: url(../images/System/AarowDown.png) 0 2px no-repeat;
+    color: #000;
+}
+
+.ListIllusArea {
+    background: #e8f3d1;
+    border-top: 1px solid #fff;
+    clear: both;
+    padding: 6px 20px;
+}
+
+.ListIllus {
+    display: inline-block;
+}
+
+.IllusItem {
+    float: left;
+    margin-right: 15px;
+}
+
+.ListIllus span {
+    margin-right: 15px;
+}
+
+.List1 {
+    background-color: #cccccc;
+    border-collapse: separate;
+    border-spacing: 1px;
+    clear: both;
+    display: inline-table;
+    line-height: 1.42857143;
+    padding: 0;
+}
+
+    .List1 .tdHead td {
+        background: #f7f7f7;
+        color: #5c5c5c;
+        font-size: 13px;
+        font-weight: bold;
+        height: 25px;
+        padding: 3px;
+        text-align: center;
+    }
+
+    .List1 td {
+        background: #fff;
+        min-height: 25px;
+        padding: 6px 5px;
+    }
+
+    .List1 .TrGray td {
+        background: #eee;
+    }
+
+    .List1 .TrPink td {
+        background: #fdeaea;
+    }
+
+    .List1 .TrOrange td {
+        background: #fdedd9;
+    }
+
+    .List1 .TrGreen td {
+        background: #edfbe7;
+    }
+
+    .List1 .TrPurple td {
+        background: #ede8f7;
+    }
+
+    .List1 .TrEarth td {
+        background: #f1eadf;
+    }
+
+    .List1 .TrYellow td {
+        background: #fdf8d9;
+    }
+
+    .List1 .TrBlue td {
+        background: #e6f4f8;
+    }
+
+    .List1 .PHelfCon {
+        clear: both;
+        display: block;
+        margin: 3px 0;
+    }
+
+    .List1 .tdItem {
+        background: url('../images/System/IconCircle.gif') no-repeat 4px 7px;
+        clear: both;
+        margin: 0;
+        padding: 2px 0 2px 18px;
+    }
+
+    .List1 .tdItemValue {
+        color: #4e9824;
+        font-style: normal;
+    }
+
+    .List1 .PHelf {
+        float: left;
+        width: 50%;
+    }
+
+    .List1 .tdItem a {
+        text-decoration: underline;
+    }
+
+        .List1 .tdItem a:hover {
+            color: #00a0ea;
+        }
+
+    .List1 td .tdItem em {
+        color: #ff0000;
+        font-style: normal;
+        padding: 0 2px 0 0;
+    }
+
+a.BtnManager {
+    background: #4F9727;
+    color: #fff;
+    font-size: 12px;
+    margin: 1px 2px;
+    padding: 2px 3px 0;
+    padding: 2px 5px;
+}
+
+    a.BtnManager:hover {
+        background: #178951;
+        color: #fff;
+        text-decoration: none;
+    }
+
+a.Lock {
+    background: url('../images/System/BtnLock.png') no-repeat top;
+    color: #333;
+    display: inline-block;
+    height: 22px;
+    margin: 1px 2px;
+    padding: 2px 0 0 25px;
+    width: 31px;
+}
+
+    a.Lock:hover {
+        background: url('../images/System/BtnLock.png') no-repeat 0 -30px;
+        color: #333;
+        text-decoration: none;
+    }
+
+a.Edit {
+    background: url('../images/System/BtnEdit.png') no-repeat;
+    color: #333;
+    display: inline-block;
+    height: 22px;
+    margin: 1px 2px;
+    padding: 2px 0 0 25px;
+    width: 31px;
+    font-size: 12px;
+}
+
+    a.Edit:hover {
+        background: url('../images/System/BtnEdit.png') no-repeat 0 -30px;
+        color: #333;
+        text-decoration: none;
+    }
+
+a.Delete {
+    background: url('../images/System/BtnDelete.png') no-repeat;
+    color: #333;
+    display: inline-block;
+    height: 22px;
+    margin: 1px 2px;
+    padding: 2px 0 0 25px;
+    width: 31px;
+    font-size: 12px;
+}
+
+    a.Delete:hover {
+        background: url('../images/System/BtnDelete.png') no-repeat 0 -30px;
+        color: #333;
+        text-decoration: none;
+    }
+
+a.Proof {
+    background: url('../images/System/BtnProof.png') no-repeat;
+    color: #333;
+    display: inline-block;
+    height: 22px;
+    margin: 1px 2px;
+    padding: 2px 0 0 25px;
+    width: 55px;
+    font-size: 12px;
+}
+
+    a.Proof:hover {
+        background: url('../images/System/BtnProof.png') no-repeat 0 -30px;
+        color: #333;
+        text-decoration: none;
+    }
+
+a.BtnTwo {
+    background: url('../images/System/BtnListTwo.png') no-repeat;
+    color: #333;
+    display: inline-block;
+    height: 20px;
+    margin: 3px 3px 3px 0;
+    padding: 2px 0 0 0;
+    padding: 3px 0 0 0 \9;
+    padding: 3px 0 0 0;
+    text-align: center;
+    width: 56px;
+    font-size: 12px;
+}
+
+    a.BtnTwo:hover {
+        background: url('../images/System/BtnListTwo.png') no-repeat 0 -30px;
+        color: #333;
+        text-decoration: none;
+    }
+
+a.BtnFour {
+    background: url('../images/System/BtnListFour.png') no-repeat;
+    color: #333;
+    display: inline-block;
+    height: 20px;
+    margin: 3px 3px 3px 0;
+    padding: 2px 0 0 0;
+    padding: 3px 0 0 0 \9;
+    padding: 3px 0 0 0;
+    text-align: center;
+    width: 80px;
+    font-size: 12px;
+}
+
+    a.BtnFour:hover {
+        background: url('../images/System/BtnListFour.png') no-repeat 0 -30px;
+        color: #333;
+        text-decoration: none;
+    }
+
+a.PMember {
+    background: url('../images/System/IconMember.png') no-repeat 1px 1px;
+}
+/* Calendar
+----------------------------------*/
+a.Date {
+    background: url('../images/System/IconCalendary.png') no-repeat 0 0;
+    border: 0;
+    display: inline-block;
+    height: 17px;
+    margin: 0 2px 0;
+    padding: 0;
+    text-indent: -5000px;
+    width: 17px;
+}
+
+    a.Date:hover {
+        background: url('../images/System/IconCalendary.png') no-repeat -21px 0;
+    }
+/* Page Style
+----------------------------------*/
+.PagesArea {
+    background: #f3f3f3;
+    border-top: 3px solid #e8e8e8;
+    padding: 5px 10px;
+}
+
+.PageControlCon {
+    display: block;
+    height: 25px;
+}
+
+.PageControl {
+    display: inline;
+}
+
+.PagePre {
+    background: url('../images/System/PageBtn.png') no-repeat 0 4px;
+    display: block;
+    float: left;
+    height: 20px;
+    text-indent: -5000px;
+    width: 20px;
+}
+
+    .PagePre:hover {
+        background-position: 0 -21px;
+    }
+
+.PageNext {
+    background: url('../images/System/PageBtn.png') no-repeat -30px 4px;
+    display: block;
+    float: left;
+    height: 20px;
+    text-indent: -5000px;
+    width: 20px;
+}
+
+    .PageNext:hover {
+        background-position: -30px -21px;
+    }
+
+.Pages {
+    float: left;
+    padding: 2px 5px 0 5px;
+}
+
+    .Pages a {
+        color: #333;
+        padding: 2px 5px;
+    }
+
+        .Pages a:hover {
+            background: #6dba0a;
+            color: #fff;
+            text-decoration: none;
+        }
+
+    .Pages span {
+        background: #358800;
+        color: #fff;
+        padding: 2px 5px;
+    }
+
+.PageSet {
+    display: inline-block;
+    float: left;
+    font-family: Verdana;
+    margin-left: 20px;
+}
+
+.PageAccount {
+    float: right;
+    padding: 2px 0 0 0;
+}
+
+.PageSetIn {
+    margin-right: 5px;
+    width: 30px;
+}
+
+.PageSetBtn {
+    margin: 0 0 0 5px;
+    padding: 0;
+    text-align: center;
+    width: 30px;
+}
+/* Submit Area
+----------------------------------*/
+.SubmitArea {
+    background: #f3f3f3;
+    border-top: 3px solid #e8e8e8;
+    padding: 15px 10px;
+    text-align: center;
+}
+
+.SubmitAreaS {
+    background: #f3f3f3;
+    border-top: 3px solid #e8e8e8;
+    padding: 5px 10px;
+    text-align: center;
+}
+/* Login
+----------------------------------*/
+.SysLogin {
+    background: #fff;
+}
+
+.SysLoginPageCon {
+    margin: 60px auto 0;
+    width: 520px;
+}
+
+.SysLoginContent {
+    background: url('../images/System/LoginABg_Eng.png') no-repeat;
+    height: 250px;
+    padding: 70px 30px 0 35px;
+    width: 455px;
+}
+
+.ForEng {
+    background: url('../images/System/LoginABg_Eng.png') no-repeat;
+}
+
+.Info {
+    background: none;
+    float: left;
+    margin: 0;
+    padding: 0;
+    width: 260px;
+}
+
+    .Info h2 {
+        font-size: 18px;
+        font-weight: bold;
+        margin: 8px;
+    }
+
+.InfoItemCon {
+}
+
+.InfoItem {
+    background: url('../images/System/IconArrow.png') no-repeat 0 3px;
+    clear: both;
+    color: #555;
+    display: inline-block;
+    font-size: 15px;
+    margin: 1px 0 0 10px;
+    padding: 0 0 5px 22px;
+}
+
+.InfoLable {
+    display: inline-table;
+    float: left;
+    padding-top: 5px;
+}
+
+.CheckNum {
+    margin: 0 5px -8px 0;
+}
+
+.Info hr {
+    background-color: #ddd;
+    border: 0;
+    height: 1px;
+    margin-bottom: 10px;
+}
+
+.InfoItemEdit {
+    float: left;
+}
+
+.InfoItemWarm {
+    color: #F33;
+    font-size: 12px;
+}
+
+.LoginBtnArea {
+    clear: both;
+}
+
+.Login {
+    background: url('../images/System/BtnLogin.png') no-repeat;
+    display: block;
+    height: 35px;
+    margin: 10px 0 0 177px;
+    text-indent: -5000px;
+    width: 91px;
+}
+
+.ForEng .Login {
+    background: url('../images/System/BtnLogin_Eng.png') no-repeat;
+}
+
+.Login:hover {
+    background-position: right;
+}
+
+.CalendarArea {
+    background: none;
+    float: left;
+    margin: 0 0 0 15px;
+    padding: 0;
+}
+
+.Announce {
+    background: #fff;
+    clear: both;
+    margin: 0 auto;
+}
+
+    .Announce p {
+        border-bottom: 1px dashed #ccc;
+        color: #666;
+        margin: 0;
+        padding: 5px 10px;
+    }
+
+.AnnounceLight {
+    color: #C63;
+    padding: 0 2px;
+}
+
+.Announce a {
+    padding: 0 2px;
+    text-decoration: underline;
+}
+/* Search Area
+----------------------------------*/
+.Sift {
+    border-bottom: 2px solid #a8d763;
+    display: inline-block;
+    padding: 4px 0 6px;
+    width: 100%;
+}
+
+    .Sift ul {
+        clear: both;
+        color: #009acc;
+        display: block;
+        margin: 0;
+        padding: 0 5px 0;
+    }
+
+    .Sift li {
+        background: url('../images/System/IconSift.png') no-repeat 1px 50%;
+        background-position: 1px 12px;
+        display: block;
+        float: left;
+        /*font-size: 13px;*/
+        list-style: none;
+        margin: 0 5px 0 0;
+        padding: 3px 10px 3px 15px;
+    }
+
+        .Sift li.BgN, .BgN {
+            background: none;
+        }
+
+    .Sift a {
+        padding: 0 3px;
+        padding: 2px 3px 0;
+        text-decoration: underline;
+    }
+
+        .Sift a:hover {
+            color: #36F;
+        }
+
+        .Sift a.Sifta {
+            border: 1px solid #A8D763;
+            font-size: 12px;
+            padding: 0 3px;
+            padding: 2px 3px 0;
+            text-decoration: none;
+        }
+
+            .Sift a.Sifta:hover {
+                background: #A8D763;
+                color: #fff;
+                text-decoration: none;
+            }
+
+    .Sift select {
+        margin: 0 2px;
+        position: relative;
+        top: 1px;
+    }
+
+    .Sift li label.Slabel {
+        display: inline-block;
+    }
+
+    .Sift input, .Sift checkbox, .Sift radio {
+        margin: auto 2px auto \9;
+        margin: auto 2px auto;
+        margin: auto 2px;
+    }
+
+        .Sift input[type="checkbox"] {
+            margin-left: 10px;
+            margin-right: 0;
+            position: relative;
+            top: 2px;
+            top: 3px;
+        }
+
+        .Sift input[type="button"] {
+            position: relative;
+            top: 1px;
+            top: -1px\0;
+        }
+
+.SiftBr {
+    border: 0;
+    border-bottom: 1px solid #fff;
+    clear: both;
+    height: 1px;
+    margin: 0;
+    padding: 0;
+    text-indent: -5000px;
+}
+
+.SiftTab {
+    background: #f8fbef;
+    clear: both;
+    display: inline-block;
+    margin: 0 0 0 0;
+    padding: 6px 5px 6px;
+}
+
+    .SiftTab ul {
+        border: 1px solid #000;
+    }
+
+    .SiftTab li {
+        background: url('../images/System/IconSift.png') no-repeat 1px 9px;
+        color: #009acc;
+        float: left;
+        /*font-size: 13px;*/
+        list-style: none;
+        margin: 0;
+        padding: 3px 10px 3px 15px;
+    }
+
+    .SiftTab select {
+        margin: 0 2px;
+    }
+
+.SiftEdit {
+    background: #efefef;
+}
+
+    .SiftEdit li {
+        background: url(../images/System/IconCircle.gif) no-repeat 0 10px;
+        color: #333;
+        font-size: 12px;
+        padding: 2px 5px 0 12px;
+    }
+
+.SiftLight {
+    color: #F63;
+    font-size: 11px;
+    padding: 0;
+}
+
+li.SiftLiLight {
+    background: none;
+    clear: both;
+    color: green;
+    font-size: 11px;
+}
+
+.SiftItem {
+    display: inline-block;
+    padding: 4px 0 6px;
+    width: 100%;
+}
+
+    .SiftItem ul {
+        clear: both;
+        display: block;
+        margin: 0;
+        padding: 0 5px 0;
+    }
+
+    .SiftItem li {
+        background: url('../images/System/IconCircle.gif') no-repeat 1px 50%;
+        background-position: 1px 12px;
+        display: block;
+        float: left;
+        font-size: 12px;
+        list-style: none;
+        margin: 0 5px 0 0;
+        padding: 3px 10px 3px 15px;
+    }
+
+.SiftItem_Table {
+    display: inline-table;
+    padding: 4px 0 6px;
+    width: 100%;
+}
+
+    .SiftItem_Table ul {
+        clear: both;
+        display: block;
+        margin: 0;
+        padding: 0 5px 0;
+    }
+
+    .SiftItem_Table li {
+        background: url('../images/System/IconCircle.gif') no-repeat 1px 50%;
+        background-position: 1px 12px;
+        display: block;
+        float: left;
+        font-size: 12px;
+        list-style: none;
+        margin: 0 5px 0 0;
+        padding: 3px 10px 3px 15px;
+    }
+
+.SysTab {
+    border-bottom: 2px solid #a8d763;
+    display: block;
+}
+
+    .SysTab ul {
+        display: inline-block;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .SysTab li {
+        background: url('../images/System/TabR.png') no-repeat right bottom;
+        float: left;
+    }
+
+        .SysTab li:hover, .SysTab li.TabAc {
+            background-position: right top;
+        }
+
+        .SysTab li a {
+            background: url('../images/System/TabL.png') no-repeat left bottom;
+            color: #444;
+            display: block;
+            /*font-size: 13px;*/
+            height: 19px;
+            margin-top: 3px;
+            padding: 6px 15px 3px;
+        }
+
+            .SysTab li a:hover, .SysTab li.TabAc a {
+                background-position: left top;
+                color: #fff;
+                height: 20px;
+                margin-top: 0;
+                padding: 8px 15px 3px;
+                text-decoration: none;
+            }
+
+.SysTab2 {
+    border-bottom: 1px solid #999;
+    display: block;
+    margin: 10px 0;
+    padding-bottom: 1px;
+}
+
+    .SysTab2 a {
+        color: #666;
+        padding: 3px 12px;
+        text-decoration: none;
+    }
+
+        .SysTab2 a:hover {
+            background: #efefef;
+            margin-top: -1px;
+            padding-bottom: 0px;
+        }
+
+        .SysTab2 a.Ac {
+            background: #efefef;
+            border: 1px solid #999;
+            border-bottom: 1px solid #efefef;
+            border-bottom: 1px solid #fff;
+            border-top: 4px solid #888;
+            color: #333;
+            padding: 2px 7px;
+            padding-bottom: 4px\0;
+            padding-top: 5px;
+        }
+
+
+.SysTab3 {
+    border-bottom: 2px solid #a8d763;
+    display: block;
+    margin-top: 10px;
+}
+
+    .SysTab3 ul {
+        display: inline-block;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+    }
+
+    .SysTab3 li {
+        background: url('../images/System/TabR.png') no-repeat right bottom;
+        float: left;
+    }
+
+        .SysTab3 li:hover, .SysTab3 li.TabAc {
+            background-position: right top;
+        }
+
+        .SysTab3 li a {
+            background: url('../images/System/TabL.png') no-repeat left bottom;
+            color: #444;
+            display: block;
+            /*font-size: 13px;*/
+            height: 31px;
+            margin-top: 0px;
+            padding: 8px 15px 3px;
+        }
+
+            .SysTab3 li a:hover, .SysTab3 li.TabAc a {
+                background-position: left top;
+                color: #fff;
+                height: 31px;
+                margin-top: 0px;
+                padding: 8px 15px 3px;
+                text-decoration: none;
+            }
+
+
+.Navi {
+    border: 1px solid #fff;
+    font-size: 10px;
+    padding: 0 0 10px;
+}
+
+    .Navi span {
+        color: #777;
+        font-size: 12px;
+        padding: 0 8px;
+    }
+
+    .Navi a {
+        font-size: 12px;
+        padding: 0 8px;
+    }
+
+.SumArea {
+    background: #efefef;
+    padding: 10px;
+    text-align: right;
+}
+
+    .SumArea em {
+        color: #F30;
+        font-size: 15px;
+        font-style: normal;
+        font-weight: bold;
+        margin: 0 3px;
+    }
+
+    .SumArea table {
+        border: 1px dotted #fff;
+    }
+/* Main Page InfoBox
+----------------------------------*/
+.FSSetCon {
+    display: block;
+}
+
+.FSSet {
+    color: #666;
+    display: block;
+    float: left;
+    margin-right: 1%;
+    width: 32%;
+}
+
+.FSCon {
+    border: 1px solid #b5d6e8;
+    display: inline-block;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.FSHead {
+    background: url(../images/System/FSHeadBg.png) repeat-x 0 -30px;
+    border-bottom: 1px solid #b5d6e8;
+    color: #318bb1;
+    display: block;
+    /*font-size: 13px;*/
+    font-weight: bold;
+    height: 26px;
+    letter-spacing: 2px;
+    line-height: 25px;
+    overflow: hidden;
+    padding: 0 10px;
+}
+
+.FSHead {
+    height: 23px \9;
+    padding-top: 3px \9;
+}
+
+.FSMain {
+    padding: 5px;
+    word-break: break-all;
+}
+
+    .FSMain a {
+        color: #06F;
+        margin: 0 3px;
+        padding: 2px 0 2px;
+    }
+
+        .FSMain a:hover {
+        }
+
+    .FSMain .FSNum {
+        color: #F33;
+        margin-left: 5px;
+    }
+
+    .FSMain ul {
+        margin: 0;
+        padding: 0 0 10px 20px;
+    }
+
+        .FSMain ul li {
+            padding: 3px;
+        }
+
+.aList {
+    border-bottom: 1px dashed #ccc;
+}
+
+    .aList:hover {
+        border-bottom: 1px dashed #333;
+        text-decoration: none;
+    }
+
+.FSGray .FSHead {
+    background: url(../images/System/FSHeadBg.png) repeat-x 0 0;
+    border-bottom: 1px solid #aeaeae;
+    color: #333333;
+}
+
+.FSGray {
+    border: 1px solid #aeaeae;
+}
+
+.FSPurple .FSHead {
+    background: url(../images/System/FSHeadBg.png) repeat-x 0 -60px;
+    border-bottom: 1px solid #c6b9cf;
+    color: #694582;
+}
+
+.FSPurple {
+    border: 1px solid #c6b9cf;
+}
+
+.FSPink .FSHead {
+    background: url(../images/System/FSHeadBg.png) repeat-x 0 -90px;
+    border-bottom: 1px solid #fad4e1;
+    color: #d54375;
+}
+
+.FSPink {
+    border: 1px solid #fad4e1;
+}
+
+.FSOrange .FSHead {
+    background: url(../images/System/FSHeadBg.png) repeat-x 0 -120px;
+    border-bottom: 1px solid #f1c8a1;
+    color: #a84316;
+}
+
+.FSOrange {
+    border: 1px solid #f1c8a1;
+}
+
+.FSGreen .FSHead {
+    background: url(../images/System/FSHeadBg.png) repeat-x 0 -150px;
+    border-bottom: 1px solid #aed494;
+    color: #3c840b;
+}
+
+.FSGreen {
+    border: 1px solid #aed494;
+}
+/* Sortable Style
+----------------------------------*/
+.FEditCon {
+    clear: both;
+    display: block;
+}
+
+    .FEditCon li {
+        border: 1px dashed #fff;
+        clear: both;
+        cursor: pointer;
+        line-height: 1.3;
+        list-style-position: outside;
+        list-style-type: decimal;
+        padding: 3px;
+    }
+
+        .FEditCon li:hover {
+            background: url(../images/system/cursor_drag_arrow.png) no-repeat right;
+            border: 1px dashed #ccc;
+            cursor: pointer;
+        }
+
+    .FEditCon table {
+        border: 0;
+        border-collapse: collapse;
+        border-spacing: 0;
+        margin-top: -15px\0;
+        padding: 0;
+    }
+
+        .FEditCon table td {
+            vertical-align: middle;
+        }
+
+.FEditCon_NoArrow {
+    clear: both;
+    display: block;
+}
+
+    .FEditCon_NoArrow li {
+        border: 1px dashed #fff;
+        clear: both;
+        cursor: pointer;
+        line-height: 1.3;
+        list-style-position: outside;
+        list-style-type: decimal;
+        padding: 3px;
+    }
+
+        .FEditCon_NoArrow li:hover {
+            border: 1px dashed #ccc;
+            cursor: pointer;
+        }
+
+    .FEditCon_NoArrow table {
+        border: 0;
+        border-collapse: collapse;
+        border-spacing: 0;
+        margin-top: -15px\0;
+        padding: 0;
+    }
+
+        .FEditCon_NoArrow table td {
+            vertical-align: middle;
+        }
+
+.FEItemIn {
+    display: inline-block;
+    padding-right: 5px;
+}
+
+    .FEItemIn textarea {
+        background: #efefef;
+        border: 1px solid #ccc;
+        height: 15px;
+        line-height: inherit;
+        padding: 2px;
+    }
+
+.FEItemControl {
+    padding-top: 5px \0;
+    vertical-align: middle;
+}
+
+    .FEItemControl a {
+        border: 1px solid #ccc;
+        color: #666;
+        margin-right: 3px;
+        padding: 1px 8px;
+        position: relative;
+    }
+
+        .FEItemControl a:hover {
+            background: #333;
+            border: 1px solid #333;
+            color: #ccc;
+        }
+/* 清單樣式
+----------------------------------*/
+.FucList {
+    padding-left: 10px;
+}
+
+    .FucList li {
+        background: url(../images/System/IconArrow2List.png) no-repeat 0 8px;
+        border-bottom: 1px solid #f7f7f7;
+        list-style: none;
+        padding: 4px 2px 4px 14px;
+    }
+
+        .FucList li a {
+            color: #444;
+        }
+
+            .FucList li a:hover {
+                color: #00A0EA !important;
+            }
+
+.FucListMore {
+    padding-left: 10px;
+}
+
+    .FucListMore li {
+        background: url(../images/System/IconArrow2List.png) no-repeat 8px 8px;
+        color: #555;
+        cursor: pointer;
+        list-style: none;
+        padding: 4px 5px 4px 20px;
+    }
+
+.StNone {
+}
+
+.FucListMore li.StNone:hover {
+    background: url(../images/System/IconArrow2List.png) no-repeat 8px 8px #f9f9f9;
+    color: #000;
+}
+
+.FucListMore li.Sted {
+    background: url(../images/System/IconArrow2List.png) no-repeat 8px 8px #EAF4DC;
+    color: #4E9824;
+}
+
+/* Search Result
+----------------------------------*/
+.SearchShift {
+    border-bottom: 2px solid #f1f1f1;
+    display: inline-block;
+    font-size: 15px;
+    line-height: 18px;
+    padding-bottom: 5px;
+}
+
+    .SearchShift input, .SearchShift select {
+        color: #555;
+        font: inherit;
+    }
+
+        .SearchShift input[type="text"] {
+            font-weight: bold;
+        }
+
+        .SearchShift input[type="button"] {
+            /*font-size: 13px;*/
+            font-weight: normal;
+        }
+
+.SearchSum {
+    color: #666;
+    font-size: 12px;
+    padding-left: 5px;
+    padding-top: 2px;
+}
+
+.SearchList {
+    clear: both;
+    display: block;
+    margin: 10px 0;
+    width: 650px;
+}
+
+.SearchItem {
+    display: inline-block;
+    margin: 10px 0 15px;
+    width: 100%;
+}
+
+    .SearchItem h5 {
+        font-size: 15px;
+        margin-bottom: 5px;
+    }
+
+        .SearchItem h5 a {
+            border-left: 5px solid #ccc;
+            color: #0081CC;
+            line-height: 1;
+            padding-left: 6px;
+            padding-top: 1px;
+        }
+
+    .SearchItem em {
+        color: #f33;
+        font-style: normal;
+    }
+
+    .SearchItem a em {
+        color: #f33;
+        font-style: normal;
+    }
+
+    .SearchItem p {
+        margin: 0;
+        margin-bottom: 3px;
+        margin-right: 50px;
+    }
+
+        .SearchItem p b {
+            font-weight: normal;
+        }
+
+.SearchDetail {
+    padding-left: 11px;
+}
+
+.SearhIndex .SearchShift {
+    border-bottom: none;
+    margin-left: 50px;
+}
+
+.SearhHead {
+    background: url(../images/System/Logo_Search.png) no-repeat 0 0;
+    height: 50px;
+    text-indent: -5000px;
+}
+
+.SearhHeadIndex {
+    background: url(../images/System/Head_Search.png) no-repeat 30px 0;
+    display: block;
+    height: 72px;
+    margin-top: 30px;
+    text-indent: -5000px;
+}
+
+/* 下滑出來的清單,內容
+----------------------------------*/
+.TableModifyPsCon {
+    clear: both;
+    display: inline-block;
+    margin-bottom: 5px;
+    width: 100%;
+}
+
+.SelectHoverShow {
+    cursor: pointer;
+    display: inline-block;
+    float: left;
+    margin-right: 5px;
+    position: relative;
+}
+
+.NowItem {
+    background: url(../images/System/BtnGrayFlatR.png) no-repeat top right;
+    display: inline-block;
+    height: 21px;
+    line-height: 21px;
+    margin-left: 10px;
+    padding-right: 10px;
+}
+
+    .NowItem em {
+        background: url(../images/System/BtnGrayFlatL.png) no-repeat;
+        display: inline-block;
+        float: left;
+        height: 21px;
+        margin-left: -10px;
+        width: 21px;
+    }
+
+    .NowItem span {
+        background: #096;
+        color: #fff;
+        margin-left: 2px;
+        padding: 0 3px;
+    }
+
+.ShowCon {
+    background: #fff;
+    border: 1px solid #DFEAC3;
+    clear: both;
+    display: inline-block;
+    display: none;
+    left: 0;
+    min-width: 120px;
+    padding: 10px 15px;
+    position: absolute;
+    top: 21px;
+    width: auto;
+}
+
+    .ShowCon ul {
+        margin: 2px 0;
+        padding-left: 25px;
+        padding-right: 15px;
+    }
+
+.SelectHoverShow:hover .ShowCon {
+    display: inline-block;
+}
+
+.SelectHoverShow:hover .NowItem {
+    background-position: bottom right;
+}
+
+    .SelectHoverShow:hover .NowItem em {
+        background-position: bottom left;
+    }
+
+/* 字型 Start
+----------------------------------*/
+.styleEarth {
+    color: #CC6600;
+}
+
+.stylePurple {
+    color: #663399;
+}
+
+.styleGreen {
+    color: #008833;
+}
+
+.styleBlue {
+    color: #0033CC;
+}
+
+.styleBluelight {
+    color: #0081CC;
+}
+
+.styleDarkBlue {
+    color: #0047AB;
+}
+
+.styleRed {
+    color: #F33 !important;
+}
+
+.styleReddark {
+    color: #670A19 !important;
+}
+
+.styleGraylight {
+    color: #999 !important;
+}
+
+.styleBlack {
+    color: #000;
+}
+
+.styleCafe {
+    color: #824E00;
+}
+
+.styleChocolate {
+    color: #D2691E;
+}
+
+.Font9 {
+    font-size: 9px;
+}
+
+.Font10 {
+    font-size: 10px;
+}
+
+.Font11 {
+    font-size: 11px;
+}
+
+.Font12 {
+    font-size: 12px;
+}
+
+.Font13 {
+    font-size: 13px;
+}
+
+.Font14 {
+    font-size: 14px;
+}
+
+.Font15 {
+    font-size: 15px;
+}
+
+.Font16 {
+    font-size: 16px;
+}
+
+.Font18 {
+    font-size: 18px;
+}
+
+.Font20 {
+    font-size: 20px;
+}
+
+.Font24 {
+    font-size: 24px;
+}
+
+.B {
+    font-weight: bold;
+}
+
+.I {
+    font-style: italic;
+}
+
+.U {
+    text-decoration: underline;
+}
+
+/* 字型 End
+----------------------------------*/
+
+/* 背景色
+----------------------------------*/
+.BgGray {
+    background: #eee;
+}
+
+.BgPink {
+    background: #fdeaea;
+}
+
+.BgOrange {
+    background: #fdedd9;
+}
+
+.BgGreen {
+    background: #edfbe7;
+}
+
+.BgPurple {
+    background: #ede8f7;
+}
+
+.BgEarth {
+    background: #f1eadf;
+}
+
+.BgYellow {
+    background: #fdf8d9;
+}
+
+.BgBlue {
+    background: #e6f4f8;
+}
+
+.BackgroundBlue {
+    background: #e3f7ff;
+    border-left: 4px solid #dfeac3;
+    color: #72993e;
+    font-weight: normal;
+    padding-right: 5px;
+    text-align: right;
+}
+
+.BackgroundBlueTd {
+    background: #e3f7ff;
+    padding: 5px;
+}
+
+.BackgroundGreen {
+    background: #e3ffe5;
+    border-left: 4px solid #dfeac3;
+    color: #72993e;
+    font-weight: normal;
+    padding-right: 5px;
+    text-align: right;
+}
+
+.BackgroundGreenTd {
+    background: #e3ffe5;
+    padding: 5px;
+}
+
+.BackgroundOrange {
+    background: #fff9e3;
+    border-left: 4px solid #dfeac3;
+    color: #72993e;
+    font-weight: normal;
+    padding-right: 5px;
+    text-align: right;
+}
+
+.BackgroundOrangeTd {
+    background: #fff9e3;
+    padding: 5px;
+}
+
+/* Sortable - 拖曳效果
+----------------------------------*/
+.image-wrap {
+    width: 100%;
+}
+
+.image-box {
+    border: 2px dashed #CCC;
+    cursor: move;
+    float: left;
+    height: 150px;
+    margin: 15px 20px 5px 0;
+    width: 200px;
+}
+
+    .image-box input {
+        cursor: pointer;
+    }
+
+    .image-box img {
+        border: 1px solid #666;
+        float: left;
+        margin: 10px;
+        padding: 3px;
+    }
+
+    .image-box span {
+        background: url(../images/drag.jpg) no-repeat;
+        display: block;
+        height: 31px;
+        margin: 10px 0 10px 120px;
+        text-indent: -9999px;
+        width: 75px;
+    }
+
+a.image-delete {
+    border: 1px solid #CCC;
+    color: #666;
+    padding: 2px 8px;
+}
+
+a:hover.image-delete {
+    background-color: #000;
+    color: #CCC;
+}
+/* 加入最愛 */
+.favoriteMark {
+    background: url('../images/ico_mark.png') no-repeat;
+    display: inline-block;
+    height: 24px;
+    width: 24px;
+}
+
+.favoriteUnMark {
+    background: url('../images/ico_unmark.png') no-repeat;
+    display: inline-block;
+    height: 24px;
+    width: 24px;
+}
+
+/* jQuery UI Css
+ * 參考 http://jquery-ui.googlecode.com/svn/tags/1.6rc5/tests/static/icons.html
+----------------------------------*/
+/*! 
+ * 1.ui-icon (默認圖標)
+ * 2.ui-widget-content .ui-icon (容器中內容圖標)
+ * 3.ui-widget-header .ui-icon (容器中標題圖標)
+ * 4.ui-state-default .ui-icon (默認狀態圖標)
+ * 5.ui-state-hover .ui-icon, .ui-state-focus .ui-icon (鼠標移動到上方時或獲得焦點時圖標)
+ * 6.ui-state-active .ui-icon (激活時圖標)
+ * 7.ui-state-highlight .ui-icon (高亮時圖標)
+ * 8.ui-state-error .ui-icon, .ui-state-error-text .ui-icon (錯誤時圖標)
+ */
+.JQ-ui-icon {
+    background-repeat: no-repeat;
+    display: inline-block;
+    overflow: hidden;
+    text-indent: -99999px;
+}
+
+.JQ-ui-icon {
+    background-image: url(../js/smoothness/images/ui-icons_222222_256x240.png);
+    height: 16px;
+    width: 16px;
+}
+
+.JQ-ui-widget-content .JQ-ui-icon {
+    background-image: url(../js/smoothness/images/ui-icons_222222_256x240.png);
+}
+
+.JQ-ui-widget-header .JQ-ui-icon {
+    background-image: url(../js/smoothness/images/ui-icons_222222_256x240.png);
+}
+
+.JQ-ui-state-default .JQ-ui-icon {
+    background-image: url(../js/smoothness/images/ui-icons_888888_256x240.png);
+}
+
+.JQ-ui-state-hover .JQ-ui-icon, .JQ-ui-state-focus .JQ-ui-icon {
+    background-image: url(../js/smoothness/images/ui-icons_454545_256x240.png);
+}
+
+.JQ-ui-state-active .JQ-ui-icon {
+    background-image: url(../js/smoothness/images/ui-icons_454545_256x240.png);
+}
+
+.JQ-ui-state-highlight .JQ-ui-icon {
+    background-image: url(../js/smoothness/images/ui-icons_2e83ff_256x240.png);
+}
+
+.JQ-ui-state-error .JQ-ui-icon, .JQ-ui-state-error-text .JQ-ui-icon {
+    background-image: url(../js/smoothness/images/ui-icons_cd0a0a_256x240.png);
+}
+/* positioning
+----------------------------------*/
+.ui-icon-carat-1-n {
+    background-position: 0 0;
+}
+
+.ui-icon-carat-1-ne {
+    background-position: -16px 0;
+}
+
+.ui-icon-carat-1-e {
+    background-position: -32px 0;
+}
+
+.ui-icon-carat-1-se {
+    background-position: -48px 0;
+}
+
+.ui-icon-carat-1-s {
+    background-position: -64px 0;
+}
+
+.ui-icon-carat-1-sw {
+    background-position: -80px 0;
+}
+
+.ui-icon-carat-1-w {
+    background-position: -96px 0;
+}
+
+.ui-icon-carat-1-nw {
+    background-position: -112px 0;
+}
+
+.ui-icon-carat-2-n-s {
+    background-position: -128px 0;
+}
+
+.ui-icon-carat-2-e-w {
+    background-position: -144px 0;
+}
+
+.ui-icon-triangle-1-n {
+    background-position: 0 -16px;
+}
+
+.ui-icon-triangle-1-ne {
+    background-position: -16px -16px;
+}
+
+.ui-icon-triangle-1-e {
+    background-position: -32px -16px;
+}
+
+.ui-icon-triangle-1-se {
+    background-position: -48px -16px;
+}
+
+.ui-icon-triangle-1-s {
+    background-position: -64px -16px;
+}
+
+.ui-icon-triangle-1-sw {
+    background-position: -80px -16px;
+}
+
+.ui-icon-triangle-1-w {
+    background-position: -96px -16px;
+}
+
+.ui-icon-triangle-1-nw {
+    background-position: -112px -16px;
+}
+
+.ui-icon-triangle-2-n-s {
+    background-position: -128px -16px;
+}
+
+.ui-icon-triangle-2-e-w {
+    background-position: -144px -16px;
+}
+
+.ui-icon-arrow-1-n {
+    background-position: 0 -32px;
+}
+
+.ui-icon-arrow-1-ne {
+    background-position: -16px -32px;
+}
+
+.ui-icon-arrow-1-e {
+    background-position: -32px -32px;
+}
+
+.ui-icon-arrow-1-se {
+    background-position: -48px -32px;
+}
+
+.ui-icon-arrow-1-s {
+    background-position: -64px -32px;
+}
+
+.ui-icon-arrow-1-sw {
+    background-position: -80px -32px;
+}
+
+.ui-icon-arrow-1-w {
+    background-position: -96px -32px;
+}
+
+.ui-icon-arrow-1-nw {
+    background-position: -112px -32px;
+}
+
+.ui-icon-arrow-2-n-s {
+    background-position: -128px -32px;
+}
+
+.ui-icon-arrow-2-ne-sw {
+    background-position: -144px -32px;
+}
+
+.ui-icon-arrow-2-e-w {
+    background-position: -160px -32px;
+}
+
+.ui-icon-arrow-2-se-nw {
+    background-position: -176px -32px;
+}
+
+.ui-icon-arrowstop-1-n {
+    background-position: -192px -32px;
+}
+
+.ui-icon-arrowstop-1-e {
+    background-position: -208px -32px;
+}
+
+.ui-icon-arrowstop-1-s {
+    background-position: -224px -32px;
+}
+
+.ui-icon-arrowstop-1-w {
+    background-position: -240px -32px;
+}
+
+.ui-icon-arrowthick-1-n {
+    background-position: 0 -48px;
+}
+
+.ui-icon-arrowthick-1-ne {
+    background-position: -16px -48px;
+}
+
+.ui-icon-arrowthick-1-e {
+    background-position: -32px -48px;
+}
+
+.ui-icon-arrowthick-1-se {
+    background-position: -48px -48px;
+}
+
+.ui-icon-arrowthick-1-s {
+    background-position: -64px -48px;
+}
+
+.ui-icon-arrowthick-1-sw {
+    background-position: -80px -48px;
+}
+
+.ui-icon-arrowthick-1-w {
+    background-position: -96px -48px;
+}
+
+.ui-icon-arrowthick-1-nw {
+    background-position: -112px -48px;
+}
+
+.ui-icon-arrowthick-2-n-s {
+    background-position: -128px -48px;
+}
+
+.ui-icon-arrowthick-2-ne-sw {
+    background-position: -144px -48px;
+}
+
+.ui-icon-arrowthick-2-e-w {
+    background-position: -160px -48px;
+}
+
+.ui-icon-arrowthick-2-se-nw {
+    background-position: -176px -48px;
+}
+
+.ui-icon-arrowthickstop-1-n {
+    background-position: -192px -48px;
+}
+
+.ui-icon-arrowthickstop-1-e {
+    background-position: -208px -48px;
+}
+
+.ui-icon-arrowthickstop-1-s {
+    background-position: -224px -48px;
+}
+
+.ui-icon-arrowthickstop-1-w {
+    background-position: -240px -48px;
+}
+
+.ui-icon-arrowreturnthick-1-w {
+    background-position: 0 -64px;
+}
+
+.ui-icon-arrowreturnthick-1-n {
+    background-position: -16px -64px;
+}
+
+.ui-icon-arrowreturnthick-1-e {
+    background-position: -32px -64px;
+}
+
+.ui-icon-arrowreturnthick-1-s {
+    background-position: -48px -64px;
+}
+
+.ui-icon-arrowreturn-1-w {
+    background-position: -64px -64px;
+}
+
+.ui-icon-arrowreturn-1-n {
+    background-position: -80px -64px;
+}
+
+.ui-icon-arrowreturn-1-e {
+    background-position: -96px -64px;
+}
+
+.ui-icon-arrowreturn-1-s {
+    background-position: -112px -64px;
+}
+
+.ui-icon-arrowrefresh-1-w {
+    background-position: -128px -64px;
+}
+
+.ui-icon-arrowrefresh-1-n {
+    background-position: -144px -64px;
+}
+
+.ui-icon-arrowrefresh-1-e {
+    background-position: -160px -64px;
+}
+
+.ui-icon-arrowrefresh-1-s {
+    background-position: -176px -64px;
+}
+
+.ui-icon-arrow-4 {
+    background-position: 0 -80px;
+}
+
+.ui-icon-arrow-4-diag {
+    background-position: -16px -80px;
+}
+
+.ui-icon-extlink {
+    background-position: -32px -80px;
+}
+
+.ui-icon-newwin {
+    background-position: -48px -80px;
+}
+
+.ui-icon-refresh {
+    background-position: -64px -80px;
+}
+
+.ui-icon-shuffle {
+    background-position: -80px -80px;
+}
+
+.ui-icon-transfer-e-w {
+    background-position: -96px -80px;
+}
+
+.ui-icon-transferthick-e-w {
+    background-position: -112px -80px;
+}
+
+.ui-icon-folder-collapsed {
+    background-position: 0 -96px;
+}
+
+.ui-icon-folder-open {
+    background-position: -16px -96px;
+}
+
+.ui-icon-document {
+    background-position: -32px -96px;
+}
+
+.ui-icon-document-b {
+    background-position: -48px -96px;
+}
+
+.ui-icon-note {
+    background-position: -64px -96px;
+}
+
+.ui-icon-mail-closed {
+    background-position: -80px -96px;
+}
+
+.ui-icon-mail-open {
+    background-position: -96px -96px;
+}
+
+.ui-icon-suitcase {
+    background-position: -112px -96px;
+}
+
+.ui-icon-comment {
+    background-position: -128px -96px;
+}
+
+.ui-icon-person {
+    background-position: -144px -96px;
+}
+
+.ui-icon-print {
+    background-position: -160px -96px;
+}
+
+.ui-icon-trash {
+    background-position: -176px -96px;
+}
+
+.ui-icon-locked {
+    background-position: -192px -96px;
+}
+
+.ui-icon-unlocked {
+    background-position: -208px -96px;
+}
+
+.ui-icon-bookmark {
+    background-position: -224px -96px;
+}
+
+.ui-icon-tag {
+    background-position: -240px -96px;
+}
+
+.ui-icon-home {
+    background-position: 0 -112px;
+}
+
+.ui-icon-flag {
+    background-position: -16px -112px;
+}
+
+.ui-icon-calendar {
+    background-position: -32px -112px;
+}
+
+.ui-icon-cart {
+    background-position: -48px -112px;
+}
+
+.ui-icon-pencil {
+    background-position: -64px -112px;
+}
+
+.ui-icon-clock {
+    background-position: -80px -112px;
+}
+
+.ui-icon-disk {
+    background-position: -96px -112px;
+}
+
+.ui-icon-calculator {
+    background-position: -112px -112px;
+}
+
+.ui-icon-zoomin {
+    background-position: -128px -112px;
+}
+
+.ui-icon-zoomout {
+    background-position: -144px -112px;
+}
+
+.ui-icon-search {
+    background-position: -160px -112px;
+}
+
+.ui-icon-wrench {
+    background-position: -176px -112px;
+}
+
+.ui-icon-gear {
+    background-position: -192px -112px;
+}
+
+.ui-icon-heart {
+    background-position: -208px -112px;
+}
+
+.ui-icon-star {
+    background-position: -224px -112px;
+}
+
+.ui-icon-link {
+    background-position: -240px -112px;
+}
+
+.ui-icon-cancel {
+    background-position: 0 -128px;
+}
+
+.ui-icon-plus {
+    background-position: -16px -128px;
+}
+
+.ui-icon-plusthick {
+    background-position: -32px -128px;
+}
+
+.ui-icon-minus {
+    background-position: -48px -128px;
+}
+
+.ui-icon-minusthick {
+    background-position: -64px -128px;
+}
+
+.ui-icon-close {
+    background-position: -80px -128px;
+}
+
+.ui-icon-closethick {
+    background-position: -96px -128px;
+}
+
+.ui-icon-key {
+    background-position: -112px -128px;
+}
+
+.ui-icon-lightbulb {
+    background-position: -128px -128px;
+}
+
+.ui-icon-scissors {
+    background-position: -144px -128px;
+}
+
+.ui-icon-clipboard {
+    background-position: -160px -128px;
+}
+
+.ui-icon-copy {
+    background-position: -176px -128px;
+}
+
+.ui-icon-contact {
+    background-position: -192px -128px;
+}
+
+.ui-icon-image {
+    background-position: -208px -128px;
+}
+
+.ui-icon-video {
+    background-position: -224px -128px;
+}
+
+.ui-icon-script {
+    background-position: -240px -128px;
+}
+
+.ui-icon-alert {
+    background-position: 0 -144px;
+}
+
+.ui-icon-info {
+    background-position: -16px -144px;
+}
+
+.ui-icon-notice {
+    background-position: -32px -144px;
+}
+
+.ui-icon-help {
+    background-position: -48px -144px;
+}
+
+.ui-icon-check {
+    background-position: -64px -144px;
+}
+
+.ui-icon-bullet {
+    background-position: -80px -144px;
+}
+
+.ui-icon-radio-off {
+    background-position: -96px -144px;
+}
+
+.ui-icon-radio-on {
+    background-position: -112px -144px;
+}
+
+.ui-icon-pin-w {
+    background-position: -128px -144px;
+}
+
+.ui-icon-pin-s {
+    background-position: -144px -144px;
+}
+
+.ui-icon-play {
+    background-position: 0 -160px;
+}
+
+.ui-icon-pause {
+    background-position: -16px -160px;
+}
+
+.ui-icon-seek-next {
+    background-position: -32px -160px;
+}
+
+.ui-icon-seek-prev {
+    background-position: -48px -160px;
+}
+
+.ui-icon-seek-end {
+    background-position: -64px -160px;
+}
+
+.ui-icon-seek-start {
+    background-position: -80px -160px;
+}
+
+.ui-icon-seek-first {
+    background-position: -80px -160px;
+}
+
+.ui-icon-stop {
+    background-position: -96px -160px;
+}
+
+.ui-icon-eject {
+    background-position: -112px -160px;
+}
+
+.ui-icon-volume-off {
+    background-position: -128px -160px;
+}
+
+.ui-icon-volume-on {
+    background-position: -144px -160px;
+}
+
+.ui-icon-power {
+    background-position: 0 -176px;
+}
+
+.ui-icon-signal-diag {
+    background-position: -16px -176px;
+}
+
+.ui-icon-signal {
+    background-position: -32px -176px;
+}
+
+.ui-icon-battery-0 {
+    background-position: -48px -176px;
+}
+
+.ui-icon-battery-1 {
+    background-position: -64px -176px;
+}
+
+.ui-icon-battery-2 {
+    background-position: -80px -176px;
+}
+
+.ui-icon-battery-3 {
+    background-position: -96px -176px;
+}
+
+.ui-icon-circle-plus {
+    background-position: 0 -192px;
+}
+
+.ui-icon-circle-minus {
+    background-position: -16px -192px;
+}
+
+.ui-icon-circle-close {
+    background-position: -32px -192px;
+}
+
+.ui-icon-circle-triangle-e {
+    background-position: -48px -192px;
+}
+
+.ui-icon-circle-triangle-s {
+    background-position: -64px -192px;
+}
+
+.ui-icon-circle-triangle-w {
+    background-position: -80px -192px;
+}
+
+.ui-icon-circle-triangle-n {
+    background-position: -96px -192px;
+}
+
+.ui-icon-circle-arrow-e {
+    background-position: -112px -192px;
+}
+
+.ui-icon-circle-arrow-s {
+    background-position: -128px -192px;
+}
+
+.ui-icon-circle-arrow-w {
+    background-position: -144px -192px;
+}
+
+.ui-icon-circle-arrow-n {
+    background-position: -160px -192px;
+}
+
+.ui-icon-circle-zoomin {
+    background-position: -176px -192px;
+}
+
+.ui-icon-circle-zoomout {
+    background-position: -192px -192px;
+}
+
+.ui-icon-circle-check {
+    background-position: -208px -192px;
+}
+
+.ui-icon-circlesmall-plus {
+    background-position: 0 -208px;
+}
+
+.ui-icon-circlesmall-minus {
+    background-position: -16px -208px;
+}
+
+.ui-icon-circlesmall-close {
+    background-position: -32px -208px;
+}
+
+.ui-icon-squaresmall-plus {
+    background-position: -48px -208px;
+}
+
+.ui-icon-squaresmall-minus {
+    background-position: -64px -208px;
+}
+
+.ui-icon-squaresmall-close {
+    background-position: -80px -208px;
+}
+
+.ui-icon-grip-dotted-vertical {
+    background-position: 0 -224px;
+}
+
+.ui-icon-grip-dotted-horizontal {
+    background-position: -16px -224px;
+}
+
+.ui-icon-grip-solid-vertical {
+    background-position: -32px -224px;
+}
+
+.ui-icon-grip-solid-horizontal {
+    background-position: -48px -224px;
+}
+
+.ui-icon-gripsmall-diagonal-se {
+    background-position: -64px -224px;
+}
+
+.ui-icon-grip-diagonal-se {
+    background-position: -80px -224px;
+}
+/* 頁簽型框框
+----------------------------------*/
+ul.as-selections {
+    list-style-type: none;
+    margin: 0;
+    overflow: auto;
+    padding: 4px 0 4px 4px;
+}
+
+    ul.as-selections li {
+        float: left;
+        margin: 1px 4px 1px 0;
+    }
+
+        ul.as-selections li.as-selection-item {
+            background-color: #ddeefe;
+            background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#ddeefe), to(#bfe0f1));
+            border: 1px solid #acc3ec;
+            border-radius: 12px;
+            border-top-color: #c0d9e9;
+            box-shadow: 0 1px 1px #e4edf2;
+            color: #2b3840;
+            font-family: "Lucida Grande", arial, sans-serif;
+            font-size: 13px;
+            moz-border-radius: 12px;
+            moz-box-shadow: 0 1px 1px #e4edf2;
+            padding: 2px 7px 2px 10px;
+            text-shadow: 0 1px 1px #fff;
+            webkit-border-radius: 12px;
+            webkit-box-shadow: 0 1px 1px #e4edf2;
+        }
+
+            ul.as-selections li.as-selection-item.blur {
+                background-color: #f4f4f4;
+                background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#f4f4f4), to(#d5d5d5));
+                border-color: #bbb;
+                border-top-color: #ccc;
+                box-shadow: 0 1px 1px #e9e9e9;
+                color: #666666;
+                moz-box-shadow: 0 1px 1px #e9e9e9;
+                webkit-box-shadow: 0 1px 1px #e9e9e9;
+            }
+
+        ul.as-selections li:hover.as-selection-item {
+            background-color: #bbd4f1;
+            background-image: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#bbd4f1), to(#a3c2e5));
+            border-color: #6da0e0;
+            border-top-color: #8bb7ed;
+            color: #2b3840;
+        }
+/* 問卷 Style Start
+----------------------------------*/
+.questionTitle {
+    color: #F00;
+    font-size: 15px;
+    line-height: 30px;
+    margin-left: 13px;
+}
+
+.questionTable {
+    background-color: #f5f9e8;
+    margin-bottom: 10px;
+    padding: 5px;
+    width: 100%;
+}
+
+    .questionTable h3 {
+        background: url(../images/System/IconSift.png) no-repeat left center;
+        color: #4e9824;
+        font-size: 15px;
+        font-weight: bold;
+        line-height: 25px;
+        margin: 0 0 0 15px;
+        padding-left: 15px;
+    }
+
+    .questionTable p {
+        color: #72993e;
+        font-size: 13px;
+        margin: 0;
+        padding: 5px 30px;
+    }
+
+.questionTable2 {
+    font-size: 13px;
+    line-height: 20px;
+    margin: 0 30px;
+    width: 97%;
+}
+
+    .questionTable2 em {
+        color: #F00;
+        font-size: 12px;
+        font-style: normal;
+    }
+
+.questionA {
+    display: block;
+    padding: 10px 10px;
+}
+/* 問卷 Style End
+----------------------------------*/
+/* Button Style Start
+----------------------------------*/
+.btnBlock {
+    display: inline-block;
+    text-decoration: none;
+    font-size: 12px;
+    color: #fff;
+    color: rgba(255,255,255,1);
+    padding: 0.3em 1em;
+    margin: 0.5em;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 4px;
+    box-shadow: 0 1px 1px rgba(255,255,255,0.5) inset;
+    cursor: pointer;
+    opacity: 0.85;
+}
+
+    .btnBlock:active {
+        box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.4) inset;
+        opacity: 1;
+        color: rgba(255,255,255,0.5);
+    }
+
+    .btnBlock:hover {
+        box-shadow: 0 1px 1px rgba(255,255,255,0.5) inset,0 0 2px rgba(0,0,0,0.2);
+        opacity: 1;
+    }
+
+.colorRed {
+    background: #da4d42;
+    background: rgba(218,77,66,1);
+    border-color: #a44f36;
+    border-color: rgba(164,79,54,1);
+}
+
+.colorBlue {
+    background: #4297da;
+    background: rgba(66,151,218,1);
+    border-color: #3663a4;
+    border-color: rgba(54,99,164,1);
+}
+
+.colorGreen {
+    background: #73B839;
+    background: rgba(115,184,57,1);
+    border-color: #61a436;
+    border-color: rgba(97,164,54,1);
+}
+
+.colorCoffee {
+    background: #D2691E;
+    background: rgba(210,105,30,1);
+    border-color: #8B4513;
+    border-color: rgba(139,69,19,1);
+}
+
+.colorDark {
+    background: #808080;
+    background: rgba(128, 128, 128,1);
+    border-color: #404040;
+    border-color: rgba(64, 64, 64,1);
+}
+
+.colorGray {
+    background: #f2f2f2;
+    background: rgba(0,0,0,0.05);
+    border-color: #c0c0c0;
+    border-color: rgba(192,192,192,0.8);
+    color: #222;
+}
+
+    .colorGray:hover {
+        box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.1) inset;
+        color: #212121;
+        opacity: 1;
+    }
+/* Button Style End
+----------------------------------*/
+/* 讓 datepicker 不會被其他視窗蓋住 */
+#ui-datepicker-div {
+    z-index: 99999 !important;
+}

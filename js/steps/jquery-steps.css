@@ -1,0 +1,65 @@
+﻿/* Steps 主體 */
+.mySteps .stepContainer fieldset {
+    padding: 0 10% 0 10%;
+}
+/*Hide all except first fieldset*/
+.mySteps fieldset:not(:first-of-type) {
+    display: none;
+}
+
+/* Steps progressbar */
+.mySteps > .progressbar {
+    margin-bottom: 30px;
+    overflow: hidden;
+    text-align: center;
+    /*CSS counters to number the steps*/
+    counter-reset: step;
+    width: 100%;
+}
+
+    .mySteps > .progressbar li {
+        color: #666;
+        display: table-cell;
+        font-size: 12px;
+        float: none;
+        list-style-type: none;
+        margin-left: 0px;
+        position: relative;
+        text-transform: uppercase;
+        width: 1%;
+    }
+
+        .mySteps > .progressbar li:before {
+            background: rgba(204, 204, 204, 0.85);
+            border-radius: 3px;
+            color: #333;
+            content: counter(step);
+            counter-increment: step;
+            display: block;
+            font-size: 14px;
+            font-weight: bold;
+            line-height: 40px;
+            margin: 0 auto 5px auto;
+            width: 40px;
+        }
+
+        .mySteps > .progressbar li:after {
+            background: rgba(204, 204, 204, 0.85);
+            content: '';
+            left: -50%;
+            height: 2px;
+            position: absolute;
+            top: 18px;
+            width: 100%;
+            z-index: -1; /*put it behind the numbers*/
+        }
+
+        .mySteps > .progressbar li:first-child:after {
+            /*connector not needed before the first step*/
+            content: none;
+        }
+        /* 標記完成或作用中的項目為綠色 */
+        .mySteps > .progressbar li.active:before, .mySteps > .progressbar li.active:after {
+            background: #27AE60;
+            color: white;
+        }

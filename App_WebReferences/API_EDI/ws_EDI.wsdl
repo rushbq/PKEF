@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://www.prokits.com.tw/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://www.prokits.com.tw/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://www.prokits.com.tw/">
+      <s:element name="InsertData">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="myData" type="tns:EDIData" />
+            <s:element minOccurs="0" maxOccurs="1" name="TokenID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="TestMode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="EDIData">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="XA001" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="XA002" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="XA003" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="XA004" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="XA005" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="XA006" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="XA007" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="XA008" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="XA009" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="XA010" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="XA011" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="XA012" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="XA013" type="s:double" />
+          <s:element minOccurs="0" maxOccurs="1" name="XA014" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="XA015" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="XA016" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="XA017" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="XA020" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="XA021" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="XA022" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="XA023" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="XA024" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="XA025" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="XA026" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="XA027" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="XA028" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="XA031" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="XA032" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="XA033" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="InsertDataResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="InsertDataResult" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="ErrMsg" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InsertData_byDT">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="myDS">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+            <s:element minOccurs="0" maxOccurs="1" name="TokenID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="TestMode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InsertData_byDTResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="InsertData_byDTResult" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="ErrMsg" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Insert">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="myDS">
+              <s:complexType>
+                <s:sequence>
+                  <s:element ref="s:schema" />
+                  <s:any />
+                </s:sequence>
+              </s:complexType>
+            </s:element>
+            <s:element minOccurs="0" maxOccurs="1" name="TokenID" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="TestMode" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="InsertResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="InsertResult" type="s:boolean" />
+            <s:element minOccurs="0" maxOccurs="1" name="ErrMsg" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="InsertDataSoapIn">
+    <wsdl:part name="parameters" element="tns:InsertData" />
+  </wsdl:message>
+  <wsdl:message name="InsertDataSoapOut">
+    <wsdl:part name="parameters" element="tns:InsertDataResponse" />
+  </wsdl:message>
+  <wsdl:message name="InsertData_byDTSoapIn">
+    <wsdl:part name="parameters" element="tns:InsertData_byDT" />
+  </wsdl:message>
+  <wsdl:message name="InsertData_byDTSoapOut">
+    <wsdl:part name="parameters" element="tns:InsertData_byDTResponse" />
+  </wsdl:message>
+  <wsdl:message name="InsertSoapIn">
+    <wsdl:part name="parameters" element="tns:Insert" />
+  </wsdl:message>
+  <wsdl:message name="InsertSoapOut">
+    <wsdl:part name="parameters" element="tns:InsertResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ws_EDISoap">
+    <wsdl:operation name="InsertData">
+      <wsdl:input message="tns:InsertDataSoapIn" />
+      <wsdl:output message="tns:InsertDataSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="InsertData_byDT">
+      <wsdl:input message="tns:InsertData_byDTSoapIn" />
+      <wsdl:output message="tns:InsertData_byDTSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Insert">
+      <wsdl:input message="tns:InsertSoapIn" />
+      <wsdl:output message="tns:InsertSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ws_EDISoap" type="tns:ws_EDISoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="InsertData">
+      <soap:operation soapAction="http://www.prokits.com.tw/InsertData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InsertData_byDT">
+      <soap:operation soapAction="http://www.prokits.com.tw/InsertData_byDT" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Insert">
+      <soap:operation soapAction="http://www.prokits.com.tw/Insert" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ws_EDISoap12" type="tns:ws_EDISoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="InsertData">
+      <soap12:operation soapAction="http://www.prokits.com.tw/InsertData" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="InsertData_byDT">
+      <soap12:operation soapAction="http://www.prokits.com.tw/InsertData_byDT" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Insert">
+      <soap12:operation soapAction="http://www.prokits.com.tw/Insert" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ws_EDI">
+    <wsdl:port name="ws_EDISoap" binding="tns:ws_EDISoap">
+      <soap:address location="http://api.prokits.com.tw/WebService/ws_EDI.asmx" />
+    </wsdl:port>
+    <wsdl:port name="ws_EDISoap12" binding="tns:ws_EDISoap12">
+      <soap12:address location="http://api.prokits.com.tw/WebService/ws_EDI.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
