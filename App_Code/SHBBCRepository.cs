@@ -4488,7 +4488,7 @@ namespace SH_BBC.Controllers
                 sql.AppendLine(" FROM SHBBC_ImportData Base WITH(NOLOCK)");
                 sql.AppendLine("  INNER JOIN [PKSYS].dbo.Customer Cust WITH(NOLOCK) ON Base.CustID = Cust.MA001");
                 sql.AppendLine("  INNER JOIN [PKSYS].dbo.Customer_Data CustDT WITH(NOLOCK) ON Cust.MA001 = CustDT.Cust_ERPID");
-                sql.AppendLine(" WHERE (Base.Data_ID = @DataID)");
+                sql.AppendLine(" WHERE (Cust.DBS = Cust.DBC) AND (Base.Data_ID = @DataID)");
 
                 //----- SQL 執行 -----
                 cmd.CommandText = sql.ToString();

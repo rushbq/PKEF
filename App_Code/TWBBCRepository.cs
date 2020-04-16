@@ -1440,7 +1440,7 @@ namespace TW_BBC.Controllers
                             if (getPrice == null)
                             {
                                 //無報價資料
-                                ErrMsg = "請檢查ERP核價單是否已建立.";
+                                ErrMsg = "請檢查ERP客戶商品計價.";
                                 return false;
                             }
 

@@ -962,7 +962,7 @@ namespace SZ_Invoice.Aisino.Controllers
                     sql.AppendLine("     , CAST(ISNULL(Cust.InvType, 0) AS INT) AS invoicekind "); //--0—专用发票 / 2—普通发票
                     sql.AppendLine("     , 'NEW' AS sta ");
                     sql.AppendLine("     , 'N' AS negativesign ");
-                    sql.AppendLine("     , 0 AS machineno"); //--深圳0, 上海1
+                    sql.AppendLine("     , 1 AS machineno"); //--深圳0, 上海1 (20200415修改0->1)
                     sql.AppendLine(" FROM SZ_Invoice_E6 Base ");
                     sql.AppendLine("  INNER JOIN [ProUnion].dbo.COPMA WITH(NOLOCK) ON COPMA.MA001 = Base.CustID COLLATE Chinese_Taiwan_Stroke_BIN ");
                     sql.AppendLine("  LEFT JOIN Customer_Data Cust ON Cust.Cust_ERPID = Base.CustID ");

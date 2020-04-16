@@ -27,7 +27,7 @@
                 <div class="card-panel">
                     <div>
                         <a href="<%=fn_Params.WebUrl %>mySHBBC/ImportStep1.aspx?ts=<%=TraceID %>&type=1" class="btn-large waves-effect waves-light green">未出貨訂單<i class="material-icons right">chevron_right</i></a>
-                        <a href="<%=fn_Params.WebUrl %>mySHBBC/ImportStep1.aspx?ts=<%=TraceID %>&type=3" class="btn-large waves-effect waves-light green darken-3">已出貨訂單<i class="material-icons right">chevron_right</i></a>
+                        <%--<a href="<%=fn_Params.WebUrl %>mySHBBC/ImportStep1.aspx?ts=<%=TraceID %>&type=3" class="btn-large waves-effect waves-light green darken-3">已出貨訂單<i class="material-icons right">chevron_right</i></a>--%>
                         <a href="<%=fn_Params.WebUrl %>mySHBBC/Import_VC.aspx" class="btn-large waves-effect waves-light blue darken-2">京東VC匯入<i class="material-icons right">chevron_right</i></a>
                     </div>
                     <div class="section row">
