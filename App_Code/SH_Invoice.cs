@@ -64,6 +64,9 @@ namespace SH_Invoice.Models
         public int IsRel { get; set; }  //發票系統是否已回寫,可UPDATE發票資料
         public Int16 DataType { get; set; } //1:一般紙本發票 2:電商紙本發票
         public string vendeename { get; set; }
+        public double TotalPrice { get; set; }
+        public string erp_sDate { get; set; }
+        public string erp_eDate { get; set; }
 
         public string Create_Time { get; set; }
         public string Update_Time { get; set; }
@@ -91,7 +94,6 @@ namespace SH_Invoice.Models
     public class DT_Header
     {
         public string unino { get; set; }
-        public string erp_unino { get; set; }
         public string vendeename { get; set; }
         public string vendeetax { get; set; }
         public string vendeeadress { get; set; }

@@ -51,7 +51,7 @@ public class GetData_Customer : IHttpHandler
              new
              {
                  ID = fld.CustID,
-                 Label = fld.CustName,
+                 Label = "(" + fld.Corp_Name + ") " + fld.CustName,
                  SalesID = fld.SalesID
              })
             .Take(100);

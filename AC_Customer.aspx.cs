@@ -99,6 +99,7 @@ public partial class AC_Customer : System.Web.UI.Page
 
                     case "myCust":
                         //依使用者的公司別權限(Staff_Rel_Corp)取得客戶, 可在基本資料維護設定
+                        //20200421, 取消使用者關聯
                         SBSql.AppendLine("SELECT TOP 100");
                         SBSql.AppendLine("  myCorp.DB_Name AS myDB ");
                         SBSql.AppendLine("  , RTRIM(Cust.MA001) AS custId, Cust.MA002 AS shortName, ISNULL(MA014,'') AS currency ");
@@ -106,10 +107,10 @@ public partial class AC_Customer : System.Web.UI.Page
                         SBSql.AppendLine("  , CustData.SWID AS SWID ");
                         SBSql.AppendLine(" FROM Customer Cust WITH (NOLOCK) ");
                         SBSql.AppendLine("  INNER JOIN Param_Corp myCorp ON UPPER(Cust.DBC) = UPPER(myCorp.Corp_ID) ");
-                        SBSql.AppendLine("  INNER JOIN Staff_Rel_Corp Rel ON myCorp.Corp_UID = rel.Corp_UID ");
                         SBSql.AppendLine("  INNER JOIN Customer_Data CustData ON Cust.MA001 = CustData.Cust_ERPID");
+                        //SBSql.AppendLine("  INNER JOIN Staff_Rel_Corp Rel ON myCorp.Corp_UID = rel.Corp_UID ");
                         SBSql.AppendLine(" WHERE (Cust.DBS = Cust.DBC) ");
-                        SBSql.AppendLine(" AND (Rel.StaffID = @Login_UserID) ");
+                        //SBSql.AppendLine(" AND (Rel.StaffID = @Login_UserID) ");
                         SBSql.AppendLine(" AND ( ");
                         SBSql.AppendLine("      (MA001 LIKE '%' + @Keyword + '%') ");
                         SBSql.AppendLine("   OR (MA002 LIKE '%' + @Keyword + '%') ");
@@ -119,7 +120,7 @@ public partial class AC_Customer : System.Web.UI.Page
                         SBSql.AppendLine(" ORDER BY MA001 ");
 
 
-                        cmd.Parameters.AddWithValue("Login_UserID", fn_Params.UserAccount);
+                        //cmd.Parameters.AddWithValue("Login_UserID", fn_Params.UserAccount);
 
                         break;
 

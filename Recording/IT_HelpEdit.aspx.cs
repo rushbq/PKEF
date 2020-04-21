@@ -805,6 +805,7 @@ public partial class IT_HelpEdit : SecurityIn
 
     /// <summary>
     /// 結案
+    /// 發信給需求者/已設定的轉寄通知人員/固定CC名單(db)
     /// </summary>
     protected void btn_Done_Click(object sender, EventArgs e)
     {
@@ -858,7 +859,7 @@ public partial class IT_HelpEdit : SecurityIn
                 }
                 else
                 {
-                    //發信給需求者
+                    //發信給需求者/轉寄者
                     SendMail_Done(Param_thisID, fn_stringFormat.Filter_Html(this.tb_Help_Subject.Text), this.tb_Email.Text);
 
                     //導向列表頁
@@ -1301,7 +1302,9 @@ public partial class IT_HelpEdit : SecurityIn
 
         //[設定參數] - 轉寄人群組(結案通知)
         List<string> emailToCC = new List<string>();
+        //固定CC名單(空值則為mis)
         emailToCC.AddRange(fn_CustomUI.emailReceiver("2"));
+        //已設定的轉寄通知人員
         emailToCC.AddRange(fn_CustomUI.emailCC(TraceID));
 
         fn_Mail.CC = emailToCC;

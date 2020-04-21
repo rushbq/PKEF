@@ -13,7 +13,7 @@ using SH_BBC.Models;
 
 /*
  * [SH BBC匯入]
- * 主要資料庫:[China_SH]
+ * 主要資料庫:[SHPK2]
  */
 namespace SH_BBC.Controllers
 {
@@ -440,15 +440,15 @@ namespace SH_BBC.Controllers
                 sql.AppendLine("  INNER JOIN SHBBC_ImportData_DT DT ON Base.Data_ID = DT.Parent_ID");
 
                 //COPTC:訂單單頭 ,條件:OrderID = TC012, CustID = TC004");
-                sql.AppendLine("  INNER JOIN [China_SH].dbo.COPTC WITH(NOLOCK) ON DT.OrderID COLLATE Chinese_Taiwan_Stroke_BIN = COPTC.TC012");
+                sql.AppendLine("  INNER JOIN [SHPK2].dbo.COPTC WITH(NOLOCK) ON DT.OrderID COLLATE Chinese_Taiwan_Stroke_BIN = COPTC.TC012");
                 sql.AppendLine("     AND Base.CustID COLLATE Chinese_Taiwan_Stroke_BIN = COPTC.TC004");
 
                 //COPTD:訂單單身, 條件:ERP_ModelNo = TD004, COPTC.TC001 = COPTD.TD001, COPTC.TC002 = COPTD.TD002");
-                sql.AppendLine("  INNER JOIN [China_SH].dbo.COPTD WITH(NOLOCK) ON COPTC.TC001 = COPTD.TD001 AND COPTC.TC002 = COPTD.TD002");
+                sql.AppendLine("  INNER JOIN [SHPK2].dbo.COPTD WITH(NOLOCK) ON COPTC.TC001 = COPTD.TD001 AND COPTC.TC002 = COPTD.TD002");
                 sql.AppendLine("     AND DT.ERP_ModelNo COLLATE Chinese_Taiwan_Stroke_BIN = COPTD.TD004 AND DT.ProdID COLLATE Chinese_Taiwan_Stroke_BIN = COPTD.TD014");
 
                 //COPTH:銷貨單單身, 條件:COPTH.TH014 = COPTC.TC001, COPTH.TH015 = COPTC.TC002, (訂單序號)COPTH.TH016 = COPTD.TD003");
-                sql.AppendLine("  LEFT JOIN [China_SH].dbo.COPTH WITH(NOLOCK) ON COPTH.TH014 = COPTC.TC001 AND COPTH.TH015 = COPTC.TC002 AND COPTH.TH016 = COPTD.TD003");
+                sql.AppendLine("  LEFT JOIN [SHPK2].dbo.COPTH WITH(NOLOCK) ON COPTH.TH014 = COPTC.TC001 AND COPTH.TH015 = COPTC.TC002 AND COPTH.TH016 = COPTD.TD003");
 
                 //Filter
                 sql.AppendLine(" WHERE (DT.IsPass = 'Y') AND (COPTC.TC200 = 'Y')");
@@ -549,8 +549,8 @@ namespace SH_BBC.Controllers
                 //----- SQL 查詢語法 -----
                 sql.AppendLine(" SELECT ");
                 sql.AppendLine("    RTRIM(TI001) TI001, RTRIM(TI002) TI002, RTRIM(TJ004) TJ004, TJ005, TJ007, TI020, TJ023, TJ052");
-                sql.AppendLine(" FROM [China_SH].dbo.COPTI WITH(NOLOCK)");
-                sql.AppendLine("  INNER JOIN [China_SH].dbo.COPTJ WITH(NOLOCK) ON COPTI.TI001 = COPTJ.TJ001 AND COPTI.TI002 = COPTJ.TJ002");
+                sql.AppendLine(" FROM [SHPK2].dbo.COPTI WITH(NOLOCK)");
+                sql.AppendLine("  INNER JOIN [SHPK2].dbo.COPTJ WITH(NOLOCK) ON COPTI.TI001 = COPTJ.TJ001 AND COPTI.TI002 = COPTJ.TJ002");
                 sql.AppendLine(" WHERE (RTRIM(COPTI.TI001) + RTRIM(COPTI.TI002) IN (");
                 sql.AppendLine("     SELECT RTRIM(XB029) + RTRIM(XB030)");
                 sql.AppendLine("     FROM [DSCSYS].dbo.EDIXB WITH(NOLOCK)");
@@ -616,9 +616,9 @@ namespace SH_BBC.Controllers
                 sql.AppendLine(" SELECT RTRIM(INVTG.TG001) TG001, RTRIM(INVTG.TG002) TG002, COPTC.TC012");
                 sql.AppendLine(" , INVTG.TG004, INVTG.TG005, INVTG.TG007, INVTG.TG008, INVTG.TG009");
                 sql.AppendLine(" , INVTG.TG014, INVTG.TG015");
-                sql.AppendLine(" FROM [China_SH].dbo.COPTC WITH(NOLOCK)");
-                sql.AppendLine("  INNER JOIN [China_SH].dbo.COPTD WITH(NOLOCK) ON COPTC.TC001 = COPTD.TD001 AND COPTC.TC002 = COPTD.TD002");
-                sql.AppendLine("  INNER JOIN [China_SH].dbo.INVTG WITH(NOLOCK) ON INVTG.TG014 = COPTD.TD001 AND INVTG.TG015 = COPTD.TD002 AND INVTG.TG016 = COPTD.TD003");
+                sql.AppendLine(" FROM [SHPK2].dbo.COPTC WITH(NOLOCK)");
+                sql.AppendLine("  INNER JOIN [SHPK2].dbo.COPTD WITH(NOLOCK) ON COPTC.TC001 = COPTD.TD001 AND COPTC.TC002 = COPTD.TD002");
+                sql.AppendLine("  INNER JOIN [SHPK2].dbo.INVTG WITH(NOLOCK) ON INVTG.TG014 = COPTD.TD001 AND INVTG.TG015 = COPTD.TD002 AND INVTG.TG016 = COPTD.TD003");
                 sql.AppendLine(" WHERE (COPTC.TC202 = @TraceID)");
 
                 //----- SQL 執行 -----
@@ -1665,7 +1665,7 @@ namespace SH_BBC.Controllers
         /// <param name="search"></param>
         /// <returns></returns>
         /// <remarks>
-        /// DB:[China_SH]
+        /// DB:[SHPK2]
         /// </remarks>
         public IQueryable<ERPData> GetERPDataByDealer(Dictionary<int, string> search)
         {
@@ -1680,9 +1680,9 @@ namespace SH_BBC.Controllers
                 sql.AppendLine(" SELECT");
                 sql.AppendLine("  COPTC.TC001, COPTC.TC002, COPTC.TC003, COPTD.TD004, COPTD.TD005, ROUND(COPTD.TD008, 0) TD008");
                 sql.AppendLine("  , COPTH.TH001, COPTH.TH002, COPTH.TH007, ROUND(COPTH.TH008, 0) TH008");
-                sql.AppendLine(" FROM [China_SH].dbo.COPTC WITH(NOLOCK)");
-                sql.AppendLine("  INNER JOIN [China_SH].dbo.COPTD WITH(NOLOCK) ON COPTC.TC001 = COPTD.TD001 AND COPTC.TC002 = COPTD.TD002");
-                sql.AppendLine("  LEFT JOIN [China_SH].dbo.COPTH WITH(NOLOCK) ON COPTH.TH014 = COPTC.TC001 AND COPTH.TH015 = COPTC.TC002 AND COPTH.TH016 = COPTD.TD003");
+                sql.AppendLine(" FROM [SHPK2].dbo.COPTC WITH(NOLOCK)");
+                sql.AppendLine("  INNER JOIN [SHPK2].dbo.COPTD WITH(NOLOCK) ON COPTC.TC001 = COPTD.TD001 AND COPTC.TC002 = COPTD.TD002");
+                sql.AppendLine("  LEFT JOIN [SHPK2].dbo.COPTH WITH(NOLOCK) ON COPTH.TH014 = COPTC.TC001 AND COPTH.TH015 = COPTC.TC002 AND COPTH.TH016 = COPTD.TD003");
                 sql.AppendLine("  WHERE (RTRIM(COPTC.TC001) + RTRIM(COPTC.TC002) IN (");
                 sql.AppendLine("      SELECT RTRIM(XB029) + RTRIM(XB030)");
                 sql.AppendLine("      FROM [DSCSYS].dbo.EDIXB WITH(NOLOCK)");
@@ -1769,7 +1769,7 @@ namespace SH_BBC.Controllers
         /// <param name="search"></param>
         /// <returns></returns>
         /// <remarks>
-        /// DB:[China_SH]
+        /// DB:[SHPK2]
         /// </remarks>
         public IQueryable<RebackData> GetERPRebackData(Dictionary<int, string> search)
         {
@@ -1785,9 +1785,9 @@ namespace SH_BBC.Controllers
                 sql.AppendLine("    RTRIM(TI001) TI001, RTRIM(TI002) TI002, TI003, RTRIM(TJ004) TJ004, TJ005, TJ007");
                 sql.AppendLine("    , TI020, TJ023, TJ052");
                 sql.AppendLine("    , TJ025, TJ026");
-                sql.AppendLine(" FROM [China_SH].dbo.COPTI WITH(NOLOCK)");
-                sql.AppendLine("  INNER JOIN [China_SH].dbo.COPTJ WITH(NOLOCK) ON COPTI.TI001 = COPTJ.TJ001 AND COPTI.TI002 = COPTJ.TJ002");
-                sql.AppendLine("  INNER JOIN [China_SH].dbo.ACRTB WITH(NOLOCK) ON COPTJ.TJ025 = ACRTB.TB001 AND COPTJ.TJ026 = ACRTB.TB002");
+                sql.AppendLine(" FROM [SHPK2].dbo.COPTI WITH(NOLOCK)");
+                sql.AppendLine("  INNER JOIN [SHPK2].dbo.COPTJ WITH(NOLOCK) ON COPTI.TI001 = COPTJ.TJ001 AND COPTI.TI002 = COPTJ.TJ002");
+                sql.AppendLine("  INNER JOIN [SHPK2].dbo.ACRTB WITH(NOLOCK) ON COPTJ.TJ025 = ACRTB.TB001 AND COPTJ.TJ026 = ACRTB.TB002");
                 sql.AppendLine(" WHERE (RTRIM(COPTI.TI001) + RTRIM(COPTI.TI002) IN (");
                 sql.AppendLine("     SELECT RTRIM(XB029) + RTRIM(XB030)");
                 sql.AppendLine("     FROM [DSCSYS].dbo.EDIXB WITH(NOLOCK)");
@@ -1901,11 +1901,11 @@ namespace SH_BBC.Controllers
                 sql.AppendLine("  ) AS ShipNo");
                 sql.AppendLine("  , CONVERT(INT, CASE WHEN COPTH.TH008 = 0 THEN COPTH.TH024 ELSE COPTH.TH008 END) AS BuyCnt");
                 sql.AppendLine("  , CONVERT(FLOAT, COPTG.TG045 + COPTG.TG046) AS TotalPrice");
-                sql.AppendLine(" FROM [China_SH].dbo.COPTC WITH(NOLOCK)");
-                sql.AppendLine("  INNER JOIN [China_SH].dbo.COPTD WITH(NOLOCK) ON COPTC.TC001 = COPTD.TD001 AND COPTC.TC002 = COPTD.TD002");
-                sql.AppendLine("  INNER JOIN [China_SH].dbo.COPTH WITH(NOLOCK) ON COPTD.TD001 = COPTH.TH014 AND COPTD.TD002 = COPTH.TH015 AND COPTD.TD003 = COPTH.TH016");
-                sql.AppendLine("  INNER JOIN [China_SH].dbo.COPTG WITH(NOLOCK) ON COPTG.TG001 = COPTH.TH001 AND COPTG.TG002 = COPTH.TH002");
-                sql.AppendLine("  INNER JOIN [China_SH].dbo.COPMA WITH(NOLOCK) ON COPMA.MA001 = COPTC.TC004");
+                sql.AppendLine(" FROM [SHPK2].dbo.COPTC WITH(NOLOCK)");
+                sql.AppendLine("  INNER JOIN [SHPK2].dbo.COPTD WITH(NOLOCK) ON COPTC.TC001 = COPTD.TD001 AND COPTC.TC002 = COPTD.TD002");
+                sql.AppendLine("  INNER JOIN [SHPK2].dbo.COPTH WITH(NOLOCK) ON COPTD.TD001 = COPTH.TH014 AND COPTD.TD002 = COPTH.TH015 AND COPTD.TD003 = COPTH.TH016");
+                sql.AppendLine("  INNER JOIN [SHPK2].dbo.COPTG WITH(NOLOCK) ON COPTG.TG001 = COPTH.TH001 AND COPTG.TG002 = COPTH.TH002");
+                sql.AppendLine("  INNER JOIN [SHPK2].dbo.COPMA WITH(NOLOCK) ON COPMA.MA001 = COPTC.TC004");
                 //條件:已確認 / 排除W001
                 sql.AppendLine(" WHERE (COPTC.TC200 = 'Y') AND (COPTD.TD004 NOT IN ('W001'))");
                 sql.AppendLine(" )");
@@ -2075,7 +2075,7 @@ namespace SH_BBC.Controllers
                 sql.AppendLine("  , Base.sDate, Base.eDate");
                 sql.AppendLine("  , (SELECT Account_Name + ' (' + Display_Name + ')' FROM PKSYS.dbo.User_Profile WHERE (Guid = Base.Create_Who)) AS Create_Name");
                 sql.AppendLine(" FROM [PKEF].dbo.SHBBC_ShipExport Base");
-                sql.AppendLine("  LEFT JOIN [China_SH].dbo.COPMA WITH(NOLOCK) ON Base.CustID COLLATE Chinese_Taiwan_Stroke_BIN = COPMA.MA001");
+                sql.AppendLine("  LEFT JOIN [SHPK2].dbo.COPMA WITH(NOLOCK) ON Base.CustID COLLATE Chinese_Taiwan_Stroke_BIN = COPMA.MA001");
                 sql.AppendLine(" WHERE (1=1)");
 
                 #region >> filter <<
@@ -2193,11 +2193,11 @@ namespace SH_BBC.Controllers
                 sql.AppendLine("  ) AS ShipNo");
                 sql.AppendLine("  , CONVERT(INT, CASE WHEN COPTH.TH008 = 0 THEN COPTH.TH024 ELSE COPTH.TH008 END) AS BuyCnt");
                 sql.AppendLine("  , CONVERT(FLOAT, COPTG.TG045 + COPTG.TG046) AS TotalPrice");
-                sql.AppendLine(" FROM [China_SH].dbo.COPTC WITH(NOLOCK)");
-                sql.AppendLine("  INNER JOIN [China_SH].dbo.COPTD WITH(NOLOCK) ON COPTC.TC001 = COPTD.TD001 AND COPTC.TC002 = COPTD.TD002");
-                sql.AppendLine("  INNER JOIN [China_SH].dbo.COPTH WITH(NOLOCK) ON COPTD.TD001 = COPTH.TH014 AND COPTD.TD002 = COPTH.TH015 AND COPTD.TD003 = COPTH.TH016");
-                sql.AppendLine("  INNER JOIN [China_SH].dbo.COPTG WITH(NOLOCK) ON COPTG.TG001 = COPTH.TH001 AND COPTG.TG002 = COPTH.TH002");
-                sql.AppendLine("  INNER JOIN [China_SH].dbo.COPMA WITH(NOLOCK) ON COPMA.MA001 = COPTC.TC004");
+                sql.AppendLine(" FROM [SHPK2].dbo.COPTC WITH(NOLOCK)");
+                sql.AppendLine("  INNER JOIN [SHPK2].dbo.COPTD WITH(NOLOCK) ON COPTC.TC001 = COPTD.TD001 AND COPTC.TC002 = COPTD.TD002");
+                sql.AppendLine("  INNER JOIN [SHPK2].dbo.COPTH WITH(NOLOCK) ON COPTD.TD001 = COPTH.TH014 AND COPTD.TD002 = COPTH.TH015 AND COPTD.TD003 = COPTH.TH016");
+                sql.AppendLine("  INNER JOIN [SHPK2].dbo.COPTG WITH(NOLOCK) ON COPTG.TG001 = COPTH.TH001 AND COPTG.TG002 = COPTH.TH002");
+                sql.AppendLine("  INNER JOIN [SHPK2].dbo.COPMA WITH(NOLOCK) ON COPMA.MA001 = COPTC.TC004");
                 //條件:已確認 / 排除W001
                 sql.AppendLine(" WHERE (COPTC.TC200 = 'Y') AND (COPTD.TD004 NOT IN ('W001'))");
                 //條件:關聯,節省效能
@@ -2398,13 +2398,13 @@ namespace SH_BBC.Controllers
                 sql.AppendLine(" 		SELECT (ISNULL(SUM(TD008 - TD009 + TD024 - TD025), 0)");
                 sql.AppendLine(" 		  - ISNULL((");
                 sql.AppendLine(" 			SELECT SUM(ISNULL(INVTG.TG009, 0))");
-                sql.AppendLine(" 			FROM [China_SH].dbo.INVTG WITH(NOLOCK)");
+                sql.AppendLine(" 			FROM [SHPK2].dbo.INVTG WITH(NOLOCK)");
                 sql.AppendLine(" 			WHERE COPTD.TD004 = TG004 AND TG007 = COPTD.TD007 AND TG001 = '1302' AND TG008 = 'C01' AND TG024 = 'N'");
                 sql.AppendLine(" 		  ),0)");
                 sql.AppendLine(" 		 ) AS PreSell");
                 sql.AppendLine(" 		 , RTRIM(TD004) AS ModelNo");
                 sql.AppendLine(" 		 , TD007 AS StockType");
-                sql.AppendLine(" 		FROM [China_SH].dbo.COPTD WITH (NOLOCK)");
+                sql.AppendLine(" 		FROM [SHPK2].dbo.COPTD WITH (NOLOCK)");
                 sql.AppendLine(" 		WHERE (TD016 = 'N') AND (TD021 = 'Y') AND (TD007 IN ('A01','B01'))");
                 sql.AppendLine(" 		GROUP BY TD004, TD007");
                 sql.AppendLine(" 	) t ");
@@ -2418,7 +2418,7 @@ namespace SH_BBC.Controllers
                 sql.AppendLine(" 	SELECT p.ModelNo, p.A01 AS PreIN_A01, p.B01 AS PreIN_B01");
                 sql.AppendLine(" 	FROM (");
                 sql.AppendLine(" 		SELECT ISNULL(SUM(TD008 - TD015), 0) AS PreIN, RTRIM(TD004) AS ModelNo, TD007 AS StockType");
-                sql.AppendLine(" 		FROM [China_SH].dbo.PURTD WITH (NOLOCK)");
+                sql.AppendLine(" 		FROM [SHPK2].dbo.PURTD WITH (NOLOCK)");
                 sql.AppendLine(" 		WHERE (TD016 = 'N') AND (TD018 = 'Y') AND (TD007 IN ('A01','B01'))");
                 sql.AppendLine(" 		GROUP BY TD004, TD007");
                 sql.AppendLine(" 	) t ");
@@ -2431,7 +2431,7 @@ namespace SH_BBC.Controllers
                 sql.AppendLine(" 	SELECT p.ModelNo, p.A01 AS StockQty_A01, p.B01 AS StockQty_B01");
                 sql.AppendLine(" 	FROM (");
                 sql.AppendLine(" 		SELECT MC007 AS StockQty, RTRIM(MC001) AS ModelNo, MC002 AS StockType");
-                sql.AppendLine(" 		FROM [China_SH].dbo.INVMC WITH (NOLOCK)");
+                sql.AppendLine(" 		FROM [SHPK2].dbo.INVMC WITH (NOLOCK)");
                 sql.AppendLine(" 		WHERE (MC002 IN ('A01','B01'))");
                 sql.AppendLine(" 	) t ");
                 sql.AppendLine(" 	PIVOT (");
@@ -2823,11 +2823,11 @@ namespace SH_BBC.Controllers
                 sql.AppendLine("  , COPTC.TC012 COLLATE Chinese_Taiwan_Stroke_CI_AS AS OrderID");
                 sql.AppendLine("  , COPTD.TD004 COLLATE Chinese_Taiwan_Stroke_CI_AS AS ModelNo");
                 sql.AppendLine("  , COPTD.TD014 COLLATE Chinese_Taiwan_Stroke_CI_AS AS CustModelNo");
-                sql.AppendLine(" FROM [China_SH].dbo.COPTC WITH(NOLOCK)");
-                sql.AppendLine("  INNER JOIN [China_SH].dbo.COPTD WITH(NOLOCK) ON COPTC.TC001 = COPTD.TD001 AND COPTC.TC002 = COPTD.TD002");
-                sql.AppendLine("  INNER JOIN [China_SH].dbo.COPTH WITH(NOLOCK) ON COPTD.TD001 = COPTH.TH014 AND COPTD.TD002 = COPTH.TH015 AND COPTD.TD003 = COPTH.TH016");
-                sql.AppendLine("  INNER JOIN [China_SH].dbo.COPMA WITH(NOLOCK) ON COPMA.MA001 = COPTC.TC004");
-                sql.AppendLine("  LEFT JOIN [China_SH].dbo.ACRTB WITH(NOLOCK) ON ACRTB.TB005 = COPTH.TH001 AND ACRTB.TB006 = COPTH.TH002");
+                sql.AppendLine(" FROM [SHPK2].dbo.COPTC WITH(NOLOCK)");
+                sql.AppendLine("  INNER JOIN [SHPK2].dbo.COPTD WITH(NOLOCK) ON COPTC.TC001 = COPTD.TD001 AND COPTC.TC002 = COPTD.TD002");
+                sql.AppendLine("  INNER JOIN [SHPK2].dbo.COPTH WITH(NOLOCK) ON COPTD.TD001 = COPTH.TH014 AND COPTD.TD002 = COPTH.TH015 AND COPTD.TD003 = COPTH.TH016");
+                sql.AppendLine("  INNER JOIN [SHPK2].dbo.COPMA WITH(NOLOCK) ON COPMA.MA001 = COPTC.TC004");
+                sql.AppendLine("  LEFT JOIN [SHPK2].dbo.ACRTB WITH(NOLOCK) ON ACRTB.TB005 = COPTH.TH001 AND ACRTB.TB006 = COPTH.TH002");
                 sql.AppendLine(" WHERE (COPTC.TC200 = 'Y')");
                 sql.AppendLine(" )");
                 sql.AppendLine(" SELECT DT.OrderID, Cls.Class_Name");
@@ -3990,7 +3990,7 @@ namespace SH_BBC.Controllers
                 sql.AppendLine("  SELECT Tmp.ProdID, RTRIM(MG002) AS ModelNo");
                 sql.AppendLine("  FROM SHBBC_StockData Base");
                 sql.AppendLine("   INNER JOIN SHBBC_StockData_DT Tmp ON Base.Data_ID = Tmp.Parent_ID");
-                sql.AppendLine("   LEFT JOIN [China_SH].dbo.COPMG Ref ON Tmp.ProdID = (Ref.MG003 COLLATE Chinese_Taiwan_Stroke_BIN) AND Base.CustID = (Ref.MG001 COLLATE Chinese_Taiwan_Stroke_BIN)");
+                sql.AppendLine("   LEFT JOIN [SHPK2].dbo.COPMG Ref ON Tmp.ProdID = (Ref.MG003 COLLATE Chinese_Taiwan_Stroke_BIN) AND Base.CustID = (Ref.MG001 COLLATE Chinese_Taiwan_Stroke_BIN)");
                 sql.AppendLine("  WHERE (Base.Data_ID = @DataID)");
                 sql.AppendLine(" ) AS TblBase");
                 sql.AppendLine(" WHERE (SHBBC_StockData_DT.ProdID = TblBase.ProdID)");
@@ -4224,7 +4224,7 @@ namespace SH_BBC.Controllers
         /// <remarks>
         /// Step2 時執行(after 下一步)
         /// *** 重要:資料庫欄位若有修改, 必須調整此區的SQL ***
-        /// *** 重要:此處有寫死DB Name([China_SH]), 若有變動須注意 ***
+        /// *** 重要:此處有寫死DB Name([SHPK2]), 若有變動須注意 ***
         /// 暫存檔與COPMG對應比較, 更新 ERP_ModelNo
         /// , 不正常的資料 IsPass = 'N',doWhat = '查無ERP品號'
         /// , 其他IsPass = 'Y', 並Insert至 SHBBC_ImportData_DT
@@ -4278,7 +4278,7 @@ namespace SH_BBC.Controllers
                         sql.AppendLine("  , Tmp.BuyRemark, Tmp.SellRemark");
                         sql.AppendLine(" FROM SHBBC_ImportData Base");
                         sql.AppendLine("  INNER JOIN SHBBC_ImportData_TempDT Tmp ON Base.Data_ID = Tmp.Parent_ID");
-                        sql.AppendLine("  LEFT JOIN [China_SH].dbo.COPMG Ref ON Tmp.ProdID = (Ref.MG003 COLLATE Chinese_Taiwan_Stroke_BIN) AND Base.CustID = (Ref.MG001 COLLATE Chinese_Taiwan_Stroke_BIN)");
+                        sql.AppendLine("  LEFT JOIN [SHPK2].dbo.COPMG Ref ON Tmp.ProdID = (Ref.MG003 COLLATE Chinese_Taiwan_Stroke_BIN) AND Base.CustID = (Ref.MG001 COLLATE Chinese_Taiwan_Stroke_BIN)");
                         sql.AppendLine(" WHERE (Base.Data_ID = @DataID)");
                         sql.AppendLine(" ORDER BY Tmp.Data_ID");
 
@@ -4313,7 +4313,7 @@ namespace SH_BBC.Controllers
                         sql.AppendLine("  INNER JOIN SHBBC_ImportData_TempDT Tmp ON Base.Data_ID = Tmp.Parent_ID");
                         //單身備註參考
                         sql.AppendLine("  LEFT JOIN SHBBC_RefRemark RefMark ON Tmp.RemarkID = RefMark.ID AND UPPER(Lang) = UPPER('zh-CN')");
-                        sql.AppendLine("  LEFT JOIN [China_SH].dbo.COPMG Ref ON Tmp.ProdID = (Ref.MG003 COLLATE Chinese_Taiwan_Stroke_BIN) AND Base.CustID = (Ref.MG001 COLLATE Chinese_Taiwan_Stroke_BIN)");
+                        sql.AppendLine("  LEFT JOIN [SHPK2].dbo.COPMG Ref ON Tmp.ProdID = (Ref.MG003 COLLATE Chinese_Taiwan_Stroke_BIN) AND Base.CustID = (Ref.MG001 COLLATE Chinese_Taiwan_Stroke_BIN)");
                         sql.AppendLine(" WHERE (Base.Data_ID = @DataID)");
                         sql.AppendLine(" ORDER BY Tmp.Data_ID");
 
@@ -4342,7 +4342,7 @@ namespace SH_BBC.Controllers
                         sql.AppendLine("  , @StockStatus");
                         sql.AppendLine(" FROM SHBBC_ImportData Base");
                         sql.AppendLine("  INNER JOIN SHBBC_ImportData_TempDT Tmp ON Base.Data_ID = Tmp.Parent_ID");
-                        sql.AppendLine("  LEFT JOIN [China_SH].dbo.INVMB Ref ON Tmp.ProdID = (Ref.MB001 COLLATE Chinese_Taiwan_Stroke_BIN)");
+                        sql.AppendLine("  LEFT JOIN [SHPK2].dbo.INVMB Ref ON Tmp.ProdID = (Ref.MB001 COLLATE Chinese_Taiwan_Stroke_BIN)");
                         sql.AppendLine(" WHERE (Base.Data_ID = @DataID)");
                         sql.AppendLine(" ORDER BY Tmp.Data_ID");
 

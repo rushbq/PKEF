@@ -631,30 +631,48 @@ public partial class Cust_Search : SecurityIn
     {
         get
         {
-            String DataID = Request.QueryString["t"];
+            string _id = Request.QueryString["t"];
+            string _checkID = _id;
 
-            //若擁有所有權限
-            if (Tab_TW && Tab_SZ)
-            {
-                return string.IsNullOrEmpty(DataID) ? "1" : DataID;
-            }
-            else
+            //若為空值,依權限帶預設值
+            if (string.IsNullOrWhiteSpace(_id) || _id.Equals("0"))
             {
                 if (Tab_TW)
                 {
-                    DataID = "1";
+                    _checkID = "1";
                 }
                 else if (Tab_SZ)
                 {
-                    DataID = "2";
+                    _checkID = "2";
                 }
                 else if (Tab_SH)
                 {
-                    DataID = "3";
+                    _checkID = "3";
                 }
-
-                return DataID;
             }
+            else
+            {
+                //判斷來源type是否有對應的權限
+                switch (_id)
+                {
+                    case "2":
+                        _checkID = (Tab_SZ) ? _id : "0";
+                        break;
+
+
+                    case "3":
+                        _checkID = (Tab_SH) ? _id : "0";
+                        break;
+
+                    default:
+                        _checkID = (Tab_TW) ? _id : "0";
+                        break;
+
+                }
+            }
+
+            return _checkID;
+            
         }
         set
         {
