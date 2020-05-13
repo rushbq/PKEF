@@ -173,12 +173,12 @@ namespace SH_Invoice.Controllers
                 sql.AppendLine("   , Base.CustID, Base.Inv_UID, Base.Inv_Subject, Base.Inv_NO, Base.Inv_Date, Base.DataType");
                 sql.AppendLine("   , Base.IsInsert, Base.IsUpdate");
                 sql.AppendLine("   , Base.erp_sDate, Base.erp_eDate, Base.Create_Time, Base.Update_Time");
-                sql.AppendLine("   , (SELECT TOP 1 RTRIM(MA002) FROM PKSYS.dbo.Customer WITH(NOLOCK) WHERE (MA001 = Base.CustID) AND (DBS = DBC)) AS CustName");
-                sql.AppendLine("   , ISNULL((SELECT TOP 1 RTRIM(InvType) FROM PKSYS.dbo.Customer_Data WITH(NOLOCK) WHERE (Cust_ERPID = Base.CustID)), 'x') AS InvType"); //一般紙本INVTYPE
+                sql.AppendLine("   , (SELECT TOP 1 RTRIM(MA002) FROM PKSYS.dbo.Customer WITH(NOLOCK) WHERE (MA001 = Base.CustID COLLATE Chinese_Taiwan_Stroke_CI_AS) AND (DBS = DBC)) AS CustName");
+                sql.AppendLine("   , ISNULL((SELECT TOP 1 RTRIM(InvType) FROM PKSYS.dbo.Customer_Data WITH(NOLOCK) WHERE (Cust_ERPID = Base.CustID COLLATE Chinese_Taiwan_Stroke_CI_AS)), 'x') AS InvType"); //一般紙本INVTYPE
                 sql.AppendLine("   , ISNULL((SELECT TOP 1 (CASE InvType WHEN '2' THEN '0' ELSE '2' END) AS InvType FROM [SHInvoice].dbo.SH_Invoice_BW_BBCData WITH(NOLOCK) WHERE (Parent_ID = Base.Data_ID)), '0') AS E_InvType"); //電商紙本INVTYPE(0—专用发票/ 2—普通发票)
                 sql.AppendLine("   , (SELECT TOP 1 ISNULL(vendeename, '') AS Buyer FROM [SHInvoice].dbo.SH_Invoice_BW_BBCData WITH(NOLOCK) WHERE (Parent_ID = Base.Data_ID)) AS BuyerName");
-                sql.AppendLine("   , (SELECT Account_Name + ' (' + Display_Name + ')' FROM PKSYS.dbo.User_Profile WHERE (Guid = Base.Create_Who)) AS Create_Name");
-                sql.AppendLine("   , (SELECT Account_Name + ' (' + Display_Name + ')' FROM PKSYS.dbo.User_Profile WHERE (Guid = Base.Update_Who)) AS Update_Name");
+                sql.AppendLine("   , (SELECT Account_Name + ' (' + Display_Name + ')' FROM PKSYS.dbo.User_Profile WHERE (Guid = Base.Create_Who COLLATE Chinese_Taiwan_Stroke_CI_AS)) AS Create_Name");
+                sql.AppendLine("   , (SELECT Account_Name + ' (' + Display_Name + ')' FROM PKSYS.dbo.User_Profile WHERE (Guid = Base.Update_Who COLLATE Chinese_Taiwan_Stroke_CI_AS)) AS Update_Name");
                 //發票系統已回寫,可UPDATE發票資料
                 sql.AppendLine("   , (SELECT COUNT(*) FROM [SHInvoice].dbo.HTJS_DJXX_HT InvRel WHERE (InvRel.DJBH = Base.Inv_UID)) AS IsRel");
                 sql.AppendLine("   , (SELECT GHFMC FROM [SHInvoice].dbo.HTJS_DJXX_WKP WHERE (DJBH = Base.Inv_UID)) AS vendeename");
@@ -558,7 +558,7 @@ namespace SH_Invoice.Controllers
                 sql.AppendLine(" FROM [SHInvoice].dbo.SH_Invoice_BW Base");
                 sql.AppendLine("  INNER JOIN [SHInvoice].dbo.HTJS_DJXX_WKPMX lines ON Base.Inv_UID = lines.DJBH");
                 sql.AppendLine(" WHERE (Base.Data_ID = @id)");
-                sql.AppendLine(" ORDER BY lines.XH");
+                sql.AppendLine(" ORDER BY CAST(lines.XH AS INT)");
 
                 //----- SQL 執行 -----
                 cmd.CommandText = sql.ToString();
@@ -968,8 +968,8 @@ namespace SH_Invoice.Controllers
                     sql.Append(" , GETDATE() AS DJRQ, GETDATE() AS SCRQ");
                     sql.Append(" , '0' AS KPZT "); //0-未开票；1-已开票
                     sql.AppendLine(" FROM [SHInvoice].dbo.SH_Invoice_BW Base ");
-                    sql.AppendLine("  INNER JOIN [SHPK2].dbo.COPMA WITH(NOLOCK) ON COPMA.MA001 = Base.CustID COLLATE Chinese_Taiwan_Stroke_BIN ");
-                    sql.AppendLine("  LEFT JOIN Customer_Data Cust ON Cust.Cust_ERPID = Base.CustID ");
+                    sql.AppendLine("  INNER JOIN [SHPK2].dbo.COPMA WITH(NOLOCK) ON COPMA.MA001 = Base.CustID COLLATE Chinese_Taiwan_Stroke_BIN");
+                    sql.AppendLine("  LEFT JOIN Customer_Data Cust ON Cust.Cust_ERPID = Base.CustID COLLATE Chinese_Taiwan_Stroke_CI_AS");
                     sql.AppendLine(" WHERE (Base.Data_ID = @DataID) ");
                     sql.AppendLine("END ");
                 }
@@ -1004,7 +1004,7 @@ namespace SH_Invoice.Controllers
                     sql.Append(" , '0' AS KPZT "); //0-未开票；1-已开票
                     sql.AppendLine(" FROM [SHInvoice].dbo.SH_Invoice_BW Base");
                     sql.AppendLine("  INNER JOIN [SHInvoice].dbo.SH_Invoice_BW_BBCData Rel ON Base.Data_ID = Rel.Parent_ID");
-                    sql.AppendLine("  LEFT JOIN Customer_Data Cust ON Cust.Cust_ERPID = Base.CustID");
+                    sql.AppendLine("  LEFT JOIN Customer_Data Cust ON Cust.Cust_ERPID = Base.CustID COLLATE Chinese_Taiwan_Stroke_CI_AS");
                     sql.AppendLine(" WHERE (Base.Data_ID = @DataID)");
                     sql.AppendLine("END ");
                 }
@@ -1031,7 +1031,7 @@ namespace SH_Invoice.Controllers
                     sql.Append(" , YHZCBS"); //是否使用优惠政策(0=No, 1=Yes)
                     sql.Append(" ) VALUES (");
                     //DJBH, XH
-                    sql.Append(" '{0}', '{1}'".FormatThis(line.unino, ("00" + row.ToString()).Right(3)));
+                    sql.Append(" '{0}', '{1}'".FormatThis(line.unino, row.ToString()));
                     //SPMC, GGXH, JLDW
                     sql.Append(" , N'{0}', N'{1}', N'{2}'".FormatThis(
                         line.tradename, line.model, line.unit
@@ -1131,8 +1131,12 @@ namespace SH_Invoice.Controllers
                     sql.AppendLine("         , SUM(CAST(COPTH.TH038 AS MONEY)) AS taxation	--//稅額(開票系統會自動算)");
                     sql.AppendLine("         , COPTH.TH005 AS tradename	--//品名");
                     sql.AppendLine("         , RTRIM(COPTH.TH004) AS model	--//品號");
-                    sql.AppendLine("         , (CASE COPTH.TH009 WHEN 'PCE' THEN N'个' WHEN 'PCS' THEN N'个' WHEN 'SET' THEN N'套' ELSE COPTH.TH009 END) AS unit");
-                    sql.AppendLine("         , 'Y' AS taxprice  --//含稅(Y/N)");
+                    sql.AppendLine("         , (CASE COPTH.TH009 WHEN 'PCE' THEN N'个' WHEN 'PCS' THEN N'个' WHEN 'SET' THEN N'套' ELSE COPTH.TH009 END) AS unit");                  
+                    sql.AppendLine("         , (");
+                    sql.AppendLine("               SELECT CASE WHEN Rel.TG017 IN ('1','2') THEN '1' ELSE '0' END");
+                    sql.AppendLine("               FROM [SHPK2].dbo.COPTG Rel");
+                    sql.AppendLine("               WHERE (Rel.TG001 = COPTH.TH001) AND (Rel.TG002 = COPTH.TH002)");
+                    sql.AppendLine("             ) AS taxprice  --//含稅(0:不含/1:含)");
                     //sql.AppendLine("         , '1.0' AS bmbbh  --//編碥版本");
                     //sql.AppendLine("         , (CASE WHEN RTRIM(COPTH.TH004) = 'B009' THEN '202' ELSE '108040412' END) AS ssflbm   --//稅收分類編碼(會變動)");
                     sql.AppendLine("         , '0' AS FPHXZ  --//0-正常行/1-折扣行/2-被折扣行");
@@ -1143,7 +1147,7 @@ namespace SH_Invoice.Controllers
                     sql.AppendLine("      INNER JOIN [SHPK2].dbo.COPTH WITH(NOLOCK) ON COPTG.TG001 = COPTH.TH001 AND COPTG.TG002 = COPTH.TH002");
                     sql.AppendLine("      LEFT JOIN [SHPK2].dbo.COPTJ WITH(NOLOCK) ON COPTH.TH001 = COPTJ.TJ015 AND COPTH.TH002 = COPTJ.TJ016 AND COPTH.TH003 = COPTJ.TJ017");
                     sql.AppendLine("     WHERE (Base.Data_ID = @id) AND ((COPTH.TH008 - ISNULL(COPTJ.TJ007, 0)) > 0)  AND (COPTH.TH013 <> 0)");
-                    sql.AppendLine("     GROUP BY COPTH.TH004, COPTH.TH005, COPTH.TH009, COPTH.TH073");
+                    sql.AppendLine("     GROUP BY COPTH.TH004, COPTH.TH005, COPTH.TH009, COPTH.TH073, COPTH.TH001, COPTH.TH002");
                     sql.AppendLine(" )");
                     sql.AppendLine(" SELECT");
                     sql.AppendLine("     Base.Inv_UID AS unino");
@@ -1307,11 +1311,12 @@ namespace SH_Invoice.Controllers
 
                 /*
                  * 將有disamt的資料列,複製一列同品名無品號,金額為折扣金額, 且金額為負數, FPHXZ=2
+                 * 條件:排除B009
                  */
-                var copyResult = dataResult;
+                var copyResult = dataResult.Where(fld => !fld.model.Equals("B009"));
                 foreach (var item in copyResult)
                 {
-                    //加入項目 - 折扣品項(品號為空白)
+                    //加入項目 - 折扣品項(品號必為空白)
                     var data = new DT_Lines
                     {
                         serial = item.serial, //排序用的序號
@@ -1339,7 +1344,7 @@ namespace SH_Invoice.Controllers
                 //加入至完整集合
                 fullResult.AddRange(dataResult);
 
-                //回傳新集合
+                //回傳新集合(排序 = serial:相同, 折扣行:1 or 2)
                 return fullResult.OrderBy(o => o.serial).ThenBy(o => o.xsyhzc).AsQueryable();
 
             }

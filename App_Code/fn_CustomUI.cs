@@ -205,10 +205,10 @@ namespace ExtensionUI
                 {
                     List<string> GetEmail = new List<string>();
 
-                    //若無資料則塞mis@mail.prokits.com.tw
+                    //若無資料
                     if (DT.Rows.Count == 0)
                     {
-                        GetEmail.Add("mis@mail.prokits.com.tw");
+                        GetEmail.Add("ITInform@mail.prokits.com.tw");
                     }
                     else
                     {

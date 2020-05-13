@@ -187,7 +187,7 @@ public partial class mySHInvoice_Step2 : SecurityIn
                 return "普票";
 
             default:
-                return "<a href=\"{0}CustInfo/Cust_Search.aspx?t=2\">尚未設定, 點此前往設定</a>".FormatThis(fn_Params.WebUrl);
+                return "<a href=\"{0}CustInfo/Cust_Search.aspx?t=3\">尚未設定, 點此前往設定</a>".FormatThis(fn_Params.WebUrl);
         }
     }
 
