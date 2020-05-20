@@ -263,8 +263,7 @@ public partial class mySZBBC_ImportList : SecurityIn
     }
 
 
-    public string GetStatusColor(string value)
-    {
+    public string GetStatusColor(string value) {
         switch (value)
         {
             case "10":

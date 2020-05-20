@@ -183,6 +183,7 @@
 
                     } else {
                         alert('資料存檔失敗!');
+                        console.log(msg);
                         _btnUpdate.prop("disabled", false);
                         event.preventDefault();
                     }

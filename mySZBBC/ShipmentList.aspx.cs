@@ -416,11 +416,7 @@ public partial class mySZBBC_ShipmentList : SecurityIn
         return url.ToString();
     }
 
-    /// <summary>
-    /// 背景變更
-    /// </summary>
-    /// <param name="inputVal"></param>
-    /// <returns></returns>
+
     public string setCss(object inputVal)
     {
         if (inputVal == null || string.IsNullOrWhiteSpace(inputVal.ToString()))

@@ -4,7 +4,6 @@ using System.Runtime.Caching;
 using System.Web;
 
 /// <summary>
-/// [取代Session]
 /// UnobtrusiveSession 使用 MemoryCache 保存資料
 /// </summary>
 /// <remarks>

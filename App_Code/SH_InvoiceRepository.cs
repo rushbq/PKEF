@@ -1552,7 +1552,7 @@ namespace SH_Invoice.Controllers
 
                     //填入資料
                     invoiceNo = DT.Rows[0]["InvoiceNo"].ToString();
-                    invoiceDate = DT.Rows[0]["InvoiceDate"].ToString();
+                    invoiceDate = DT.Rows[0]["InvoiceDate"].ToString().ToDateString("yyyyMMdd");
                 }
 
                 //--- do clear ---
@@ -1577,7 +1577,7 @@ namespace SH_Invoice.Controllers
                 cmd.CommandText = sql.ToString();
                 cmd.Parameters.AddWithValue("DataID", dataID);
                 cmd.Parameters.AddWithValue("InvNo", invoiceNo);
-                cmd.Parameters.AddWithValue("InvDate", invoiceDate);
+                cmd.Parameters.AddWithValue("InvDate", invoiceDate); //注意日期格式(yyyyMMdd)
                 cmd.Parameters.AddWithValue("Update_Who", who);
 
                 return dbConn.ExecuteSql(cmd, dbConn.DBS.ERP_TAX, out ErrMsg);
