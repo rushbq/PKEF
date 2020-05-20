@@ -1052,6 +1052,7 @@ namespace SZBBC_Toy.Controllers
                                 default:
                                     //京東POP
                                     myProdID = val[1];
+                                    myProdSpec = val[27];
                                     myProdName = val[2];
                                     myBuyCnt = string.IsNullOrEmpty(val[4]) ? 0 : Convert.ToInt16(val[4]);
                                     myBuyPrice = string.IsNullOrEmpty(val[8]) ? 0 : Convert.ToDouble(val[8]);
@@ -3254,9 +3255,9 @@ namespace SZBBC_Toy.Controllers
             {
                 //----- SQL 查詢語法 -----
                 sql.AppendLine(" INSERT INTO refCOPMG( ");
-                sql.AppendLine("  MallID, MG001, MG002, MG003, MG006");
+                sql.AppendLine("  MallID, MG001, MG002, MG003, MG006, DB");
                 sql.AppendLine(" ) VALUES (");
-                sql.AppendLine("  @MallID, @MG001, @MG002, @MG003, @MG006");
+                sql.AppendLine("  @MallID, @MG001, @MG002, @MG003, @MG006, 'SH'");
                 sql.AppendLine(" );");
 
 

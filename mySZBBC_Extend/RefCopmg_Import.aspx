@@ -31,7 +31,7 @@
             <!-- Section Start -->
             <div class="ui segments">
                 <div class="ui green segment">
-                    <h5 class="ui header">工具</h5>
+                    <h5 class="ui header">深圳工具 <small>(資料庫:SZ)</small></h5>
                 </div>
                 <div class="ui small form segment">
                     <div class="fields">
@@ -64,7 +64,7 @@
                     </div>
                 </div>
                 <div class="ui orange segment">
-                    <h5 class="ui header">科學玩具</h5>
+                    <h5 class="ui header">科學玩具 <small>(資料庫:SH)</small></h5>
                 </div>
                 <div class="ui small form segment">
                     <div class="fields">

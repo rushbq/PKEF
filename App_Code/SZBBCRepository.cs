@@ -3744,9 +3744,9 @@ namespace SZ_BBC.Controllers
             {
                 //----- SQL 查詢語法 -----
                 sql.AppendLine(" INSERT INTO refCOPMG( ");
-                sql.AppendLine("  MallID, MG001, MG002, MG003, MG006");
+                sql.AppendLine("  MallID, MG001, MG002, MG003, MG006, DB");
                 sql.AppendLine(" ) VALUES (");
-                sql.AppendLine("  @MallID, @MG001, @MG002, @MG003, @MG006");
+                sql.AppendLine("  @MallID, @MG001, @MG002, @MG003, @MG006, 'SZ'");
                 sql.AppendLine(" );");
 
 
@@ -4018,7 +4018,7 @@ namespace SZ_BBC.Controllers
         /// <param name="mallID">Mall</param>
         /// <param name="ErrMsg"></param>
         /// <returns></returns>
-        public bool Create_RefModels(IQueryable<RefModel> instance, string custID, Int32 mallID, out string ErrMsg)
+        public bool Create_RefModels(IQueryable<RefModel> instance, string custID, Int32 mallID, string db, out string ErrMsg)
         {
             //----- 宣告 -----
             StringBuilder sql = new StringBuilder();
@@ -4027,7 +4027,7 @@ namespace SZ_BBC.Controllers
             using (SqlCommand cmd = new SqlCommand())
             {
                 //----- SQL 查詢語法 -----
-                sql.AppendLine(" DELETE FROM refCOPMG WHERE (MG001 = @CustID) AND (MallID = @MallID) AND (DB = 'SZ')");
+                sql.AppendLine(" DELETE FROM refCOPMG WHERE (MG001 = @CustID) AND (MallID = @MallID) AND (DB = @db)");
                 //sql.AppendLine(" DECLARE @NewID AS INT");
 
                 foreach (var item in instance)
@@ -4036,10 +4036,10 @@ namespace SZ_BBC.Controllers
                     //sql.AppendLine("  SELECT ISNULL(MAX(Data_ID) ,0) + 1 FROM refCOPMG");
                     //sql.AppendLine(" )");
                     sql.AppendLine(" INSERT INTO refCOPMG(");
-                    sql.AppendLine("  MallID, MG001");
+                    sql.AppendLine("  MallID, MG001, DB");
                     sql.AppendLine("  , MG002, MG003, MG006");
                     sql.AppendLine(" ) VALUES (");
-                    sql.AppendLine("  @MallID, @CustID");
+                    sql.AppendLine("  @MallID, @CustID, @db");
                     sql.AppendLine("  , N'{0}', N'{1}', N'{2}'".FormatThis(item.ModelNo, item.CustModelNo, item.CustSpec));
                     sql.AppendLine(" );");
                 }
@@ -4048,6 +4048,7 @@ namespace SZ_BBC.Controllers
                 cmd.CommandText = sql.ToString();
                 cmd.Parameters.AddWithValue("CustID", custID);
                 cmd.Parameters.AddWithValue("MallID", mallID);
+                cmd.Parameters.AddWithValue("db", db);
 
                 //Execute
                 return dbConn.ExecuteSql(cmd, dbConn.DBS.PKSYS, out ErrMsg);

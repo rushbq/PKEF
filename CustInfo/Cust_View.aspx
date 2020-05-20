@@ -137,12 +137,12 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="TableModifyTdHead styleRed">戶名(開票用)<br />(勿超過100字,含空白)
+                        <td class="TableModifyTdHead styleRed">戶名(開票用)<br />(限100字,含空白)<br />客戶英文全名
                         </td>
                         <td class="TableModifyTd">
                             <asp:Literal ID="lt_MA110" runat="server"></asp:Literal>
                         </td>
-                        <td class="TableModifyTdHead styleRed">稅號(開票用)<br />(勿超過20字,含空白)
+                        <td class="TableModifyTdHead styleRed">稅號(開票用)<br />(限20字,含空白)<br />銀行帳號(一)
                         </td>
                         <td class="TableModifyTd">
                             <asp:Literal ID="lt_MA071" runat="server"></asp:Literal>

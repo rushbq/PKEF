@@ -50,7 +50,7 @@ public partial class mySZBBC_Extend_RefCopmg_Import : SecurityIn
         string _mallID = ddl_Mall1.SelectedValue;
         string _custID = filter_Cust1.Text;
         string _mallName = "工具-" + ddl_Mall1.SelectedItem.Text;
-        do_Upload(_custID, _mallID, _mallName, fu_File1);
+        do_Upload(_custID, _mallID, _mallName, "SZ", fu_File1);
     }
 
     protected void btn_Save2_Click(object sender, EventArgs e)
@@ -58,11 +58,11 @@ public partial class mySZBBC_Extend_RefCopmg_Import : SecurityIn
         string _mallID = ddl_Mall2.SelectedValue;
         string _custID = filter_Cust2.Text;
         string _mallName = "科學玩具-" + ddl_Mall1.SelectedItem.Text;
-        do_Upload(_custID, _mallID, _mallName, fu_File2);
+        do_Upload(_custID, _mallID, _mallName, "SH", fu_File2);
     }
 
 
-    private void do_Upload(string _custID, string _mallID, string _mallName, FileUpload filectrl)
+    private void do_Upload(string _custID, string _mallID, string _mallName, string _db, FileUpload filectrl)
     {
         //Check Input
         if (string.IsNullOrWhiteSpace(_custID))
@@ -214,7 +214,7 @@ public partial class mySZBBC_Extend_RefCopmg_Import : SecurityIn
         try
         {
             //儲存資料
-            if (!_data.Create_RefModels(query_Xls, _custID, Convert.ToInt32(_mallID), out ErrMsg))
+            if (!_data.Create_RefModels(query_Xls, _custID, Convert.ToInt32(_mallID), _db, out ErrMsg))
             {
                 CustomExtension.AlertMsg(_custID + "資料匯入失敗", thisPage);
                 return;
@@ -256,7 +256,7 @@ public partial class mySZBBC_Extend_RefCopmg_Import : SecurityIn
         //----- 資料整理:繫結 ----- 
         this.lvDataList.DataSource = data;
         this.lvDataList.DataBind();
-      
+
         //release
         _data = null;
     }
@@ -285,14 +285,14 @@ public partial class mySZBBC_Extend_RefCopmg_Import : SecurityIn
         }
         catch (Exception)
         {
-            
+
             throw;
         }
         finally
         {
             //release
             _data = null;
-        }       
+        }
     }
 
 
