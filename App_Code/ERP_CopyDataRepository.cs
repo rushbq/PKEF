@@ -304,9 +304,9 @@ namespace ERP_CopyData.Controllers
             sql.AppendLine(" DECLARE @pToday AS VARCHAR(8)");
             sql.AppendLine(" SET @pToday = CONVERT(VARCHAR(8), GETDATE() ,112)");
 
-            /* 取號:PK190414001 (PK+yyMMdd+流水號3碼) */
+            /* 取號:PK190414001 (EF+yyMMdd+流水號3碼) */
             sql.AppendLine(" DECLARE @NewID AS INT, @NewFullID AS VARCHAR(11), @FstID AS VARCHAR(2), @SecID AS VARCHAR(6)");
-            sql.AppendLine(" SET @FstID = 'PK'");
+            sql.AppendLine(" SET @FstID = 'EF'");
             sql.AppendLine(" SET @SecID = RIGHT(@pToday, 6)");
             sql.AppendLine(" SET @NewID = (");
             sql.AppendLine(" 	SELECT ISNULL(MAX(CAST(RIGHT(TL002, 3) AS INT)), 0) + 1");
@@ -411,9 +411,9 @@ namespace ERP_CopyData.Controllers
             sql.AppendLine(" DECLARE @pToday AS VARCHAR(8)");
             sql.AppendLine(" SET @pToday = CONVERT(VARCHAR(8), GETDATE() ,112)");
 
-            /* 取號:PK190414001 (PK+yyMMdd+流水號3碼) */
+            /* 取號:PK190414001 (EF+yyMMdd+流水號3碼) */
             sql.AppendLine(" DECLARE @NewID AS INT, @NewFullID AS VARCHAR(11), @FstID AS VARCHAR(2), @SecID AS VARCHAR(6)");
-            sql.AppendLine(" SET @FstID = 'PK'");
+            sql.AppendLine(" SET @FstID = 'EF'");
             sql.AppendLine(" SET @SecID = RIGHT(@pToday, 6)");
             sql.AppendLine(" SET @NewID = (");
             sql.AppendLine(" 	SELECT ISNULL(MAX(CAST(RIGHT(TA002, 3) AS INT)), 0) + 1");

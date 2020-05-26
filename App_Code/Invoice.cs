@@ -6,6 +6,53 @@ using System.Web;
 
 namespace Invoice.Models
 {
+
+    /// <summary>
+    /// ERP未開票資料
+    /// </summary>
+    public class ERP_Invoice
+    {
+        //銷貨/退貨單號
+        public string Erp_SO_ID { get; set; }
+        //結帳單號
+        public string Erp_AR_ID { get; set; }
+        public string CustID { get; set; }
+        public string CustName { get; set; }
+        //結帳日
+        public string ArDate { get; set; }
+        //發票號碼
+        public string InvNo { get; set; }
+        public Int64 SerialNo { get; set; }
+    }
+
+    public class InvData_Base
+    {
+        public Guid Data_ID { get; set; }
+        public string CompID { get; set; }
+        public string CustID { get; set; }
+        public string CustName { get; set; }
+        public string erp_sDate { get; set; }
+        public string erp_eDate { get; set; }
+        public string InvDate { get; set; }
+        public string InvNo { get; set; }
+        public string Staus { get; set; }
+        public string Create_Who { get; set; }
+        public string Create_Time { get; set; }
+        public string Update_Who { get; set; }
+        public string Update_Time { get; set; }
+
+
+
+    }
+
+    public class InvData_DT
+    {
+        public Guid Parent_ID { get; set; }
+        public Int64 Data_ID { get; set; }
+        public string Erp_AR_ID { get; set; }
+    }
+
+
     /// <summary>
     /// 發票欄位
     /// </summary>

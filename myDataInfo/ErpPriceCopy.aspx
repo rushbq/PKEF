@@ -96,7 +96,7 @@
                     <div class="header">注意事項</div>
                     <ul class="list">
                         <li>複製完成後，單號將由系統取號，單據的狀態為「<span class="red-text text-darken-1">未確認</span>」。</li>
-                        <li>單號的編碼組合為PK + 年月日後6碼 + 流水號3碼。</li>
+                        <li>單號的編碼組合為 <b class="red-text">EF</b> + 年月日後6碼 + 流水號3碼。</li>
                         <li class="blue-text text-darken-4">廠商核價單：
                             <ul>
                                 <li>1. 複製後不能修改供應商代號，如果跨公司別複製，要確認二邊的供應商代號相同</li>

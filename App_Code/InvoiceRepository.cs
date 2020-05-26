@@ -9,6 +9,11 @@ using ExtensionUI;
 using Invoice.Models;
 using PKLib_Method.Methods;
 
+/*
+ * 使用功能
+ * SZ BBC發票相關
+ * 手動開票-批次回寫ERP發票號碼
+ */
 namespace Invoice.Controllers
 {
     /// <summary>
@@ -29,6 +34,240 @@ namespace Invoice.Controllers
         public string ErrMsg;
 
         #region -----// Read //-----
+
+
+        #region >> 手動回填ERP <<
+
+
+        /// <summary>
+        /// [Step2] 取得基本資料
+        /// </summary>
+        /// <param name="guid"></param>
+        /// <returns></returns>
+        public IQueryable<InvData_Base> GetInvData_Base(string guid, out string ErrMsg)
+        {
+            //----- 宣告 -----
+            List<InvData_Base> dataList = new List<InvData_Base>();
+            StringBuilder sql = new StringBuilder();
+
+            //----- 資料查詢 -----
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                //----- SQL 語法 -----
+                sql.AppendLine(" SELECT Base.Data_ID, Base.CompID, Base.erp_sDate, Base.erp_eDate");
+                sql.AppendLine("  , Base.InvDate, Base.InvNo, Base.CustID");
+                sql.AppendLine("  , Cust.MA002 AS CustName");
+                sql.AppendLine(" FROM InvoiceToERP Base");
+                sql.AppendLine("  LEFT JOIN [PKSYS].dbo.Customer Cust ON Base.CustID = Cust.MA001 AND Cust.DBS = Cust.DBC");
+                sql.AppendLine(" WHERE (Base.Data_ID = @dataID)");
+
+                //----- SQL 執行 -----
+                cmd.CommandText = sql.ToString();
+                cmd.Parameters.AddWithValue("dataID", guid);
+
+                //----- 資料取得 -----
+                using (DataTable DT = dbConn.LookupDT(cmd, out ErrMsg))
+                {
+                    //LinQ 查詢
+                    var query = DT.AsEnumerable();
+
+                    //資料迴圈
+                    foreach (var item in query)
+                    {
+                        //加入項目
+                        var data = new InvData_Base
+                        {
+                            Data_ID = item.Field<Guid>("Data_ID"),
+                            CompID = item.Field<string>("CompID"),
+                            CustID = item.Field<string>("CustID"),
+                            CustName = item.Field<string>("CustName"),
+                            erp_sDate = item.Field<string>("erp_sDate"),
+                            erp_eDate = item.Field<string>("erp_eDate"),
+                            InvDate = item.Field<string>("InvDate"),
+                            InvNo = item.Field<string>("InvNo")
+                        };
+
+                        //將項目加入至集合
+                        dataList.Add(data);
+
+                    }
+                }
+            }
+
+            //回傳集合
+            return dataList.AsQueryable();
+        }
+
+
+        /// <summary>
+        /// [Step3] 取得單身資料
+        /// </summary>
+        /// <param name="guid"></param>
+        /// <returns></returns>
+        public IQueryable<InvData_DT> GetInvData_DT(string guid, out string ErrMsg)
+        {
+            //----- 宣告 -----
+            List<InvData_DT> dataList = new List<InvData_DT>();
+            StringBuilder sql = new StringBuilder();
+
+            //----- 資料查詢 -----
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                //----- SQL 語法 -----
+                sql.AppendLine(" SELECT DT.Erp_AR_ID");
+                sql.AppendLine(" FROM InvoiceToERP_DT DT");
+                sql.AppendLine(" WHERE (DT.Parent_ID = @dataID)");
+
+                //----- SQL 執行 -----
+                cmd.CommandText = sql.ToString();
+                cmd.Parameters.AddWithValue("dataID", guid);
+
+                //----- 資料取得 -----
+                using (DataTable DT = dbConn.LookupDT(cmd, out ErrMsg))
+                {
+                    //LinQ 查詢
+                    var query = DT.AsEnumerable();
+
+                    //資料迴圈
+                    foreach (var item in query)
+                    {
+                        //加入項目
+                        var data = new InvData_DT
+                        {
+                            Erp_AR_ID = item.Field<string>("Erp_AR_ID")
+                        };
+
+                        //將項目加入至集合
+                        dataList.Add(data);
+
+                    }
+                }
+            }
+
+            //回傳集合
+            return dataList.AsQueryable();
+        }
+
+
+        /// <summary>
+        /// [Step2] 取得ERP未開票資料
+        /// </summary>
+        /// <param name="custID">Cust ID</param>
+        /// <param name="compID">DBS</param>
+        /// <param name="startDate">開始日(yyyyMMdd)</param>
+        /// <param name="endDate">結束日(yyyyMMdd)</param>
+        /// <returns></returns>
+        public IQueryable<ERP_Invoice> GetErpUnBilledData(string compID, string custID, string startDate, string endDate
+            , out string ErrMsg)
+        {
+            //----- 宣告 -----
+            List<ERP_Invoice> dataList = new List<ERP_Invoice>();
+            StringBuilder sql = new StringBuilder();
+            string _dbs = compID.Equals("SH") ? "[SHPK2]" : "[ProUnion]";
+
+            //----- 資料查詢 -----
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                //----- SQL 語法 -----
+                sql.AppendLine(";WITH TblBase AS ( ");
+                sql.AppendLine(" SELECT ");
+                sql.AppendLine("  RTRIM(COPMA.MA001) AS CustID");
+                sql.AppendLine("  , RTRIM(COPMA.MA003) AS CustName");
+                sql.AppendLine("  , ISNULL(RTRIM(COPTG.TG001) + '-' + RTRIM(COPTG.TG002), RTRIM(COPTJ.TJ001) + '-' + RTRIM(COPTJ.TJ002)) AS Erp_SO_ID");
+                sql.AppendLine("  , RTRIM(ACRTA.TA001) + '-' + RTRIM(ACRTA.TA002) AS Erp_AR_ID");
+                sql.AppendLine("  , ACRTA.TA003 AS ArDate, ACRTA.TA036 AS InvNo");
+                sql.AppendLine("  , ROW_NUMBER() OVER(ORDER BY ACRTA.TA001, ACRTA.TA002) AS SerialNo");
+                sql.AppendLine(" FROM ##DBS##.dbo.ACRTA WITH(NOLOCK) ");
+                sql.AppendLine("  INNER JOIN ##DBS##.dbo.ACRTB WITH(NOLOCK) ON ACRTA.TA001 = ACRTB.TB001 AND ACRTA.TA002 = ACRTB.TB002 ");
+                sql.AppendLine("  INNER JOIN ##DBS##.dbo.COPMA WITH(NOLOCK) ON COPMA.MA001 = ACRTA.TA004 ");
+                sql.AppendLine("  LEFT JOIN ##DBS##.dbo.COPTG WITH(NOLOCK) ON ACRTB.TB005 = COPTG.TG001 AND ACRTB.TB006 = COPTG.TG002 ");
+                sql.AppendLine("  LEFT JOIN ##DBS##.dbo.COPTJ WITH(NOLOCK) ON ACRTA.TA001 = COPTJ.TJ025 AND ACRTA.TA002 = COPTJ.TJ026 ");
+                sql.AppendLine(" WHERE (ACRTA.TA036 = '') ");
+
+                //CustID
+                if (!string.IsNullOrEmpty(custID))
+                {
+                    sql.AppendLine(" AND (COPMA.MA001 = @CustID) ");
+                    cmd.Parameters.AddWithValue("CustID", custID);
+                }
+
+                //結帳日
+                sql.AppendLine(" AND (ACRTA.TA003 >= @sDate) AND (ACRTA.TA003 <= @eDate) ");
+
+                sql.AppendLine(" GROUP BY COPMA.MA001, COPMA.MA003");
+                sql.AppendLine("  , ISNULL(RTRIM(COPTG.TG001) + '-' + RTRIM(COPTG.TG002), RTRIM(COPTJ.TJ001) + '-' + RTRIM(COPTJ.TJ002))");
+                sql.AppendLine("  , ACRTA.TA003, ACRTA.TA036, ACRTA.TA001, ACRTA.TA002");
+                sql.AppendLine(")");
+                sql.AppendLine(" SELECT TblBase.*");
+                sql.AppendLine(" FROM TblBase");
+
+                //不可與開票中繼檔的資料重複(SZ:航天 / SH:百旺)
+                sql.AppendLine(" WHERE (LEN(TblBase.Erp_SO_ID) >= 1)");
+
+                if (_dbs.Equals("SH"))
+                {
+                    sql.AppendLine("  AND TblBase.Erp_SO_ID NOT IN (");
+                    sql.AppendLine("     SELECT DT.Erp_SO_ID COLLATE Chinese_Taiwan_Stroke_BIN");
+                    sql.AppendLine("     FROM [SHInvoice].dbo.SH_Invoice_BW Base");
+                    sql.AppendLine("      INNER JOIN [SHInvoice].dbo.SH_Invoice_BW_Items DT ON Base.Data_ID = DT.Parent_ID");
+                    sql.AppendLine(" )");
+                }
+                else
+                {
+                    sql.AppendLine("  AND TblBase.Erp_SO_ID NOT IN (");
+                    sql.AppendLine("     SELECT DT.Erp_SO_ID COLLATE Chinese_Taiwan_Stroke_BIN");
+                    sql.AppendLine("     FROM [PKSYS].dbo.SZ_Invoice_E6 Base");
+                    sql.AppendLine("      INNER JOIN [PKSYS].dbo.SZ_Invoice_E6_Items DT ON Base.Data_ID = DT.Parent_ID");
+                    sql.AppendLine(" )");
+                }
+
+                sql.AppendLine(" ORDER BY TblBase.SerialNo");
+
+                //replace dbs
+                sql.Replace("##DBS##", _dbs);
+
+                //----- SQL 執行 -----
+                cmd.CommandText = sql.ToString();
+                cmd.Parameters.AddWithValue("sDate", startDate);
+                cmd.Parameters.AddWithValue("eDate", endDate);
+
+                //----- 資料取得 -----
+                using (DataTable DT = dbConn.LookupDT(cmd, dbConn.DBS.PKSYS, out ErrMsg))
+                {
+                    //LinQ 查詢
+                    var query = DT.AsEnumerable();
+
+                    //資料迴圈
+                    foreach (var item in query)
+                    {
+                        //加入項目
+                        var data = new ERP_Invoice
+                        {
+                            Erp_SO_ID = item.Field<string>("Erp_SO_ID"),    //銷貨單/銷退單
+                            Erp_AR_ID = item.Field<string>("Erp_AR_ID"),    //結帳單
+                            CustID = item.Field<string>("CustID"),
+                            CustName = item.Field<string>("CustName"),
+                            ArDate = item.Field<string>("ArDate"),
+                            InvNo = item.Field<string>("InvNo"),
+                            SerialNo = item.Field<Int64>("SerialNo")
+                        };
+
+                        //將項目加入至集合
+                        dataList.Add(data);
+
+                    }
+                }
+            }
+
+            //回傳集合
+            return dataList.AsQueryable();
+        }
+
+
+        #endregion
+
+
+        #region >> SZ BBC <<
 
         /// <summary>
         /// 取得所有資料(傳入預設參數)
@@ -435,7 +674,7 @@ namespace Invoice.Controllers
 
         /// <summary>
         /// 發票子檔清單 - 維護頁子查詢用(歷史記錄)
-        /// 功能位置:發票維護,歷史資料按鈕
+        /// 功能位置:SZBBC, 發票維護,歷史資料按鈕
         /// </summary>
         /// <param name="search"></param>
         /// <returns></returns>
@@ -523,11 +762,115 @@ namespace Invoice.Controllers
             return dataList.AsQueryable();
         }
 
+        #endregion
+
 
         #endregion
 
 
+
         #region  -----// Create //-----
+
+
+        #region >> 手動回填ERP <<
+
+        /// <summary>
+        /// [Step1] 建立基本資料
+        /// </summary>
+        /// <param name="instance"></param>
+        /// <param name="ErrMsg"></param>
+        /// <returns></returns>
+        public bool Create_Inv2ERP(InvData_Base instance, out string ErrMsg)
+        {
+            //----- 宣告 -----
+            StringBuilder sql = new StringBuilder();
+
+            //----- 資料查詢 -----
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                //----- SQL 查詢語法 -----
+                sql.AppendLine(" INSERT INTO InvoiceToERP (");
+                sql.AppendLine("  Data_ID, CompID, CustID");
+                sql.AppendLine("  , erp_sDate, erp_eDate, InvDate, InvNo");
+                sql.AppendLine("  , Create_Who, Create_Time");
+                sql.AppendLine(" ) VALUES (");
+                sql.AppendLine("  @Data_ID, @CompID, @CustID");
+                sql.AppendLine("  , @erp_sDate, @erp_eDate, @InvDate, @InvNo");
+                sql.AppendLine("  , @Create_Who, GETDATE()");
+                sql.AppendLine(" )");
+
+
+                //----- SQL 執行 -----
+                cmd.CommandText = sql.ToString();
+                cmd.Parameters.AddWithValue("Data_ID", instance.Data_ID);
+                cmd.Parameters.AddWithValue("CompID", instance.CompID);
+                cmd.Parameters.AddWithValue("CustID", instance.CustID);
+                cmd.Parameters.AddWithValue("erp_sDate", instance.erp_sDate);
+                cmd.Parameters.AddWithValue("erp_eDate", instance.erp_eDate);
+                cmd.Parameters.AddWithValue("InvDate", instance.InvDate);
+                cmd.Parameters.AddWithValue("InvNo", instance.InvNo);
+                cmd.Parameters.AddWithValue("Create_Who", instance.Create_Who);
+
+
+                return dbConn.ExecuteSql(cmd, out ErrMsg);
+            }
+
+        }
+
+
+        /// <summary>
+        /// [Step2] 建立單身
+        /// </summary>
+        /// <param name="guid">單頭ID</param>
+        /// <param name="query">單身資料</param>
+        /// <param name="ErrMsg"></param>
+        /// <returns></returns>
+        public bool CreateDetail_Inv2ERP(string guid, IQueryable<InvData_DT> detail, out string ErrMsg)
+        {
+            //----- 宣告 -----
+            StringBuilder sql = new StringBuilder();
+
+            //----- 資料查詢 -----
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                //----- SQL 查詢語法 -----
+                sql.AppendLine(" DELETE FROM InvoiceToERP_DT WHERE (Parent_ID = @DataID);");
+                sql.AppendLine(" UPDATE InvoiceToERP SET Update_Time = GETDATE(), Update_Who = @Who WHERE (Data_ID = @DataID);");
+                sql.AppendLine(" DECLARE @NewID AS INT ");
+
+                foreach (var item in detail)
+                {
+                    if (!string.IsNullOrWhiteSpace(item.Erp_AR_ID))
+                    {
+                        sql.AppendLine(" SET @NewID = (");
+                        sql.AppendLine("  SELECT ISNULL(MAX(Data_ID), 0) + 1 AS NewID");
+                        sql.AppendLine("  FROM InvoiceToERP_DT");
+                        sql.AppendLine("  WHERE (Parent_ID = @DataID)");
+                        sql.AppendLine(" )");
+
+                        sql.AppendLine(" INSERT INTO InvoiceToERP_DT( ");
+                        sql.AppendLine("  Parent_ID, Data_ID, Erp_AR_ID");
+                        sql.AppendLine(" ) VALUES (");
+                        sql.AppendLine("  @DataID, @NewID, '{0}'".FormatThis(item.Erp_AR_ID));
+                        sql.AppendLine(" );");
+                    }
+                }
+
+                //----- SQL 執行 -----
+                cmd.CommandText = sql.ToString();
+                cmd.Parameters.AddWithValue("DataID", guid);
+                cmd.Parameters.AddWithValue("Who", fn_Params.UserGuid);
+
+                return dbConn.ExecuteSql(cmd, out ErrMsg);
+            }
+
+        }
+
+
+        #endregion
+
+
+        #region >> SZ BBC <<
 
         ///// <summary>
         ///// 建立匯出檔 - Step1
@@ -604,14 +947,85 @@ namespace Invoice.Controllers
         //    }
         //}
 
+        #endregion
+
 
         #endregion
 
 
-        #region -----// Update & Set //-----
+
+        #region -----// Update //-----
+
+
+        #region >> 手動回填ERP <<
+
+        /// <summary>
+        /// 回寫至對應資料庫的結帳單
+        /// </summary>
+        /// <param name="dataID"></param>
+        /// <param name="compID"></param>
+        /// <param name="ErrMsg"></param>
+        /// <returns></returns>
+        public bool Update_InvData(string dataID, string compID, out string ErrMsg)
+        {
+            //----- 宣告 -----
+            StringBuilder sql = new StringBuilder();
+            string _dbs = compID.Equals("SH") ? "[SHPK2]" : "[ProUnion]";
+
+            //----- 資料查詢 -----
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                //--Update ERP
+                sql.AppendLine(" UPDATE {0}.dbo.ACRTA ".FormatThis(_dbs));
+                sql.AppendLine(" SET TA036 = Base.InvNo, TA200 = REPLACE(Base.InvDate, '/', '')");
+                sql.AppendLine(" FROM [PKEF].dbo.InvoiceToERP Base");
+                sql.AppendLine("  INNER JOIN [PKEF].dbo.InvoiceToERP_DT DT ON Base.Data_ID = DT.Parent_ID");
+                sql.AppendLine(" WHERE ((RTRIM(ACRTA.TA001)+'-'+RTRIM(ACRTA.TA002)) = DT.Erp_AR_ID COLLATE Chinese_Taiwan_Stroke_BIN)");
+                sql.AppendLine("  AND (Base.Data_ID = @DataID)");
+
+                //----- SQL 執行 -----
+                cmd.CommandText = sql.ToString();
+                cmd.Parameters.AddWithValue("DataID", dataID);
+
+                return dbConn.ExecuteSql(cmd, dbConn.DBS.ERP_TAX, out ErrMsg);
+            }
+        }
+
+        /// <summary>
+        /// 變更狀態
+        /// </summary>
+        /// <param name="dataID"></param>
+        /// <param name="ErrMsg"></param>
+        /// <returns></returns>
+        public bool Update_InvDataStatus(string dataID, out string ErrMsg)
+        {
+            //----- 宣告 -----
+            StringBuilder sql = new StringBuilder();
+
+            //----- 資料查詢 -----
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                sql.AppendLine(" UPDATE InvoiceToERP SET Status = 'Y'");
+                sql.AppendLine(" , Update_Who = @Update_Who, Update_Time = GETDATE()");
+                sql.AppendLine(" WHERE (Data_ID = @DataID);");
+
+                //----- SQL 執行 -----
+                cmd.CommandText = sql.ToString();
+                cmd.Parameters.AddWithValue("DataID", dataID);
+                cmd.Parameters.AddWithValue("Update_Who", fn_Params.UserGuid);
+
+                return dbConn.ExecuteSql(cmd, out ErrMsg);
+            }
+        }
+
+        #endregion
+
+
+        #region >> SZ BBC <<
 
         /// <summary>
         /// 指定品項是否發開票 - 發票維護
+        /// SZBBC
         /// </summary>
         /// <param name="FID"></param>
         /// <param name="SID"></param>
@@ -654,6 +1068,7 @@ namespace Invoice.Controllers
 
         /// <summary>
         /// 更新發票資料 - 發票維護
+        /// SZBBC
         /// </summary>
         /// <param name="baseData"></param>
         /// <param name="ErrMsg"></param>
@@ -741,8 +1156,46 @@ namespace Invoice.Controllers
         //    }
         //}
 
+        #endregion
+
 
         #endregion
+
+
+
+        #region -----// Delete //-----
+
+        #region >> 手動回填ERP <<
+
+        /// <summary>
+        /// 刪除
+        /// </summary>
+        /// <param name="dataID"></param>
+        /// <returns></returns>
+        public bool Delete_InvData(string dataID)
+        {
+            //----- 宣告 -----
+            StringBuilder sql = new StringBuilder();
+
+            //----- 資料查詢 -----
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                //----- SQL 語法 -----
+                sql.AppendLine(" DELETE FROM InvoiceToERP_DT WHERE (Parent_ID = @DataID);");
+                sql.AppendLine(" DELETE FROM InvoiceToERP WHERE (Data_ID = @DataID);");
+
+                //----- SQL 執行 -----
+                cmd.CommandText = sql.ToString();
+                cmd.Parameters.AddWithValue("DataID", dataID);
+
+                return dbConn.ExecuteSql(cmd, out ErrMsg);
+            }
+        }
+
+        #endregion
+
+        #endregion
+
 
 
         #region -- 取得原始資料 --
@@ -785,7 +1238,7 @@ namespace Invoice.Controllers
                 sql.AppendLine("  INNER JOIN [ProUnion].dbo.ACRTB WITH(NOLOCK) ON ACRTB.TB005 = COPTG.TG001 AND ACRTB.TB006 = COPTG.TG002 ");
                 sql.AppendLine("  INNER JOIN [ProUnion].dbo.ACRTA WITH(NOLOCK) ON ACRTA.TA001 = ACRTB.TB001 AND ACRTA.TA002 = ACRTB.TB002 ");
                 sql.AppendLine(" WHERE (COPTC.TC200 = 'Y') AND (COPTC.TC201 IN (N'京東POP',N'京東VC',N'京東廠送',N'唯品會',N'天貓'))");
-                
+
                 /* Search */
                 #region search1
                 if (search != null)
