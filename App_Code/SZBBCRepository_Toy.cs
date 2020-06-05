@@ -985,7 +985,7 @@ namespace SZBBC_Toy.Controllers
 
                             /*
                              * [判斷商城]
-                             * 1:京東POP / 2:天貓 / 3:京東VC
+                             * 1:京東POP / 2:天貓 / 3:京東VC / 7:京東廠送
                              */
                             switch (mallID)
                             {
@@ -1045,6 +1045,22 @@ namespace SZBBC_Toy.Controllers
                                     myProdID = val[0];
                                     myBuyCnt = string.IsNullOrEmpty(val[1]) ? 0 : Convert.ToInt16(val[1]);
                                     myRemarkTitle = traceID; //訂單號
+
+                                    break;
+
+
+                                case "7":
+                                    //京東廠送
+                                    myProdID = val[1];
+                                    myBuyCnt = string.IsNullOrEmpty(val[3]) ? 0 : Convert.ToInt16(val[3]);
+                                    myBuyPrice = string.IsNullOrEmpty(val[16]) ? 0 : Convert.ToDouble(val[16]);
+                                    myShipmentNo = val[28];
+                                    myShipWho = val[5];
+                                    myShipAddr = val[7];
+                                    myShipTel = val[6];
+                                    myNickName = val[5];
+
+                                    myRemarkTitle = myOrderID + "-" + myShipWho + "-" + myShipmentNo;
 
                                     break;
 
@@ -1114,7 +1130,7 @@ namespace SZBBC_Toy.Controllers
                     //加入項目
                     var data = new RefColumn
                     {
-                        OrderID = myOrderID,
+                        OrderID = myOrderID.Trim(),
                         ProdID = myProdID,
                         ProdSpec = myProdSpec,
                         ProdName = myProdName,
@@ -2092,6 +2108,7 @@ namespace SZBBC_Toy.Controllers
 
 
         #region >> 電商庫存 <<
+
         /// <summary>
         /// [電商庫存] 庫存列表
         /// </summary>
@@ -2906,11 +2923,6 @@ namespace SZBBC_Toy.Controllers
                                 sql.AppendLine(", DT.StockStatus AS XA002");
                                 break;
 
-                            case 7:
-                                //eService:促銷轉訂單
-                                sql.AppendLine(", '2' AS XA002");
-                                break;
-
                             default:
                                 //直接為銷貨單
                                 sql.AppendLine(", '1' AS XA002");
@@ -2929,7 +2941,7 @@ namespace SZBBC_Toy.Controllers
 
                 /*
                  * --- 欄位XA003:單別 ---
-                 * 設定單別:依PKSYS設定, Mall=7(寫死)
+                 * 設定單別:依PKSYS設定
                  */
                 switch (dataType)
                 {
@@ -2937,10 +2949,6 @@ namespace SZBBC_Toy.Controllers
                     case "3":
                         switch (baseData.MallID)
                         {
-                            case 7:
-                                sql.AppendLine(", '2245' AS XA003"); //促銷單別
-
-                                break;
 
                             default://** 訂單匯入 **
                                 sql.AppendLine(", '2280' AS XA003");
@@ -2983,7 +2991,7 @@ namespace SZBBC_Toy.Controllers
                     //訂單/銷貨單
                     /*
                     * [判斷商城]
-                    * 1:京東POP / 2:天貓 / 3:京東VC / 4:eService / 5:京東POP(京倉出貨) / 6:京东专卖店 / 999:通用版
+                    * 1:京東POP / 2:天貓 / 3:京東VC / 4:eService / 5:京東POP(京倉出貨) / 6:京东专卖店 / 7:京東廠送 / 999:通用版
                     */
                     switch (baseData.MallID)
                     {

@@ -14,12 +14,35 @@ public class GetData_Customer_v1 : IHttpHandler
     /// 取得客戶資料(Ajax)
     /// 使用Semantic UI的Search UI
     /// </summary>
+    /// <remarks>
+    /// [corp]
+    /// 1=TW, 2=SZ, 3=SH
+    /// </remarks>
     public void ProcessRequest(HttpContext context)
     {
         //[接收參數] 查詢字串
         string searchVal = context.Request["q"];
         string corp = context.Request["corp"];
+        string dbs = context.Request["dbs"];
 
+        //dbs轉corp
+        if (!string.IsNullOrWhiteSpace(dbs))
+        {
+            switch (dbs.ToUpper())
+            {
+                case "TW":
+                    corp = "1";
+                    break;
+
+                case "SZ":
+                    corp = "2";
+                    break;
+                    
+                case "SH":
+                    corp = "3";
+                    break;
+            }
+        }
 
         //----- 宣告:資料參數 -----
         CustomersRepository _data = new CustomersRepository();

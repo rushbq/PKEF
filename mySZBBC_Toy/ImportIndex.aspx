@@ -1,4 +1,4 @@
-﻿<%@ Page Title="深圳-工具BBC | 匯入Excel" Language="C#" MasterPageFile="~/SiteMaster.master" AutoEventWireup="true" CodeFile="ImportIndex.aspx.cs" Inherits="mySZBBC_ImportIndex" %>
+﻿<%@ Page Title="玩具BBC | 匯入Excel" Language="C#" MasterPageFile="~/SiteMaster.master" AutoEventWireup="true" CodeFile="ImportIndex.aspx.cs" Inherits="mySZBBC_ImportIndex" %>
 
 <asp:Content ID="myCss" ContentPlaceHolderID="CssContent" runat="Server">
 </asp:Content>
@@ -37,6 +37,7 @@
                                 <a href="<%=Application["RefUrl"] %>PKEF/SZBBC_Toy_Sample/JD-POP.xlsx" class="collection-item" target="_blank">京東POP、京东专卖店C、京东专卖店D<i class="material-icons right">cloud_download</i></a>
                                 <a href="<%=Application["RefUrl"] %>PKEF/SZBBC_Toy_Sample/TMall.xlsx" class="collection-item" target="_blank">天貓<i class="material-icons right">cloud_download</i></a>
                                 <a href="<%=Application["RefUrl"] %>PKEF/SZBBC_Toy_Sample/JD-VC.xlsx" class="collection-item" target="_blank">京東VC<i class="material-icons right">cloud_download</i></a>
+                                <a href="<%=Application["RefUrl"] %>PKEF/SZBBC_Toy_Sample/JD-Factory.xlsx" class="collection-item" target="_blank">京東廠送<i class="material-icons right">cloud_download</i></a>
                             </div>
                         </div>
                     </div>

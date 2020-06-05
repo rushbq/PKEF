@@ -12,7 +12,7 @@ using PKLib_Method.Methods;
 
 
 /*
- * 
+ * 核價單複製
  */
 namespace ERP_CopyData.Controllers
 {

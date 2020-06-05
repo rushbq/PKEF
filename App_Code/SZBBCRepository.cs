@@ -1023,7 +1023,7 @@ namespace SZ_BBC.Controllers
 
                             /*
                              * [判斷商城]
-                             * 1:京東POP / 2:天貓 / 3:京東VC / 4:eService / 5:唯品會 / 6:VC工業品 / 999:通用版
+                             * 1:京東POP / 2:天貓 / 3:京東VC / 4:eService / 5:唯品會 / 6:京東廠送 / 7:eService促銷 / 999:通用版
                              */
                             switch (mallID)
                             {
@@ -1173,7 +1173,7 @@ namespace SZ_BBC.Controllers
 
 
                                 case "6":
-                                    //京東工業品
+                                    //京東廠送
                                     myProdID = val[1];
                                     myBuyCnt = string.IsNullOrEmpty(val[3]) ? 0 : Convert.ToInt16(val[3]);
                                     myBuyPrice = string.IsNullOrEmpty(val[14]) ? 0 : Convert.ToDouble(val[14]);
