@@ -71,6 +71,17 @@
                                 </div>
                             </div>
                         </a>
+                        <a class="orange card" href="<%=fn_Params.WebUrl %>mySHBBC/ImportList.aspx">
+                            <div class="content">
+                                <div class="header">上海工具BBC</div>
+                                <div class="meta">
+                                    <span class="category">資料庫:上海</span>
+                                </div>
+                                <div class="description">
+                                    <p>上海電商訂單</p>
+                                </div>
+                            </div>
+                        </a>
                     </div>
 
 

@@ -19,7 +19,7 @@
                 </div>
             </div>
             <div class="right menu">
-                <a href="<%=fn_Params.WebUrl%>mySHBBC_Extend/RefCopmg_Import.aspx" class="item" target="_blank"><i class="copy icon"></i><span class="mobile hidden">匯入對應表</span></a>
+                <a href="<%=fn_Params.WebUrl%>mySZBBC_Extend/RefCopmg_Import.aspx" class="item" target="_blank"><i class="copy icon"></i><span class="mobile hidden">匯入對應表</span></a>
                 <a href="<%=FuncPath() %>ImportList.aspx" class="item"><i class="undo icon"></i><span class="mobile hidden">返回BBC</span></a>
             </div>
         </div>

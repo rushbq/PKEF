@@ -23,6 +23,7 @@ public class GetData_Customer : IHttpHandler
         //[接收參數] 查詢字串
         string searchVal = context.Request["keyword"];
         string doBlock = context.Request["doBlock"];
+        string corp = context.Request["corp"];
 
 
         //----- 宣告:資料參數 -----
@@ -35,6 +36,12 @@ public class GetData_Customer : IHttpHandler
         {
             search.Add((int)Common.CustSearch.Keyword, searchVal);
         }
+        //公司別
+        if (!string.IsNullOrEmpty(corp))
+        {
+            search.Add((int)Common.CustSearch.Corp, corp);
+        }
+        
         //開票專用條件限制
         if (!string.IsNullOrEmpty(doBlock))
         {

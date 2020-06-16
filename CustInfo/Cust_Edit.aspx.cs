@@ -117,7 +117,9 @@ public partial class Cust_Edit : SecurityIn
                     else
                     {
                         //[填入資料]
-                        this.lt_CustID.Text = DT.Rows[0]["CustID"].ToString();
+                        string _custID = DT.Rows[0]["CustID"].ToString();
+                        this.lt_CustID.Text = _custID;
+                        hf_CustID.Value = _custID;
                         this.lt_DBName.Text = DT.Rows[0]["Corp_Name"].ToString();
                         this.lt_SWName.Text = DT.Rows[0]["SWName"].ToString();
                         this.lt_CustSortName.Text = DT.Rows[0]["MA002"].ToString().Trim();
@@ -139,6 +141,10 @@ public partial class Cust_Edit : SecurityIn
 
                         //[報表關聯]
                         LookupData_Rpt();
+
+                        //[對帳單收件人]
+                        LookupData_ARemail();
+
 
                         //[其他資料]
                         this.lt_MA004.Text = DT.Rows[0]["MA004"].ToString().Trim();
@@ -219,14 +225,15 @@ public partial class Cust_Edit : SecurityIn
                 }
             }
         }
-        
+
     }
 
     #endregion -- 資料顯示 End --
 
+
     #region -- 資料編輯 Start --
     /// <summary>
-    /// 按鈕 - 存檔
+    /// 按鈕 - 基本資料存檔
     /// </summary>
     protected void btn_Save_Click(object sender, EventArgs e)
     {
@@ -292,7 +299,7 @@ public partial class Cust_Edit : SecurityIn
                 //Update, 主要資料庫
                 SBSql.AppendLine("  UPDATE Customer");
                 SBSql.AppendLine("  SET DBC = @MainDB");
-                SBSql.AppendLine("  WHERE (MA001 = @DataID);");                
+                SBSql.AppendLine("  WHERE (MA001 = @DataID);");
 
                 SBSql.AppendLine(" END");
 
@@ -405,7 +412,73 @@ public partial class Cust_Edit : SecurityIn
             return;
         }
     }
+
+
+    /// <summary>
+    /// 按鈕 - 加入收件人
+    /// </summary>
+    protected void btn_AddEmail_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            //[欄位檢查]
+            string _name = tb_MailName.Text.Trim();
+            string _mail = tb_Email.Text.Trim();
+            if (string.IsNullOrWhiteSpace(_name) || string.IsNullOrWhiteSpace(_mail))
+            {
+                fn_Extensions.JsAlert("名稱, Email不可為空.", PageUrl);
+                return;
+            }
+
+            if (!_mail.IsEmail())
+            {
+                fn_Extensions.JsAlert("Email格式錯誤.", PageUrl);
+                return;
+            }
+
+            //[資料儲存]
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                StringBuilder SBSql = new StringBuilder();
+
+                //[SQL] - 資料新增
+                SBSql.Append(" IF (SELECT COUNT(*) FROM Customer_Addressbook WHERE (Email = @Email) AND (ERP_ID = @ERP_ID)) = 0");
+                SBSql.Append(" BEGIN");
+                SBSql.Append(" DECLARE @NewID AS INT");
+                SBSql.Append(" SET @NewID = (SELECT ISNULL(MAX(Data_ID), 0) + 1 FROM Customer_Addressbook)");
+                SBSql.Append(" INSERT INTO Customer_Addressbook( ");
+                SBSql.Append("  Data_ID, ERP_ID, MailName, Email, Create_Who, Create_Time");
+                SBSql.Append(" ) VALUES (");
+                SBSql.Append("  @NewID, @ERP_ID, @MailName, @Email, @Create_Who, GETDATE()");
+                SBSql.Append(" )");
+                SBSql.Append(" END");
+                cmd.CommandText = SBSql.ToString();
+                cmd.Parameters.AddWithValue("ERP_ID", hf_CustID.Value);
+                cmd.Parameters.AddWithValue("MailName", _name);
+                cmd.Parameters.AddWithValue("Email", _mail);
+                cmd.Parameters.AddWithValue("Create_Who", fn_Params.UserAccount);
+                if (dbConn.ExecuteSql(cmd, dbConn.DBS.PKSYS, out ErrMsg) == false)
+                {
+                    fn_Extensions.JsAlert("加入失敗！", "");
+                    return;
+                }
+                else
+                {
+                    //執行轉頁
+                    Response.Redirect(PageUrl + "#ARemail");
+                }
+            }
+
+        }
+        catch (Exception)
+        {
+            fn_Extensions.JsAlert("系統發生錯誤 - 加入收件人", "");
+            return;
+        }
+
+    }
     #endregion -- 資料編輯 End --
+
 
     #region -- 資料顯示:關聯報表 --
     /// <summary>
@@ -485,6 +558,83 @@ public partial class Cust_Edit : SecurityIn
     }
 
     #endregion
+
+
+    #region -- 資料顯示:對帳單收件人 --
+    /// <summary>
+    /// 顯示對帳單收件人
+    /// </summary>
+    private void LookupData_ARemail()
+    {
+        try
+        {
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                //[SQL] - 清除參數設定
+                cmd.Parameters.Clear();
+
+                //[SQL] - 資料查詢
+                StringBuilder SBSql = new StringBuilder();
+
+                SBSql.Append(" SELECT Data_ID, MailName, Email");
+                SBSql.Append(" FROM Customer_Addressbook");
+                SBSql.Append(" WHERE (ERP_ID = @DataID)");
+                cmd.CommandText = SBSql.ToString();
+                cmd.Parameters.AddWithValue("DataID", hf_CustID.Value);
+                using (DataTable DT = dbConn.LookupDT(cmd, dbConn.DBS.PKSYS, out ErrMsg))
+                {
+                    //DataBind            
+                    this.lv_ARmail.DataSource = DT.DefaultView;
+                    this.lv_ARmail.DataBind();
+                }
+            }
+        }
+        catch (Exception)
+        {
+            fn_Extensions.JsAlert("系統發生錯誤 - 關聯報表！", "");
+        }
+    }
+
+    protected void lv_ARmail_ItemCommand(object sender, ListViewCommandEventArgs e)
+    {
+        try
+        {
+            if (e.Item.ItemType == ListViewItemType.DataItem)
+            {
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    StringBuilder SBSql = new StringBuilder();
+
+                    //取得Key值
+                    string Get_ID = ((HiddenField)e.Item.FindControl("hf_DataID")).Value;
+
+                    //[SQL] - 刪除資料
+                    SBSql.AppendLine(" DELETE FROM Customer_Addressbook WHERE (Data_ID = @Data_ID)");
+                    cmd.CommandText = SBSql.ToString();
+                    cmd.Parameters.AddWithValue("Data_ID", Get_ID);
+                    if (dbConn.ExecuteSql(cmd, dbConn.DBS.PKSYS, out ErrMsg) == false)
+                    {
+                        fn_Extensions.JsAlert("收件人刪除失敗！", "");
+                    }
+                    else
+                    {
+                        //導向本頁
+                        Response.Redirect(PageUrl + "#ARemail");
+                    }
+
+                }
+            }
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+
+    }
+
+    #endregion
+
 
     #region -- 參數設定 --
     /// <summary>

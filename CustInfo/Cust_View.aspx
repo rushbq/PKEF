@@ -125,14 +125,14 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="TableModifyTdHead" style="width: 150px">負責人
+                        <td class="TableModifyTdHead" style="width: 15%">負責人
                         </td>
-                        <td class="TableModifyTd" style="width: 400px">
+                        <td class="TableModifyTd" style="width: 35%">
                             <asp:Literal ID="lt_MA004" runat="server"></asp:Literal>
                         </td>
-                        <td class="TableModifyTdHead" style="width: 150px">連絡人
+                        <td class="TableModifyTdHead" style="width: 15%">連絡人
                         </td>
-                        <td class="TableModifyTd">
+                        <td class="TableModifyTd" style="width: 35%">
                             <asp:Literal ID="lt_MA005" runat="server"></asp:Literal>
                         </td>
                     </tr>

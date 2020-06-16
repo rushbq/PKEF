@@ -26,8 +26,10 @@
             <div class="col s12 m12 l12">
                 <div class="card-panel">
                     <div>
-                        <a href="<%=Application["WebUrl"] %>mySZBBC/ImportStep1.aspx?ts=<%=TraceID %>&type=1" class="btn-large waves-effect waves-light green">未出貨訂單<i class="material-icons right">chevron_right</i></a>
-                        <a href="<%=Application["WebUrl"] %>mySZBBC/ImportStep1.aspx?ts=<%=TraceID %>&type=3" class="btn-large waves-effect waves-light green darken-3">已出貨訂單<i class="material-icons right">chevron_right</i></a>
+                        <asp:LinkButton ID="lbtn_link1" runat="server" CssClass="btn-large waves-effect waves-light green" OnClick="lbtn_link1_Click">未出貨訂單<i class="material-icons right">chevron_right</i></asp:LinkButton>
+
+                        <%--<a href="<%=Application["WebUrl"] %>mySZBBC/ImportStep1.aspx?ts=<%=TraceID %>&type=1" class="btn-large waves-effect waves-light green">未出貨訂單<i class="material-icons right">chevron_right</i></a>
+                        <a href="<%=Application["WebUrl"] %>mySZBBC/ImportStep1.aspx?ts=<%=TraceID %>&type=3" class="btn-large waves-effect waves-light green darken-3">已出貨訂單<i class="material-icons right">chevron_right</i></a>--%>
                         <a href="<%=Application["WebUrl"] %>mySZBBC/Import_VC.aspx" class="btn-large waves-effect waves-light blue darken-2">京東VC匯入<i class="material-icons right">chevron_right</i></a>
                     </div>
                     <div class="section row">
@@ -49,7 +51,7 @@
             <div class="col s12 m12 l12">
                 <div class="card-panel">
                     <div>
-                        <a href="<%=Application["WebUrl"] %>mySZBBC/ImportStep1.aspx?ts=<%=TraceID %>&type=2" class="btn-large waves-effect waves-light deep-orange darken-1">退貨單匯入<i class="material-icons right">chevron_right</i></a>
+                        <asp:LinkButton ID="lbtn_link2" runat="server" CssClass="btn-large waves-effect waves-light deep-orange darken-1" OnClick="lbtn_link2_Click">退貨單匯入<i class="material-icons right">chevron_right</i></asp:LinkButton>
                     </div>
                     <div class="section row">
                         <div class="col s12">

@@ -118,6 +118,12 @@
                                                 <span class="secondary-content"><a href="<%#UploadFolder %><%#Eval("TraceID") %>/<%#Eval("Upload_File") %>" target="_blank">查看原始檔案</a></span>
                                             </div>
                                         </li>
+                                        <li class="collection-item">
+                                            <div>
+                                                <span class="title grey-text text-darken-1">Excel工作表</span>
+                                                <span class="secondary-content grey-text text-darken-3"><%#Eval("Sheet_Name") %></span>
+                                            </div>
+                                        </li>
                                     </ul>
                                 </div>
                             </ItemTemplate>

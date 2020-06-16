@@ -140,7 +140,7 @@
                 $("#MainContent_val_Cust").val(result.ID);
             }
             , apiSettings: {
-                url: '<%=fn_Params.WebUrl%>Ajax_Data/GetData_Customer_v1.ashx?q={query}'
+                url: '<%=fn_Params.WebUrl%>Ajax_Data/GetData_Customer_v1.ashx?corp=1&q={query}'
             }
 
         });

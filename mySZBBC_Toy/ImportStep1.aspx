@@ -45,7 +45,7 @@
                 </div>
                 <div class="section row">
                     <div class="col s12">
-                        <label>選擇客戶&nbsp;<asp:RequiredFieldValidator ID="rfv_Cust_ID_Val" runat="server" ErrorMessage="此為必填欄位" ControlToValidate="Cust_ID_Val" CssClass="red-text" Display="Dynamic"></asp:RequiredFieldValidator></label>
+                        <label>選擇客戶 (上海)&nbsp;<asp:RequiredFieldValidator ID="rfv_Cust_ID_Val" runat="server" ErrorMessage="此為必填欄位" ControlToValidate="Cust_ID_Val" CssClass="red-text" Display="Dynamic"></asp:RequiredFieldValidator></label>
                         <asp:TextBox ID="Cust_Name" runat="server" CssClass="AC-Customer" data-target="MainContent_Cust_ID_Val" placeholder="輸入客戶關鍵字"></asp:TextBox>
                         <asp:TextBox ID="Cust_ID_Val" runat="server" Style="display: none"></asp:TextBox>
                         <asp:TextBox ID="Sales_ID_Val" runat="server" Style="display: none"></asp:TextBox>
@@ -99,7 +99,7 @@
             minLength: 1,  //至少要輸入 n 個字元
             source: function (request, response) {
                 $.ajax({
-                    url: "<%=Application["WebUrl"]%>Ajax_Data/GetData_Customer.ashx",
+                    url: "<%=Application["WebUrl"]%>Ajax_Data/GetData_Customer.ashx?corp=3",
                     data: {
                         keyword: request.term
                     },

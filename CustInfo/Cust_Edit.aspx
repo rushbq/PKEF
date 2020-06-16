@@ -197,6 +197,7 @@
                                 </td>
                                 <td class="TableModifyTd styleBlue B" style="width: 40%">
                                     <asp:Literal ID="lt_CustID" runat="server"></asp:Literal>
+                                    <asp:HiddenField ID="hf_CustID" runat="server" />
                                 </td>
                                 <td class="TableModifyTdHead" style="width: 10%">主要資料庫
                                 </td>
@@ -294,10 +295,8 @@
                                         <asp:ListItem Value="2">普票</asp:ListItem>
                                     </asp:DropDownList>
                                 </td>
-                                <td class="TableModifyTdHead">
-                                </td>
-                                <td class="TableModifyTd">
-                                </td>
+                                <td class="TableModifyTdHead"></td>
+                                <td class="TableModifyTd"></td>
                             </tr>
                             <tr>
                                 <td class="TableModifyTdHead">維護資訊
@@ -385,8 +384,76 @@
                                                 </tr>
                                             </ItemTemplate>
                                             <EmptyDataTemplate>
-                                                <div class="text-center text-danger" style="padding: 10px 0px 10px 0px;">
+                                                <div class="text-center text-danger" style="padding: 5px 0px 5px 0px;">
                                                     <h3><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>&nbsp;尚未設定報表關聯</h3>
+                                                </div>
+                                            </EmptyDataTemplate>
+                                        </asp:ListView>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 對帳單收件人 -->
+                <div id="ARemail" class="table-responsive">
+                    <table class="TableModify table table-bordered">
+                        <tr class="ModifyHead">
+                            <td><i class="fa fa-bar-chart" aria-hidden="true"></i>&nbsp;對帳單收件人<em class="TableModifyTitleIcon"></em></td>
+                        </tr>
+                        <tbody>
+                            <tr>
+                                <td class="TableModifyTd bg-warning">
+                                    <div class="form-inline">
+                                        <div class="form-group">
+                                            <label>名稱</label>
+                                            <asp:TextBox ID="tb_MailName" runat="server" CssClass="form-control" placeholder="名稱" MaxLength="20"></asp:TextBox>
+                                        </div>
+                                        <div class="form-group">
+                                            <label>Email</label>
+                                            <asp:TextBox ID="tb_Email" runat="server" CssClass="form-control" placeholder="填寫Email" MaxLength="200"></asp:TextBox>
+                                        </div>
+                                        <asp:Button ID="btn_AddEmail" runat="server" Text="新增" CssClass="btn btn-success" OnClick="btn_AddEmail_Click" />
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="TableModifyTd">
+                                    <div class="panel-body collapse in table-responsive">
+                                        <asp:ListView ID="lv_ARmail" runat="server" ItemPlaceholderID="ph_Items" OnItemCommand="lv_ARmail_ItemCommand">
+                                            <LayoutTemplate>
+                                                <table class="table table-bordered table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>名稱</th>
+                                                            <th>Email</th>
+                                                            <th style="width: 10%">&nbsp;</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <asp:PlaceHolder ID="ph_Items" runat="server" />
+                                                    </tbody>
+                                                </table>
+                                            </LayoutTemplate>
+                                            <ItemTemplate>
+                                                <tr>
+                                                    <td>
+                                                        <%#Eval("MailName") %>
+                                                    </td>
+                                                    <td>
+                                                        <%#Eval("Email") %>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <asp:LinkButton ID="lbtn_Delete" runat="server" CssClass="btn btn-danger" OnClientClick="return confirm('是否確定刪除?')" ToolTip="刪除"><i class="fa fa-trash-o fa-lg"></i></asp:LinkButton>
+
+                                                        <asp:HiddenField ID="hf_DataID" runat="server" Value='<%#Eval("Data_ID") %>' />
+                                                    </td>
+                                                </tr>
+                                            </ItemTemplate>
+                                            <EmptyDataTemplate>
+                                                <div class="text-center text-danger" style="padding: 5px 0px 5px 0px;">
+                                                    <h3><i class="fa fa-exclamation-triangle" aria-hidden="true"></i>&nbsp;尚未設定對帳單收件人</h3>
                                                 </div>
                                             </EmptyDataTemplate>
                                         </asp:ListView>
@@ -402,28 +469,32 @@
                     <table class="TableModify table table-bordered">
                         <tbody>
                             <tr class="ModifyHead">
-                                <td colspan="4"><i class="fa fa-file-text" aria-hidden="true"></i>&nbsp;其他資料<em class="TableModifyTitleIcon"></em>
+                                <td colspan="4"><i class="fa fa-file-text" aria-hidden="true"></i>&nbsp;其他資料(ERP)<em class="TableModifyTitleIcon"></em>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="TableModifyTdHead" style="width: 10%">負責人
+                                <td class="TableModifyTdHead" style="width: 15%">負責人
                                 </td>
-                                <td class="TableModifyTd" style="width: 40%">
+                                <td class="TableModifyTd" style="width: 35%">
                                     <asp:Literal ID="lt_MA004" runat="server"></asp:Literal>
                                 </td>
-                                <td class="TableModifyTdHead" style="width: 10%">連絡人
+                                <td class="TableModifyTdHead" style="width: 15%">連絡人
                                 </td>
-                                <td class="TableModifyTd" style="width: 40%">
+                                <td class="TableModifyTd" style="width: 35%">
                                     <asp:Literal ID="lt_MA005" runat="server"></asp:Literal>
                                 </td>
                             </tr>
                             <tr>
-                                <td class="TableModifyTdHead styleRed">戶名(開票用)<br />(限100字,含空白)<br />客戶英文全名
+                                <td class="TableModifyTdHead styleRed">戶名(開票用)<br />
+                                    (限100字,含空白)<br />
+                                    客戶英文全名
                                 </td>
                                 <td class="TableModifyTd">
                                     <asp:Literal ID="lt_MA110" runat="server"></asp:Literal>
                                 </td>
-                                <td class="TableModifyTdHead styleRed">稅號(開票用)<br />(限20字,含空白)<br />銀行帳號(一)
+                                <td class="TableModifyTdHead styleRed">稅號(開票用)<br />
+                                    (限20字,含空白)<br />
+                                    銀行帳號(一)
                                 </td>
                                 <td class="TableModifyTd">
                                     <asp:Literal ID="lt_MA071" runat="server"></asp:Literal>
@@ -637,6 +708,7 @@
                         <li class="active"><a href="#baseData"><i class="fa fa-file fa-fw" aria-hidden="true"></i>&nbsp;基本資料</a></li>
                         <li><a href="#dbData"><i class="fa fa-database fa-fw" aria-hidden="true"></i>&nbsp;資料庫設定</a></li>
                         <li><a href="#rptData"><i class="fa fa-bar-chart fa-fw" aria-hidden="true"></i>&nbsp;報表設定</a></li>
+                        <li><a href="#ARemail"><i class="fa fa-bar-chart fa-fw" aria-hidden="true"></i>&nbsp;對帳單收件人</a></li>
                         <li><a href="#otherData"><i class="fa fa-file-text fa-fw" aria-hidden="true"></i>&nbsp;其他資料</a></li>
                         <li><a href="<%=Page_SearchUrl %>"><i class="fa fa-undo fa-fw" aria-hidden="true"></i>&nbsp;返回列表</a></li>
                     </ul>

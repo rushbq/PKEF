@@ -99,7 +99,7 @@
             minLength: 1,  //至少要輸入 n 個字元
             source: function (request, response) {
                 $.ajax({
-                    url: "<%=fn_Params.WebUrl%>Ajax_Data/GetData_Customer.ashx",
+                    url: "<%=fn_Params.WebUrl%>Ajax_Data/GetData_Customer.ashx?corp=3",
                     data: {
                         keyword: request.term
                     },

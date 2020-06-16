@@ -31,26 +31,41 @@ public partial class mySZBBC_ImportIndex : SecurityIn
         }
     }
 
-    /// <summary>
-    /// 設定參數 - 產生TraceID
-    /// </summary>
-    public string TraceID
+    private string NewTraceID()
     {
-        get
-        {
-            //產生TraceID
-            long ts = Cryptograph.GetCurrentTime();
+        //產生TraceID
+        long ts = Cryptograph.GetCurrentTime();
 
-            Random rnd = new Random();
-            int myRnd = rnd.Next(1, 99);
+        Random rnd = new Random();
+        int myRnd = rnd.Next(1, 99);
 
-            return Cryptograph.MD5Encrypt("{0}{1}".FormatThis(ts, myRnd), System.Web.Configuration.WebConfigurationManager.AppSettings["DesKey"]);
-        }
-        set
-        {
-            this._TraceID = value;
-        }
+        return "{0}{1}".FormatThis(ts, myRnd);
     }
-    private string _TraceID;
 
+    /// <summary>
+    /// 訂單
+    /// </summary>
+    protected void lbtn_link1_Click(object sender, EventArgs e)
+    {
+        string url = "{0}mySZBBC/ImportStep1.aspx?ts={1}&type=1".FormatThis(
+             fn_Params.WebUrl
+             , Cryptograph.MD5Encrypt(NewTraceID(), System.Web.Configuration.WebConfigurationManager.AppSettings["DesKey"])
+            );
+
+        Response.Redirect(url);
+    }
+
+
+    /// <summary>
+    /// 退貨單
+    /// </summary>
+    protected void lbtn_link2_Click(object sender, EventArgs e)
+    {
+        string url = "{0}mySZBBC/ImportStep1.aspx?ts={1}&type=2".FormatThis(
+             fn_Params.WebUrl
+             , Cryptograph.MD5Encrypt(NewTraceID(), System.Web.Configuration.WebConfigurationManager.AppSettings["DesKey"])
+            );
+
+        Response.Redirect(url);
+    }
 }

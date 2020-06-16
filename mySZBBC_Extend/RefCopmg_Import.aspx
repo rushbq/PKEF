@@ -64,7 +64,7 @@
                     </div>
                 </div>
                 <div class="ui orange segment">
-                    <h5 class="ui header">科學玩具 <small>(資料庫:SH)</small></h5>
+                    <h5 class="ui header">科學玩具/上海工具 <small>(資料庫:SH)</small></h5>
                 </div>
                 <div class="ui small form segment">
                     <div class="fields">
