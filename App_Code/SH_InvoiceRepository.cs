@@ -995,10 +995,10 @@ namespace SH_Invoice.Controllers
                     sql.Append(" , '0' AS KPLX");
                     //發票類型，004-专票；007-普票；026-电子发票
                     sql.Append(" , (CASE ISNULL(Cust.InvType, '0') WHEN '0' THEN '004' ELSE '007' END) AS FPLXDM");
-                    sql.Append(" , RTRIM(COPMA.MA003) AS GHFMC"); //客戶全名 = 购货方名称
-                    sql.Append(" , RTRIM(COPMA.MA071) AS NSRSBH"); //銀行帳號(一) = 购货方税号
-                    sql.Append(" , RTRIM(COPMA.MA025) AS GHFDZDH"); //發票地址(一) = 购货方地址电话
-                    sql.Append(" , RTRIM(COPMA.MA110) AS GHFYHZH"); //客戶英文全名 = 购货方银行账号
+                    sql.Append(" , Rel.vendeename AS GHFMC"); //客戶全名 = 购货方名称
+                    sql.Append(" , Rel.vendeetax AS NSRSBH"); //銀行帳號(一) = 购货方税号
+                    sql.Append(" , Rel.vendeeadress AS GHFDZDH"); //發票地址(一) = 购货方地址电话
+                    sql.Append(" , Rel.vendeebnkno AS GHFYHZH"); //客戶英文全名 = 购货方银行账号
                     sql.Append(" , @TotalAmt AS JSHJ"); //开票总金额 (销货单建立作业-本币合计)
                     sql.Append(" , GETDATE() AS DJRQ, GETDATE() AS SCRQ");
                     sql.Append(" , '0' AS KPZT "); //0-未开票；1-已开票

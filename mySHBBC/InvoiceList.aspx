@@ -1,4 +1,4 @@
-﻿<%@ Page Title="深圳寶工BBC | 發票資料" Language="C#" MasterPageFile="~/SiteMaster.master" AutoEventWireup="true" CodeFile="InvoiceList.aspx.cs" Inherits="InvoiceList" %>
+﻿<%@ Page Title="上海寶工BBC | 發票資料" Language="C#" MasterPageFile="~/SiteMaster.master" AutoEventWireup="true" CodeFile="InvoiceList.aspx.cs" Inherits="InvoiceList" %>
 
 <%@ Import Namespace="PKLib_Method.Methods" %>
 
@@ -11,7 +11,7 @@
             <div class="row">
                 <div class="col s12 m12 l12">
                     <ol class="breadcrumb">
-                        <li><a>深圳BBC</a></li>
+                        <li><a>上海BBC</a></li>
                         <li class="active">發票資料</li>
                     </ol>
                 </div>
@@ -184,7 +184,7 @@
                                         <div class="row">
                                             <div class="col s6">
                                                 <!-- Button 選擇歷史資料 -->
-                                                <%--<a class="btn waves-effect waves-light waves-green white black-text modal-trigger" data-source="<%=Application["WebUrl"] %>mySZBBC/GetHtml_InvSelector.ashx?id=<%#Eval("SerialNo") %>&keyword=<%#Server.UrlEncode(Eval("NickName").ToString()) %>" href="#remoteModal"><i class="material-icons left">search</i>選擇歷史資料</a>--%>
+                                                <%--<a class="btn waves-effect waves-light waves-green white black-text modal-trigger" data-source="<%=Application["WebUrl"] %>mySHBBC/GetHtml_InvSelector.ashx?id=<%#Eval("SerialNo") %>&keyword=<%#Server.UrlEncode(Eval("NickName").ToString()) %>" href="#remoteModal"><i class="material-icons left">search</i>選擇歷史資料</a>--%>
                                             </div>
                                             <div class="col s6 right-align">
                                                 <!-- Button Save -->
@@ -363,7 +363,7 @@
                 var iconFail = $(".invFail-" + id); //失敗圖示
 
                 var request = $.ajax({
-                    url: '<%=Application["WebUrl"]%>' + "mySZBBC/Ashx_InvoiceData.ashx",
+                    url: '<%=Application["WebUrl"]%>' + "mySHBBC/Ashx_InvoiceData.ashx",
                     method: "POST",
                     data: {
                         OrderID: _OrderID,
@@ -526,7 +526,7 @@
                 var _SO_SID = $("#SID" + id).val();
 
                 //填入Ajax Html
-                var url = "<%=Application["WebUrl"]%>mySZBBC/GetHtml_SOdetail.ashx?fid=" + _SO_FID + "&sid=" + _SO_SID;
+                var url = "<%=Application["WebUrl"]%>mySHBBC/GetHtml_SOdetail.ashx?fid=" + _SO_FID + "&sid=" + _SO_SID;
                 container.load(url);
             }
 
@@ -557,7 +557,7 @@
                     //comfirm
                     if (confirm(cfmWord)) {
                         var request = $.ajax({
-                            url: '<%=Application["WebUrl"]%>' + "mySZBBC/Ashx_InvoiceUpdate.ashx",
+                            url: '<%=Application["WebUrl"]%>' + "mySHBBC/Ashx_InvoiceUpdate.ashx",
                             method: "POST",
                             data: {
                                 FID: _FID,

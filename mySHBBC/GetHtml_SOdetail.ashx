@@ -9,7 +9,7 @@ using PKLib_Method.Methods;
 public class GetHtml_SOdetail : IHttpHandler
 {
     /// <summary>
-    /// 取得銷貨明細
+    /// 發票維護資料-取得銷貨明細
     /// </summary>
     public void ProcessRequest(HttpContext context)
     {
@@ -29,7 +29,7 @@ public class GetHtml_SOdetail : IHttpHandler
         InvoiceRepository _data = new InvoiceRepository();
 
         //----- 原始資料:取得所有資料 -----
-        var query = _data.GetDetailList(fid, sid);
+        var query = _data.GetDetailList_SH(fid, sid);
 
         //----- 資料整理:顯示Html -----
         StringBuilder html = new StringBuilder();

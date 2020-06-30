@@ -5054,11 +5054,12 @@ namespace SZ_BBC.Controllers
                 sql.AppendLine(" UPDATE BBC_ImportData_DT");
                 sql.AppendLine(" SET Cnt_Price = (");
                 sql.AppendLine("     SELECT (");
+                sql.AppendLine("      CONVERT(FLOAT,");
                 sql.AppendLine("         (");
                 sql.AppendLine("          (SELECT TOP 1 TotalPrice FROM BBC_ImportData_DT Ref WHERE (Ref.Parent_ID = @DataID) AND (Ref.OrderID = Data.OrderID))");
-                //sql.AppendLine("          + SUM(Data.Freight)");
                 sql.AppendLine("         ) ");
                 sql.AppendLine("          - SUM(Data.ERP_Price * Data.BuyCnt)");
+                sql.AppendLine("      )");
                 sql.AppendLine("     ) AS Cnt_Price");
                 sql.AppendLine("     FROM BBC_ImportData_DT Data");
                 sql.AppendLine("     WHERE (Data.Parent_ID = @DataID) AND (Data.OrderID = BBC_ImportData_DT.OrderID) AND (Data.IsGift = 'N')");

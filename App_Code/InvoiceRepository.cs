@@ -10,9 +10,9 @@ using Invoice.Models;
 using PKLib_Method.Methods;
 
 /*
- * 使用功能
- * SZ BBC發票相關
- * 手動開票-批次回寫ERP發票號碼
+ * [使用功能]
+ * 1. SZ BBC發票相關
+ * 2. 手動開票-批次回寫ERP發票號碼(SH/SZ)
  */
 namespace Invoice.Controllers
 {
@@ -765,6 +765,145 @@ namespace Invoice.Controllers
         #endregion
 
 
+        #region >> SH BBC <<
+
+        /// <summary>
+        /// 取得所有資料(傳入預設參數)
+        /// </summary>
+        /// <returns></returns>
+        /// <remarks>
+        /// 預設值為(null)
+        /// </remarks>
+        public IQueryable<InvoiceData> GetDataList_SH(out string ErrMsg)
+        {
+            return GetDataList_SH(null, out ErrMsg);
+        }
+
+
+        /// <summary>
+        /// 取得所有資料 - 發票維護查詢
+        /// </summary>
+        /// <param name="search">查詢參數</param>
+        /// <returns></returns>
+        public IQueryable<InvoiceData> GetDataList_SH(Dictionary<int, string> search, out string ErrMsg)
+        {
+            //----- 宣告 -----
+            List<InvoiceData> dataList = new List<InvoiceData>();
+
+            //----- 資料取得 -----
+            using (DataTable DT = LookupRawData_SH(search, out ErrMsg))
+            {
+                //LinQ 查詢
+                var query = DT.AsEnumerable();
+
+                //資料迴圈
+                foreach (var item in query)
+                {
+                    //加入項目
+                    var data = new InvoiceData
+                    {
+                        SerialNo = item.Field<Int64>("SerialNo"),
+                        OrderID = item.Field<string>("OrderID"),
+                        TraceID = item.Field<string>("TraceID"),
+                        NickName = item.Field<string>("NickName"),
+                        SO_FID = item.Field<string>("SO_FID"),
+                        SO_SID = item.Field<string>("SO_SID"),
+                        SO_Date = item.Field<string>("SO_Date"),
+                        CustID = item.Field<string>("CustID"),
+                        CustName = item.Field<string>("CustName"),
+                        TotalPrice = item.Field<double>("TotalPrice"),
+                        BI_FID = item.Field<string>("BI_FID"),
+                        BI_SID = item.Field<string>("BI_SID"),
+                        InvoiceNo = item.Field<string>("InvoiceNo"),
+                        InvoiceDate = item.Field<string>("InvoiceDate"),
+                        InvTitle = item.Field<string>("InvTitle"),
+                        InvType = item.Field<string>("InvType"),
+                        InvNumber = item.Field<string>("InvNumber"),
+                        InvAddrInfo = item.Field<string>("InvAddrInfo"),
+                        InvBankInfo = item.Field<string>("InvBankInfo"),
+                        InvMessage = item.Field<string>("InvMessage"),
+                        InvRemark = item.Field<string>("InvRemark"),
+                        InvStatus = item.Field<string>("InvStatus")
+                    };
+
+                    //將項目加入至集合
+                    dataList.Add(data);
+
+                }
+            }
+
+            //回傳集合
+            return dataList.AsQueryable();
+        }
+
+
+        /// <summary>
+        /// 取得銷貨明細資料 - 單身
+        /// 功能位置:發票維護列表, 明細按鈕
+        /// </summary>
+        /// <param name="FID">銷貨單別</param>
+        /// <param name="SID">銷貨單號</param>
+        /// <returns></returns>
+        public IQueryable<RefColumn> GetDetailList_SH(string FID, string SID)
+        {
+            //----- 宣告 -----
+            List<RefColumn> dataList = new List<RefColumn>();
+            StringBuilder sql = new StringBuilder();
+
+            //----- 資料查詢 -----
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                //----- SQL 查詢語法 -----
+                sql.AppendLine(" SELECT RTRIM(COPTH.TH001) AS SO_FID, RTRIM(COPTH.TH002) AS SO_SID, RTRIM(COPTH.TH003) AS SO_No ");
+                sql.AppendLine("  , RTRIM(COPTH.TH004) ModelNo, RTRIM(COPTH.TH005) ModelName ");
+                sql.AppendLine("  , CONVERT(INT, COPTH.TH008) Qty, CONVERT(FLOAT, COPTH.TH035) Price, CONVERT(FLOAT, COPTH.TH036) TaxPrice ");
+                sql.AppendLine(" FROM [SHPK2].dbo.COPTH WITH(NOLOCK) ");
+                sql.AppendLine(" WHERE (COPTH.TH001 = @SO_FID) AND (COPTH.TH002 = @SO_SID) ");
+                sql.AppendLine(" ORDER BY COPTH.TH003, COPTH.TH004 ");
+
+
+                //----- SQL 執行 -----
+                cmd.CommandText = sql.ToString();
+                cmd.Parameters.AddWithValue("SO_FID", FID);
+                cmd.Parameters.AddWithValue("SO_SID", SID);
+
+
+                //----- 資料取得 -----
+                using (DataTable DT = dbConn.LookupDT(cmd, out ErrMsg))
+                {
+                    //LinQ 查詢
+                    var query = DT.AsEnumerable();
+
+                    //資料迴圈
+                    foreach (var item in query)
+                    {
+                        //加入項目
+                        var data = new RefColumn
+                        {
+                            SO_FID = item.Field<string>("SO_FID"),
+                            SO_SID = item.Field<string>("SO_SID"),
+                            SO_No = item.Field<string>("SO_No"),
+                            ModelNo = item.Field<string>("ModelNo"),
+                            ModelName = item.Field<string>("ModelName"),
+                            Qty = item.Field<int>("Qty"),
+                            Price = item.Field<double>("Price"),
+                            TaxPrice = item.Field<double>("TaxPrice")
+
+                        };
+
+                        //將項目加入至集合
+                        dataList.Add(data);
+
+                    }
+                }
+            }
+
+            //回傳集合
+            return dataList.AsQueryable();
+        }
+
+        #endregion
+
         #endregion
 
 
@@ -870,7 +1009,7 @@ namespace Invoice.Controllers
         #endregion
 
 
-        #region >> SZ BBC <<
+        #region >> SZ BBC (停用) <<
 
         ///// <summary>
         ///// 建立匯出檔 - Step1
@@ -1024,7 +1163,7 @@ namespace Invoice.Controllers
         #region >> SZ BBC <<
 
         /// <summary>
-        /// 指定品項是否發開票 - 發票維護
+        /// 指定品項是否發開票 - 發票維護 (停用)
         /// SZBBC
         /// </summary>
         /// <param name="FID"></param>
@@ -1067,7 +1206,7 @@ namespace Invoice.Controllers
 
 
         /// <summary>
-        /// 更新發票資料 - 發票維護
+        /// 更新發票資料 - 發票維護(列表編輯)
         /// SZBBC
         /// </summary>
         /// <param name="baseData"></param>
@@ -1084,15 +1223,13 @@ namespace Invoice.Controllers
                 //----- SQL 查詢語法 -----
                 sql.AppendLine(" IF (SELECT COUNT(*) FROM BBC_InvoiceItem WHERE (OrderID = @OrderID) AND (TraceID = @TraceID)) = 0 ");
                 sql.AppendLine(" BEGIN ");
-                sql.AppendLine(" DECLARE @DataID AS INT ");
-                sql.AppendLine(" SET @DataID = (SELECT ISNULL(MAX(Data_ID), 0) + 1 FROM BBC_InvoiceItem) ");
                 sql.AppendLine("    INSERT INTO BBC_InvoiceItem ( ");
-                sql.AppendLine("    Data_ID, OrderID, TraceID ");
+                sql.AppendLine("    OrderID, TraceID ");
                 sql.AppendLine("    , Inv_Type, Inv_Title, Inv_Number ");
                 sql.AppendLine("    , Inv_AddrInfo, Inv_BankInfo, Inv_Message, Inv_Remark ");
                 sql.AppendLine("    , Create_Who, Create_Time ");
                 sql.AppendLine("    ) VALUES ( ");
-                sql.AppendLine("    @DataID, @OrderID, @TraceID ");
+                sql.AppendLine("    @OrderID, @TraceID ");
                 sql.AppendLine("    , @Inv_Type, @Inv_Title, @Inv_Number ");
                 sql.AppendLine("    , @Inv_AddrInfo, @Inv_BankInfo, @Inv_Message, @Inv_Remark ");
                 sql.AppendLine("    , @Create_Who, GETDATE() ");
@@ -1155,6 +1292,72 @@ namespace Invoice.Controllers
         //        return dbConn.ExecuteSql(cmd, out ErrMsg);
         //    }
         //}
+
+        #endregion
+
+
+        #region >> SH BBC <<
+
+      
+        /// <summary>
+        /// 更新發票資料 - 發票維護(列表編輯)
+        /// SHBBC
+        /// </summary>
+        /// <param name="baseData"></param>
+        /// <param name="ErrMsg"></param>
+        /// <returns></returns>
+        public bool SetInvoice_SH(InvoiceData baseData, out string ErrMsg)
+        {
+            //----- 宣告 -----
+            StringBuilder sql = new StringBuilder();
+
+            //----- 資料查詢 -----
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                //----- SQL 查詢語法 -----
+                sql.AppendLine(" IF (SELECT COUNT(*) FROM SHBBC_InvoiceItem WHERE (OrderID = @OrderID) AND (TraceID = @TraceID)) = 0 ");
+                sql.AppendLine(" BEGIN ");
+                sql.AppendLine("    INSERT INTO SHBBC_InvoiceItem ( ");
+                sql.AppendLine("    OrderID, TraceID ");
+                sql.AppendLine("    , Inv_Type, Inv_Title, Inv_Number ");
+                sql.AppendLine("    , Inv_AddrInfo, Inv_BankInfo, Inv_Message, Inv_Remark ");
+                sql.AppendLine("    , Create_Who, Create_Time ");
+                sql.AppendLine("    ) VALUES ( ");
+                sql.AppendLine("    @OrderID, @TraceID ");
+                sql.AppendLine("    , @Inv_Type, @Inv_Title, @Inv_Number ");
+                sql.AppendLine("    , @Inv_AddrInfo, @Inv_BankInfo, @Inv_Message, @Inv_Remark ");
+                sql.AppendLine("    , @Create_Who, GETDATE() ");
+                sql.AppendLine("    ); ");
+                sql.AppendLine(" END ");
+                sql.AppendLine("  ELSE ");
+                sql.AppendLine(" BEGIN ");
+                sql.AppendLine("    UPDATE SHBBC_InvoiceItem ");
+                sql.AppendLine("    SET Inv_Type = @Inv_Type, Inv_Title = @Inv_Title, Inv_Number = @Inv_Number ");
+                sql.AppendLine("    , Inv_AddrInfo = @Inv_AddrInfo, Inv_BankInfo = @Inv_BankInfo, Inv_Message = @Inv_Message, Inv_Remark = @Inv_Remark ");
+                sql.AppendLine("    , Update_Who = @Update_Who, Update_Time = GETDATE() ");
+                sql.AppendLine("    WHERE (OrderID = @OrderID) AND (TraceID = @TraceID); ");
+                sql.AppendLine(" END ");
+
+
+                //----- SQL 執行 -----
+                cmd.CommandText = sql.ToString();
+                cmd.Parameters.AddWithValue("OrderID", baseData.OrderID);
+                cmd.Parameters.AddWithValue("TraceID", baseData.TraceID);
+                cmd.Parameters.AddWithValue("Inv_Type", baseData.InvType);
+                cmd.Parameters.AddWithValue("Inv_Title", baseData.InvTitle);
+                cmd.Parameters.AddWithValue("Inv_Number", baseData.InvNumber);
+                cmd.Parameters.AddWithValue("Inv_AddrInfo", baseData.InvAddrInfo);
+                cmd.Parameters.AddWithValue("Inv_BankInfo", baseData.InvBankInfo);
+                cmd.Parameters.AddWithValue("Inv_Message", baseData.InvMessage);
+                cmd.Parameters.AddWithValue("Inv_Remark", baseData.InvRemark);
+                cmd.Parameters.AddWithValue("Create_Who", baseData.Create_Who);
+                cmd.Parameters.AddWithValue("Update_Who", baseData.Update_Who);
+
+                return dbConn.ExecuteSql(cmd, out ErrMsg);
+            }
+
+
+        }
 
         #endregion
 
@@ -1371,12 +1574,7 @@ namespace Invoice.Controllers
         }
 
 
-        /// <summary>
-        /// 取得原始資料 - 匯出發票Step2, Step3, List Detail
-        /// </summary>
-        /// <param name="search">查詢</param>
-        /// <returns></returns>
-        private DataTable LookupRawData_withExport(Dictionary<int, string> search)
+        private DataTable LookupRawData_SH(Dictionary<int, string> search, out string ErrMsg)
         {
             //----- 宣告 -----
             StringBuilder sql = new StringBuilder();
@@ -1385,29 +1583,33 @@ namespace Invoice.Controllers
             using (SqlCommand cmd = new SqlCommand())
             {
                 //----- SQL 查詢語法 -----
-                sql.AppendLine(" SELECT ROW_NUMBER() OVER(ORDER BY COPTG.TG001, COPTG.TG002) AS SerialNo ");
-                sql.AppendLine(", COPTC.TC012 AS OrderID");
-                sql.AppendLine(", ISNULL((SELECT TOP 1 ISNULL(NickName,'') FROM BBC_ImportData_DT WHERE (OrderID COLLATE Chinese_Taiwan_Stroke_BIN = COPTC.TC012) AND (NickName IS NOT NULL AND NickName <> '')), '') AS NickName ");
-                sql.AppendLine(", RTRIM(COPTG.TG001) SO_FID, RTRIM(COPTG.TG002) SO_SID, COPTG.TG003 SO_Date ");
-                sql.AppendLine(", RTRIM(COPMA.MA001) CustID, RTRIM(COPMA.MA002) CustName ");
-                sql.AppendLine(", ROUND(SUM(CONVERT(FLOAT, COPTH.TH035) + CONVERT(FLOAT, COPTH.TH036)), 2) TotalPrice");
-                sql.AppendLine(", RTRIM(ACRTA.TA001) BI_FID, RTRIM(ACRTA.TA002) BI_SID ");
-                sql.AppendLine(", ISNULL(Item.Inv_Title, '') InvTitle, ISNULL(Item.Inv_Type, '') InvType, ISNULL(Item.Inv_Number, '') InvNumber ");
-                sql.AppendLine(", ISNULL(Item.Inv_AddrInfo, '') InvAddrInfo, ISNULL(Item.Inv_BankInfo, '') InvBankInfo ");
-                sql.AppendLine(", ISNULL(Item.Inv_Message, '') InvMessage, ISNULL(Item.Inv_Remark, '') InvRemark ");
-                sql.AppendLine(", Item.Data_ID AS Item_DataID ");
-
-                sql.AppendLine(" FROM [ProUnion].dbo.COPTG WITH(NOLOCK) ");
-                sql.AppendLine("  INNER JOIN [ProUnion].dbo.COPTH WITH(NOLOCK) ON COPTG.TG001 = COPTH.TH001 AND COPTG.TG002 = COPTH.TH002 ");
-                sql.AppendLine("  INNER JOIN [ProUnion].dbo.COPTD WITH(NOLOCK) ON COPTH.TH014 = COPTD.TD001 AND COPTH.TH015 = COPTD.TD002 AND COPTH.TH016 = COPTD.TD003 ");
-                sql.AppendLine("  INNER JOIN [ProUnion].dbo.COPTC WITH(NOLOCK) ON COPTD.TD001 = COPTC.TC001 AND COPTD.TD002 = COPTC.TC002 ");
-                sql.AppendLine("  INNER JOIN [ProUnion].dbo.COPMA WITH(NOLOCK) ON COPMA.MA001 = COPTG.TG004 ");
-                sql.AppendLine("  INNER JOIN [ProUnion].dbo.ACRTB WITH(NOLOCK) ON ACRTB.TB005 = COPTG.TG001 AND ACRTB.TB006 = COPTG.TG002 ");
-                sql.AppendLine("  INNER JOIN [ProUnion].dbo.ACRTA WITH(NOLOCK) ON ACRTA.TA001 = ACRTB.TB001 AND ACRTA.TA002 = ACRTB.TB002 ");
-                sql.AppendLine("  INNER JOIN BBC_InvoiceItem Item WITH(NOLOCK) ON Item.OrderID COLLATE Chinese_Taiwan_Stroke_BIN = COPTC.TC012 AND Item.TraceID COLLATE Chinese_Taiwan_Stroke_BIN = COPTC.TC202 ");
-                sql.AppendLine(" WHERE (COPTG.TG200 = 'Y') AND (COPTC.TC200 = 'Y') AND (Item.Inv_Title <> '') ");
+                //** WITH AS ---
+                sql.AppendLine("WITH TblBase AS (");
+                sql.AppendLine(" SELECT ROW_NUMBER() OVER(ORDER BY COPTG.TG001, COPTG.TG002) AS SerialNo");
+                sql.AppendLine("  , COPTC.TC012 AS OrderID ");
+                sql.AppendLine("  , COPTC.TC202 AS TraceID ");
+                sql.AppendLine(", ISNULL((");
+                sql.AppendLine("  SELECT TOP 1 ISNULL(DT.NickName,'')");
+                sql.AppendLine("  FROM [PKEF].dbo.SHBBC_ImportData AS Base WITH(NOLOCK)");
+                sql.AppendLine("   INNER JOIN [PKEF].dbo.SHBBC_ImportData_DT AS DT WITH(NOLOCK) ON Base.Data_ID = DT.Parent_ID");
+                sql.AppendLine("  WHERE (Base.TraceID COLLATE Chinese_Taiwan_Stroke_BIN = COPTC.TC202) AND (DT.OrderID COLLATE Chinese_Taiwan_Stroke_BIN = COPTC.TC012)");
+                sql.AppendLine(" ), '') AS NickName ");
+                sql.AppendLine("  , RTRIM(COPTG.TG001) SO_FID, RTRIM(COPTG.TG002) SO_SID, COPTG.TG003 SO_Date ");
+                sql.AppendLine("  , RTRIM(COPMA.MA001) CustID, RTRIM(COPMA.MA002) CustName ");
+                sql.AppendLine("  , ROUND(SUM(CONVERT(FLOAT, COPTH.TH035) + CONVERT(FLOAT, COPTH.TH036)), 2) TotalPrice");
+                sql.AppendLine("  , RTRIM(ACRTA.TA001) BI_FID, RTRIM(ACRTA.TA002) BI_SID ");
+                sql.AppendLine("  , ACRTA.TA036 InvoiceNo, ACRTA.TA200 InvoiceDate ");
+                sql.AppendLine(" FROM [SHPK2].dbo.COPTG WITH(NOLOCK) ");
+                sql.AppendLine("  INNER JOIN [SHPK2].dbo.COPTH WITH(NOLOCK) ON COPTG.TG001 = COPTH.TH001 AND COPTG.TG002 = COPTH.TH002 ");
+                sql.AppendLine("  INNER JOIN [SHPK2].dbo.COPTD WITH(NOLOCK) ON COPTH.TH014 = COPTD.TD001 AND COPTH.TH015 = COPTD.TD002 AND COPTH.TH016 = COPTD.TD003 ");
+                sql.AppendLine("  INNER JOIN [SHPK2].dbo.COPTC WITH(NOLOCK) ON COPTD.TD001 = COPTC.TC001 AND COPTD.TD002 = COPTC.TC002 ");
+                sql.AppendLine("  INNER JOIN [SHPK2].dbo.COPMA WITH(NOLOCK) ON COPMA.MA001 = COPTG.TG004 ");
+                sql.AppendLine("  INNER JOIN [SHPK2].dbo.ACRTB WITH(NOLOCK) ON ACRTB.TB005 = COPTG.TG001 AND ACRTB.TB006 = COPTG.TG002 ");
+                sql.AppendLine("  INNER JOIN [SHPK2].dbo.ACRTA WITH(NOLOCK) ON ACRTA.TA001 = ACRTB.TB001 AND ACRTA.TA002 = ACRTB.TB002 ");
+                sql.AppendLine(" WHERE (COPTC.TC200 = 'Y') AND (COPTC.TC201 IN (N'京東POP',N'京東VC',N'京東廠送',N'唯品會',N'天貓'))");
 
                 /* Search */
+                #region search1
                 if (search != null)
                 {
                     foreach (var item in search)
@@ -1417,23 +1619,10 @@ namespace Invoice.Controllers
                             case (int)mySearch.DataID:
                                 if (!string.IsNullOrEmpty(item.Value))
                                 {
-                                    //BBC_InvoiceMail.Data_ID
-                                    sql.Append(" AND (Item.Data_ID IN (");
-                                    sql.Append("  SELECT ItemID FROM BBC_InvoiceMail_RelItem WHERE (MailID = @DataID)");
-                                    sql.Append(")) ");
+                                    //銷貨單號
+                                    sql.Append(" AND (RTRIM(COPTG.TG001) + RTRIM(COPTG.TG002) = @DataID)");
 
                                     cmd.Parameters.AddWithValue("DataID", item.Value);
-                                }
-
-                                break;
-
-                            case (int)mySearch.CheckRel:
-                                if (!string.IsNullOrEmpty(item.Value))
-                                {
-                                    //排除已匯出過的發票
-                                    sql.Append(" AND (ACRTA.TA036 = '') AND (Item.Data_ID NOT IN ( ");
-                                    sql.Append("	SELECT ItemID FROM BBC_InvoiceMail_RelItem");
-                                    sql.Append(" )) ");
                                 }
 
                                 break;
@@ -1443,7 +1632,7 @@ namespace Invoice.Controllers
                                 if (!string.IsNullOrEmpty(item.Value))
                                 {
                                     //ERP日期格式YYYYMMDD
-                                    sql.Append(" AND (COPTG.TG003 >= @sDate) ");
+                                    sql.Append(" AND (COPTG.TG003 >= @sDate)");
 
                                     cmd.Parameters.AddWithValue("sDate", item.Value);
                                 }
@@ -1454,7 +1643,7 @@ namespace Invoice.Controllers
                                 if (!string.IsNullOrEmpty(item.Value))
                                 {
                                     //ERP日期格式YYYYMMDD
-                                    sql.Append(" AND (COPTG.TG003 <= @eDate) ");
+                                    sql.Append(" AND (COPTG.TG003 <= @eDate)");
 
                                     cmd.Parameters.AddWithValue("eDate", item.Value);
                                 }
@@ -1464,86 +1653,267 @@ namespace Invoice.Controllers
                         }
                     }
                 }
+                #endregion
 
-                sql.AppendLine(" GROUP BY COPTC.TC012, COPTG.TG001, COPTG.TG002, COPTG.TG003 ");
-                sql.AppendLine(", COPMA.MA001, COPMA.MA002, ACRTA.TA001, ACRTA.TA002, ACRTA.TA036, ACRTA.TA200 ");
-                sql.AppendLine(", Item.Inv_Title, Item.Inv_Type, Item.Inv_Number, Item.Inv_AddrInfo, Item.Inv_BankInfo, Item.Inv_Message, Item.Inv_Remark, Item.Data_ID ");
-                sql.AppendLine(" ORDER BY COPTG.TG001, COPTG.TG002 ");
+                //Group by
+                sql.AppendLine(" GROUP BY COPTC.TC012, COPTC.TC202, COPTG.TG001, COPTG.TG002, COPTG.TG003 ");
+                sql.AppendLine(" , COPMA.MA001, COPMA.MA002, ACRTA.TA001, ACRTA.TA002, ACRTA.TA036, ACRTA.TA200 ");
+                sql.AppendLine(") ");
+                //** WITH AS ---
 
-                //----- SQL 執行 -----
-                cmd.CommandText = sql.ToString();
-
-
-                //----- 回傳資料 -----
-                return dbConn.LookupDT(cmd, out ErrMsg);
-            }
-        }
-
-
-        /// <summary>
-        /// 取得原始資料 - Excel & Email用
-        /// </summary>
-        /// <param name="search">查詢</param>
-        /// <returns></returns>
-        private DataTable LookupRawData_withEmail(Dictionary<int, string> search)
-        {
-            //----- 宣告 -----
-            StringBuilder sql = new StringBuilder();
-
-            //----- 資料查詢 -----
-            using (SqlCommand cmd = new SqlCommand())
-            {
-                //----- SQL 查詢語法 -----
-                sql.AppendLine("SELECT ");
-                sql.AppendLine(" RTRIM(COPMA.MA001) CustID, RTRIM(COPMA.MA002) CustName ");
-                sql.AppendLine(" , RTRIM(COPTH.TH004) ModelNo, RTRIM(COPTH.TH005) ModelName, CONVERT(INT, COPTH.TH008) Qty, COPTH.TH009 Unit ");
-                sql.AppendLine(" , CONVERT(FLOAT, COPTH.TH012) UnitPrice, CONVERT(FLOAT, COPTH.TH036) TaxPrice, CONVERT(FLOAT, COPTH.TH035) Price ");
-                sql.AppendLine(" , RTRIM(COPTG.TG001) SO_FID, RTRIM(COPTG.TG002) SO_SID, COPTH.TH003 SO_Num, COPTG.TG003 SO_Date ");
-                sql.AppendLine(" , Inv.Inv_Type, Inv.Inv_Title, Inv.Inv_Number, Inv.Inv_AddrInfo, Inv.Inv_BankInfo ");
-                sql.AppendLine(" , (CASE WHEN NotInv.SNO IS NOT NULL THEN '不開發票 ' + Inv.Inv_Remark ELSE Inv.Inv_Remark END) Inv_Remark ");
-                sql.AppendLine(" FROM BBC_InvoiceMail Base WITH(NOLOCK) ");
-                sql.AppendLine("  INNER JOIN BBC_InvoiceMail_RelItem Rel WITH(NOLOCK) ON Base.Data_ID = Rel.MailID ");
-                sql.AppendLine("  INNER JOIN BBC_InvoiceItem Inv WITH(NOLOCK) ON Rel.ItemID = Inv.Data_ID ");
-                sql.AppendLine("  INNER JOIN [ProUnion].dbo.COPTC WITH(NOLOCK) ON Inv.OrderID COLLATE Chinese_Taiwan_Stroke_BIN = COPTC.TC012 AND Inv.TraceID COLLATE Chinese_Taiwan_Stroke_BIN = COPTC.TC202 ");
-                sql.AppendLine("  INNER JOIN [ProUnion].dbo.COPTD WITH(NOLOCK) ON COPTD.TD001 = COPTC.TC001 AND COPTD.TD002 = COPTC.TC002 ");
-                sql.AppendLine("  INNER JOIN [ProUnion].dbo.COPTH WITH(NOLOCK) ON COPTH.TH014 = COPTD.TD001 AND COPTH.TH015 = COPTD.TD002 AND COPTH.TH016 = COPTD.TD003 ");
-                sql.AppendLine("  INNER JOIN [ProUnion].dbo.COPTG WITH(NOLOCK) ON COPTG.TG001 = COPTH.TH001 AND COPTG.TG002 = COPTH.TH002 ");
-                sql.AppendLine("  INNER JOIN [ProUnion].dbo.COPMA WITH(NOLOCK) ON COPTG.TG004 = COPMA.MA001 ");
-                sql.AppendLine("  LEFT JOIN BBC_NotInvoiceItem NotInv ON COPTH.TH001 = NotInv.FID COLLATE Chinese_Taiwan_Stroke_BIN AND COPTH.TH002 = NotInv.SID COLLATE Chinese_Taiwan_Stroke_BIN AND COPTH.TH003 = NotInv.SNO COLLATE Chinese_Taiwan_Stroke_BIN ");
+                sql.AppendLine(" SELECT TblBase.* ");
+                sql.AppendLine("  , ISNULL(Item.Inv_Title, '') InvTitle, ISNULL(Item.Inv_Type, '') InvType, ISNULL(Item.Inv_Number, '') InvNumber ");
+                sql.AppendLine("  , ISNULL(Item.Inv_AddrInfo, '') InvAddrInfo, ISNULL(Item.Inv_BankInfo, '') InvBankInfo ");
+                sql.AppendLine("  , ISNULL(Item.Inv_Message, '') InvMessage, ISNULL(Item.Inv_Remark, '') InvRemark ");
+                sql.AppendLine("  , (CASE ");
+                sql.AppendLine("    WHEN Item.Inv_Title IS NULL AND TblBase.InvoiceNo = '' THEN '1' ");
+                sql.AppendLine("    WHEN TblBase.InvoiceNo <> '' THEN '3' ");
+                sql.AppendLine("    ELSE '2' ");
+                sql.AppendLine("  END) InvStatus ");
+                sql.AppendLine(" FROM TblBase ");
+                sql.AppendLine("  LEFT JOIN SHBBC_InvoiceItem Item WITH(NOLOCK) ON Item.OrderID COLLATE Chinese_Taiwan_Stroke_BIN = TblBase.OrderID AND Item.TraceID COLLATE Chinese_Taiwan_Stroke_BIN = TblBase.TraceID");
                 sql.AppendLine(" WHERE (1=1) ");
 
-                /* Search */
+                #region search2
                 if (search != null)
                 {
                     foreach (var item in search)
                     {
                         switch (item.Key)
                         {
-                            case (int)mySearch.DataID:
+                            case (int)mySearch.Keyword:
                                 if (!string.IsNullOrEmpty(item.Value))
                                 {
-                                    //BBC_InvoiceMail.Data_ID
-                                    sql.Append(" AND (Base.Data_ID = @DataID)");
+                                    //Keyword:客戶單號/銷貨單號/訂單單號/客戶暱稱/姓名/發票抬頭
+                                    sql.Append("AND ( ");
+                                    sql.Append("	(TblBase.OrderID LIKE '%' + @Keyword + '%') ");
+                                    sql.Append("	OR (Item.Inv_Title LIKE '%' + @Keyword + '%') ");
+                                    sql.Append("	OR (RTRIM(TblBase.SO_FID) + RTRIM(TblBase.SO_SID) LIKE '%' + REPLACE(UPPER(@Keyword),'-','') + '%') ");
+                                    sql.Append("	OR (RTRIM(TblBase.BI_FID) + RTRIM(TblBase.BI_SID) LIKE '%' + REPLACE(UPPER(@Keyword),'-','') + '%') ");
+                                    sql.Append("	OR (UPPER((TblBase.CustID)) LIKE '%' + UPPER(@Keyword) + '%') ");
+                                    sql.Append("	OR (UPPER((TblBase.CustName)) LIKE '%' + UPPER(@Keyword) + '%') ");
+                                    sql.Append("    OR (UPPER((TblBase.NickName)) LIKE '%' + UPPER(@Keyword) + '%')");
+                                    sql.Append(") ");
 
-                                    cmd.Parameters.AddWithValue("DataID", item.Value);
+                                    cmd.Parameters.AddWithValue("Keyword", item.Value);
                                 }
 
                                 break;
 
+                            case (int)mySearch.Status:
+                                if (!string.IsNullOrEmpty(item.Value))
+                                {
+                                    //判斷狀態
+                                    switch (item.Value)
+                                    {
+                                        case "1":
+                                            sql.Append(" AND (Item.Inv_Title IS NULL) AND (TblBase.InvoiceNo = '') ");
+                                            break;
+
+                                        case "2":
+                                            sql.Append(" AND (Item.Inv_Title <> '') AND (TblBase.InvoiceNo = '') ");
+                                            break;
+
+                                        case "3":
+                                            sql.Append(" AND (TblBase.InvoiceNo <> '') ");
+                                            break;
+                                    }
+                                }
+
+                                break;
+
+
                         }
                     }
                 }
-                sql.AppendLine(" ORDER BY COPMA.MA001, COPTG.TG001, COPTG.TG002, COPTH.TH003, COPTH.TH004 ");
+                #endregion
 
+                sql.AppendLine(" ORDER BY TblBase.SerialNo");
 
                 //----- SQL 執行 -----
                 cmd.CommandText = sql.ToString();
-
+                cmd.CommandTimeout = 90;
 
                 //----- 回傳資料 -----
                 return dbConn.LookupDT(cmd, out ErrMsg);
             }
         }
+
+
+
+        ///// <summary>
+        ///// 取得原始資料 - 匯出發票Step2, Step3, List Detail (取消)
+        ///// </summary>
+        ///// <param name="search">查詢</param>
+        ///// <returns></returns>
+        //private DataTable LookupRawData_withExport(Dictionary<int, string> search)
+        //{
+        //    //----- 宣告 -----
+        //    StringBuilder sql = new StringBuilder();
+
+        //    //----- 資料查詢 -----
+        //    using (SqlCommand cmd = new SqlCommand())
+        //    {
+        //        //----- SQL 查詢語法 -----
+        //        sql.AppendLine(" SELECT ROW_NUMBER() OVER(ORDER BY COPTG.TG001, COPTG.TG002) AS SerialNo ");
+        //        sql.AppendLine(", COPTC.TC012 AS OrderID");
+        //        sql.AppendLine(", ISNULL((SELECT TOP 1 ISNULL(NickName,'') FROM BBC_ImportData_DT WHERE (OrderID COLLATE Chinese_Taiwan_Stroke_BIN = COPTC.TC012) AND (NickName IS NOT NULL AND NickName <> '')), '') AS NickName ");
+        //        sql.AppendLine(", RTRIM(COPTG.TG001) SO_FID, RTRIM(COPTG.TG002) SO_SID, COPTG.TG003 SO_Date ");
+        //        sql.AppendLine(", RTRIM(COPMA.MA001) CustID, RTRIM(COPMA.MA002) CustName ");
+        //        sql.AppendLine(", ROUND(SUM(CONVERT(FLOAT, COPTH.TH035) + CONVERT(FLOAT, COPTH.TH036)), 2) TotalPrice");
+        //        sql.AppendLine(", RTRIM(ACRTA.TA001) BI_FID, RTRIM(ACRTA.TA002) BI_SID ");
+        //        sql.AppendLine(", ISNULL(Item.Inv_Title, '') InvTitle, ISNULL(Item.Inv_Type, '') InvType, ISNULL(Item.Inv_Number, '') InvNumber ");
+        //        sql.AppendLine(", ISNULL(Item.Inv_AddrInfo, '') InvAddrInfo, ISNULL(Item.Inv_BankInfo, '') InvBankInfo ");
+        //        sql.AppendLine(", ISNULL(Item.Inv_Message, '') InvMessage, ISNULL(Item.Inv_Remark, '') InvRemark ");
+        //        sql.AppendLine(", Item.Data_ID AS Item_DataID ");
+
+        //        sql.AppendLine(" FROM [ProUnion].dbo.COPTG WITH(NOLOCK) ");
+        //        sql.AppendLine("  INNER JOIN [ProUnion].dbo.COPTH WITH(NOLOCK) ON COPTG.TG001 = COPTH.TH001 AND COPTG.TG002 = COPTH.TH002 ");
+        //        sql.AppendLine("  INNER JOIN [ProUnion].dbo.COPTD WITH(NOLOCK) ON COPTH.TH014 = COPTD.TD001 AND COPTH.TH015 = COPTD.TD002 AND COPTH.TH016 = COPTD.TD003 ");
+        //        sql.AppendLine("  INNER JOIN [ProUnion].dbo.COPTC WITH(NOLOCK) ON COPTD.TD001 = COPTC.TC001 AND COPTD.TD002 = COPTC.TC002 ");
+        //        sql.AppendLine("  INNER JOIN [ProUnion].dbo.COPMA WITH(NOLOCK) ON COPMA.MA001 = COPTG.TG004 ");
+        //        sql.AppendLine("  INNER JOIN [ProUnion].dbo.ACRTB WITH(NOLOCK) ON ACRTB.TB005 = COPTG.TG001 AND ACRTB.TB006 = COPTG.TG002 ");
+        //        sql.AppendLine("  INNER JOIN [ProUnion].dbo.ACRTA WITH(NOLOCK) ON ACRTA.TA001 = ACRTB.TB001 AND ACRTA.TA002 = ACRTB.TB002 ");
+        //        sql.AppendLine("  INNER JOIN BBC_InvoiceItem Item WITH(NOLOCK) ON Item.OrderID COLLATE Chinese_Taiwan_Stroke_BIN = COPTC.TC012 AND Item.TraceID COLLATE Chinese_Taiwan_Stroke_BIN = COPTC.TC202 ");
+        //        sql.AppendLine(" WHERE (COPTG.TG200 = 'Y') AND (COPTC.TC200 = 'Y') AND (Item.Inv_Title <> '') ");
+
+        //        /* Search */
+        //        if (search != null)
+        //        {
+        //            foreach (var item in search)
+        //            {
+        //                switch (item.Key)
+        //                {
+        //                    case (int)mySearch.DataID:
+        //                        if (!string.IsNullOrEmpty(item.Value))
+        //                        {
+        //                            //BBC_InvoiceMail.Data_ID
+        //                            sql.Append(" AND (Item.Data_ID IN (");
+        //                            sql.Append("  SELECT ItemID FROM BBC_InvoiceMail_RelItem WHERE (MailID = @DataID)");
+        //                            sql.Append(")) ");
+
+        //                            cmd.Parameters.AddWithValue("DataID", item.Value);
+        //                        }
+
+        //                        break;
+
+        //                    case (int)mySearch.CheckRel:
+        //                        if (!string.IsNullOrEmpty(item.Value))
+        //                        {
+        //                            //排除已匯出過的發票
+        //                            sql.Append(" AND (ACRTA.TA036 = '') AND (Item.Data_ID NOT IN ( ");
+        //                            sql.Append("	SELECT ItemID FROM BBC_InvoiceMail_RelItem");
+        //                            sql.Append(" )) ");
+        //                        }
+
+        //                        break;
+
+
+        //                    case (int)mySearch.StartDate:
+        //                        if (!string.IsNullOrEmpty(item.Value))
+        //                        {
+        //                            //ERP日期格式YYYYMMDD
+        //                            sql.Append(" AND (COPTG.TG003 >= @sDate) ");
+
+        //                            cmd.Parameters.AddWithValue("sDate", item.Value);
+        //                        }
+
+        //                        break;
+
+        //                    case (int)mySearch.EndDate:
+        //                        if (!string.IsNullOrEmpty(item.Value))
+        //                        {
+        //                            //ERP日期格式YYYYMMDD
+        //                            sql.Append(" AND (COPTG.TG003 <= @eDate) ");
+
+        //                            cmd.Parameters.AddWithValue("eDate", item.Value);
+        //                        }
+
+        //                        break;
+
+        //                }
+        //            }
+        //        }
+
+        //        sql.AppendLine(" GROUP BY COPTC.TC012, COPTG.TG001, COPTG.TG002, COPTG.TG003 ");
+        //        sql.AppendLine(", COPMA.MA001, COPMA.MA002, ACRTA.TA001, ACRTA.TA002, ACRTA.TA036, ACRTA.TA200 ");
+        //        sql.AppendLine(", Item.Inv_Title, Item.Inv_Type, Item.Inv_Number, Item.Inv_AddrInfo, Item.Inv_BankInfo, Item.Inv_Message, Item.Inv_Remark, Item.Data_ID ");
+        //        sql.AppendLine(" ORDER BY COPTG.TG001, COPTG.TG002 ");
+
+        //        //----- SQL 執行 -----
+        //        cmd.CommandText = sql.ToString();
+
+
+        //        //----- 回傳資料 -----
+        //        return dbConn.LookupDT(cmd, out ErrMsg);
+        //    }
+        //}
+
+
+        ///// <summary>
+        ///// 取得原始資料 - Excel & Email用 (取消)
+        ///// </summary>
+        ///// <param name="search">查詢</param>
+        ///// <returns></returns>
+        //private DataTable LookupRawData_withEmail(Dictionary<int, string> search)
+        //{
+        //    //----- 宣告 -----
+        //    StringBuilder sql = new StringBuilder();
+
+        //    //----- 資料查詢 -----
+        //    using (SqlCommand cmd = new SqlCommand())
+        //    {
+        //        //----- SQL 查詢語法 -----
+        //        sql.AppendLine("SELECT ");
+        //        sql.AppendLine(" RTRIM(COPMA.MA001) CustID, RTRIM(COPMA.MA002) CustName ");
+        //        sql.AppendLine(" , RTRIM(COPTH.TH004) ModelNo, RTRIM(COPTH.TH005) ModelName, CONVERT(INT, COPTH.TH008) Qty, COPTH.TH009 Unit ");
+        //        sql.AppendLine(" , CONVERT(FLOAT, COPTH.TH012) UnitPrice, CONVERT(FLOAT, COPTH.TH036) TaxPrice, CONVERT(FLOAT, COPTH.TH035) Price ");
+        //        sql.AppendLine(" , RTRIM(COPTG.TG001) SO_FID, RTRIM(COPTG.TG002) SO_SID, COPTH.TH003 SO_Num, COPTG.TG003 SO_Date ");
+        //        sql.AppendLine(" , Inv.Inv_Type, Inv.Inv_Title, Inv.Inv_Number, Inv.Inv_AddrInfo, Inv.Inv_BankInfo ");
+        //        sql.AppendLine(" , (CASE WHEN NotInv.SNO IS NOT NULL THEN '不開發票 ' + Inv.Inv_Remark ELSE Inv.Inv_Remark END) Inv_Remark ");
+        //        sql.AppendLine(" FROM BBC_InvoiceMail Base WITH(NOLOCK) ");
+        //        sql.AppendLine("  INNER JOIN BBC_InvoiceMail_RelItem Rel WITH(NOLOCK) ON Base.Data_ID = Rel.MailID ");
+        //        sql.AppendLine("  INNER JOIN BBC_InvoiceItem Inv WITH(NOLOCK) ON Rel.ItemID = Inv.Data_ID ");
+        //        sql.AppendLine("  INNER JOIN [ProUnion].dbo.COPTC WITH(NOLOCK) ON Inv.OrderID COLLATE Chinese_Taiwan_Stroke_BIN = COPTC.TC012 AND Inv.TraceID COLLATE Chinese_Taiwan_Stroke_BIN = COPTC.TC202 ");
+        //        sql.AppendLine("  INNER JOIN [ProUnion].dbo.COPTD WITH(NOLOCK) ON COPTD.TD001 = COPTC.TC001 AND COPTD.TD002 = COPTC.TC002 ");
+        //        sql.AppendLine("  INNER JOIN [ProUnion].dbo.COPTH WITH(NOLOCK) ON COPTH.TH014 = COPTD.TD001 AND COPTH.TH015 = COPTD.TD002 AND COPTH.TH016 = COPTD.TD003 ");
+        //        sql.AppendLine("  INNER JOIN [ProUnion].dbo.COPTG WITH(NOLOCK) ON COPTG.TG001 = COPTH.TH001 AND COPTG.TG002 = COPTH.TH002 ");
+        //        sql.AppendLine("  INNER JOIN [ProUnion].dbo.COPMA WITH(NOLOCK) ON COPTG.TG004 = COPMA.MA001 ");
+        //        sql.AppendLine("  LEFT JOIN BBC_NotInvoiceItem NotInv ON COPTH.TH001 = NotInv.FID COLLATE Chinese_Taiwan_Stroke_BIN AND COPTH.TH002 = NotInv.SID COLLATE Chinese_Taiwan_Stroke_BIN AND COPTH.TH003 = NotInv.SNO COLLATE Chinese_Taiwan_Stroke_BIN ");
+        //        sql.AppendLine(" WHERE (1=1) ");
+
+        //        /* Search */
+        //        if (search != null)
+        //        {
+        //            foreach (var item in search)
+        //            {
+        //                switch (item.Key)
+        //                {
+        //                    case (int)mySearch.DataID:
+        //                        if (!string.IsNullOrEmpty(item.Value))
+        //                        {
+        //                            //BBC_InvoiceMail.Data_ID
+        //                            sql.Append(" AND (Base.Data_ID = @DataID)");
+
+        //                            cmd.Parameters.AddWithValue("DataID", item.Value);
+        //                        }
+
+        //                        break;
+
+        //                }
+        //            }
+        //        }
+        //        sql.AppendLine(" ORDER BY COPMA.MA001, COPTG.TG001, COPTG.TG002, COPTH.TH003, COPTH.TH004 ");
+
+
+        //        //----- SQL 執行 -----
+        //        cmd.CommandText = sql.ToString();
+
+
+        //        //----- 回傳資料 -----
+        //        return dbConn.LookupDT(cmd, out ErrMsg);
+        //    }
+        //}
 
         #endregion
     }
