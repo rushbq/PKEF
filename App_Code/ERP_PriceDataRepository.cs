@@ -1038,7 +1038,7 @@ namespace ERP_PriceData.Controllers
                 {
                     //----- SQL 查詢語法 -----
                     //將未取得品號的原因寫入(job1~2)
-                    sql.AppendLine(" UPDATE ErpOrderPrice_ImportData_DT SET doWhat = ProdID + ',無法取得寶工品號,請確認COPMG' WHERE (Parent_ID = @ParentID) AND (IsPass = 'N');");
+                    sql.AppendLine(" UPDATE ErpOrderPrice_ImportData_DT SET doWhat = ProdID + ',無法取得寶工品號,請檢查ERP客戶品號及產品中心' WHERE (Parent_ID = @ParentID) AND (IsPass = 'N');");
                     
                     ////將已通過檢查的項目設為 E(檢查中) --後續無其他檢查
                     //sql.AppendLine(" UPDATE ErpOrderPrice_ImportData_DT SET IsPass = 'E' WHERE (Parent_ID = @ParentID) AND (IsPass = 'Y');");

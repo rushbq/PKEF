@@ -125,7 +125,8 @@
                     url: "<%=Application["WebUrl"]%>Ajax_Data/GetData_Customer.ashx",
                     data: {
                         keyword: request.term,
-                        doBlock: 'Y'
+                        doBlock: 'Y',
+                        corp: 3
                     },
                     type: "POST",
                     dataType: "json",
