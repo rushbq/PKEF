@@ -57,6 +57,7 @@
     <script src="../js/bootstrap/js/bootstrap.min.js"></script>
     <link href="../js/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <%-- bootstrap End --%>
+    
 </head>
 <body class="MainArea">
     <form id="form1" runat="server">
@@ -128,7 +129,7 @@
                         <td align="center" class="styleGreen">
                             <%#Eval("HClass") %>
                         </td>
-                        <td valign="top">
+                        <td valign="top" style="word-break:keep-all">
                             <div>
                                 <asp:Literal ID="lt_onTop" runat="server"></asp:Literal>
                                 <a class="L2MainHead" href="IT_HelpView.aspx?TraceID=<%# Server.UrlEncode(Cryptograph.MD5Encrypt(Eval("TraceID").ToString(), DesKey))%>" title="追蹤編號">
@@ -195,6 +196,7 @@
                 </EmptyDataTemplate>
             </asp:ListView>
         </div>
+
         <asp:Panel ID="pl_Page" runat="server" CssClass="PagesArea" Visible="false">
             <div class="PageControlCon">
                 <div class="PageControl">

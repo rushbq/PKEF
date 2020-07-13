@@ -71,8 +71,15 @@
                 numberOfMonths: 1
             });
 
-            //多筆上傳
+            //多筆上傳-1
             $('#fu_Pic').MultiFile({
+                STRING: {
+                    remove: '<img src="../images/trashcan.png" alt="x" border="0" width="14" />' //移除圖示
+                },
+                accept: '<%=FileExtLimit %>' //副檔名限制
+            });
+            //多筆上傳-2
+            $('#fu_Pic_Reply').MultiFile({
                 STRING: {
                     remove: '<img src="../images/trashcan.png" alt="x" border="0" width="14" />' //移除圖示
                 },
@@ -324,6 +331,8 @@
                     </td>
                     <td class="TableModifyTd styleBlue B">
                         <asp:Literal ID="lt_TraceID" runat="server">系統自動編號</asp:Literal>
+                        &nbsp;
+                        <asp:CheckBox ID="cb_IsAgent" runat="server" Text="資訊代填" CssClass="styleEarth" />
                     </td>
                 </tr>
                 <tr class="Must">
@@ -498,9 +507,59 @@
 
             <!-- 回覆資料 Start -->
             <asp:PlaceHolder ID="ph_Reply" runat="server" Visible="false">
-                <tbody>
+                <tbody id="reply">
                     <tr class="ModifyHead">
                         <td colspan="4">回覆資料<em class="TableModifyTitleIcon"></em>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="TableModifyTdHead" rowspan="2">附件
+                        </td>
+                        <td class="TableModifyTd">
+                            <table class="List1" width="100%">
+                                <tr>
+                                    <td style="width:60%">
+                                        <asp:FileUpload ID="fu_Pic_Reply" runat="server" />
+                                        <span class="SiftLight">(可一次上傳多筆, 檔案限制.jpg .png .docx .xlsx .pptx .pdf) ----&gt; <b>***** 記得自行按上傳 *****</b></span>
+                                    </td>
+                                    <td style="width:60%">
+                                        <asp:Button ID="btn_ReplyUpload" runat="server" Text="上傳檔案" OnClick="btn_ReplyUpload_Click" />
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="TableModifyTd">
+                            <asp:ListView ID="lvDataList_Reply" runat="server" GroupPlaceholderID="ph_Group" ItemPlaceholderID="ph_Items"
+                                GroupItemCount="4" OnItemCommand="lvDataList_Reply_ItemCommand">
+                                <LayoutTemplate>
+                                    <table class="List1" width="100%">
+                                        <asp:PlaceHolder ID="ph_Group" runat="server" />
+                                    </table>
+                                </LayoutTemplate>
+                                <GroupTemplate>
+                                    <tr>
+                                        <asp:PlaceHolder ID="ph_Items" runat="server" />
+                                    </tr>
+                                </GroupTemplate>
+                                <ItemTemplate>
+                                    <td align="center" valign="top" width="25%">
+                                        <div>
+                                            <asp:LinkButton ID="lbtn_Delete" runat="server" CommandName="Del" CssClass="Delete"
+                                                OnClientClick="return confirm('是否確定刪除!?')">刪除</asp:LinkButton>
+                                            <asp:HiddenField ID="hf_PicID" runat="server" Value='<%#Eval("AttachID") %>' />
+                                            <asp:HiddenField ID="hf_OldFile" runat="server" Value='<%#Eval("AttachFile") %>' />
+                                        </div>
+                                        <div>
+                                            <%#PicUrl(Eval("AttachFile").ToString(), Eval("AttachFile_Org").ToString(), true)%>
+                                        </div>
+                                    </td>
+                                </ItemTemplate>
+                                <EmptyItemTemplate>
+                                    <td></td>
+                                </EmptyItemTemplate>
+                            </asp:ListView>
                         </td>
                     </tr>
                     <tr>
@@ -595,6 +654,10 @@
                             CssClass="btnBlock colorRed" OnClientClick="return confirm('是否確定結案!?')" Visible="false" />
                         <asp:Button ID="btn_Back" runat="server" Text="已後悔" Width="72px" OnClick="btn_Back_Click"
                             CssClass="btnBlock colorCoffee" OnClientClick="return confirm('狀態將設為「處理中」')" Visible="false" />
+
+                        <asp:Button ID="btn_DoneWithoutMail" runat="server" Text="結案不通知" OnClick="btn_DoneWithoutMail_Click"
+                            CssClass="btnBlock colorBlue" OnClientClick="return confirm('是否確定結案(不發Email)!?')" Visible="false" />
+
                         <asp:HiddenField ID="hf_flag" runat="server" Value="Add" />
                         <asp:ValidationSummary ID="ValidationSummary1" runat="server" ShowSummary="false"
                             ShowMessageBox="true" ValidationGroup="Add" />

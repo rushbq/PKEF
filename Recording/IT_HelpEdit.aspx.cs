@@ -189,6 +189,7 @@ public partial class IT_HelpEdit : SecurityIn
                         {
                             //顯示回覆區
                             this.ph_Reply.Visible = true;
+
                             //填入回覆資料
                             this.tb_Reply_Hours.Text = DT.Rows[0]["Reply_Hours"].ToString();
                             this.tb_Reply_Content.Text = DT.Rows[0]["Reply_Content"].ToString();
@@ -203,12 +204,14 @@ public partial class IT_HelpEdit : SecurityIn
                                     this.btn_onTop.Visible = true;
                                     this.btn_Inform.Visible = true;
                                     this.btn_Done.Visible = true;
+                                    this.btn_DoneWithoutMail.Visible = true;
                                     break;
 
                                 case "10":
                                     this.btn_onTop.Visible = true;
                                     this.btn_Inform.Visible = true;
                                     this.btn_Done.Visible = true;
+                                    this.btn_DoneWithoutMail.Visible = true;
                                     break;
 
                                 case "11":
@@ -229,9 +232,13 @@ public partial class IT_HelpEdit : SecurityIn
                         this.hf_flag.Value = "Edit";
                         this.ph_MailItem.Visible = false;
                         this.ph_MailList.Visible = true;
+                        cb_IsAgent.Visible = false;
 
-                        //填入圖片資料
+                        //填入附件資料-1
                         LookupDataList();
+
+                        //填入附件資料-2
+                        LookupDataList_Reply();
 
                         //CC名單
                         LookupData_CC(traceID);
@@ -246,7 +253,7 @@ public partial class IT_HelpEdit : SecurityIn
     }
 
     /// <summary>
-    /// 副程式 - 顯示附件列表
+    /// 副程式 - 顯示附件列表A
     /// </summary>
     private void LookupDataList()
     {
@@ -261,7 +268,7 @@ public partial class IT_HelpEdit : SecurityIn
 
                 //[SQL] - 資料查詢
                 StringBuilder SBSql = new StringBuilder();
-                SBSql.AppendLine("SELECT AttachID, AttachFile, AttachFile_Org FROM IT_Help_Attach WHERE (TraceID = @TraceID)");
+                SBSql.AppendLine("SELECT AttachID, AttachFile, AttachFile_Org FROM IT_Help_Attach WHERE (TraceID = @TraceID) AND (AttachType = 'A')");
                 cmd.CommandText = SBSql.ToString();
                 cmd.Parameters.AddWithValue("TraceID", Param_thisID);
                 using (DataTable DT = dbConn.LookupDT(cmd, out ErrMsg))
@@ -274,7 +281,7 @@ public partial class IT_HelpEdit : SecurityIn
         }
         catch (Exception)
         {
-            fn_Extensions.JsAlert("系統發生錯誤 - 附件列表！", "");
+            fn_Extensions.JsAlert("系統發生錯誤 - 附件列表A！", "");
         }
     }
 
@@ -329,7 +336,93 @@ public partial class IT_HelpEdit : SecurityIn
 
             throw;
         }
+    }
 
+
+    /// <summary>
+    /// 副程式 - 顯示附件列表B
+    /// </summary>
+    private void LookupDataList_Reply()
+    {
+        try
+        {
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                string ErrMsg;
+
+                //[SQL] - 清除參數設定
+                cmd.Parameters.Clear();
+
+                //[SQL] - 資料查詢
+                StringBuilder SBSql = new StringBuilder();
+                SBSql.AppendLine("SELECT AttachID, AttachFile, AttachFile_Org FROM IT_Help_Attach WHERE (TraceID = @TraceID) AND (AttachType = 'B')");
+                cmd.CommandText = SBSql.ToString();
+                cmd.Parameters.AddWithValue("TraceID", Param_thisID);
+                using (DataTable DT = dbConn.LookupDT(cmd, out ErrMsg))
+                {
+                    //DataBind            
+                    this.lvDataList_Reply.DataSource = DT.DefaultView;
+                    this.lvDataList_Reply.DataBind();
+                }
+            }
+        }
+        catch (Exception)
+        {
+            fn_Extensions.JsAlert("系統發生錯誤 - 附件列表B！", "");
+        }
+    }
+
+    protected void lvDataList_Reply_ItemCommand(object sender, ListViewCommandEventArgs e)
+    {
+        try
+        {
+            if (e.Item.ItemType == ListViewItemType.DataItem)
+            {
+                switch (e.CommandName)
+                {
+                    case "Del":
+                        #region * 刪除 *
+                        using (SqlCommand cmd = new SqlCommand())
+                        {
+                            string ErrMsg;
+                            StringBuilder SBSql = new StringBuilder();
+                            cmd.Parameters.Clear();
+
+                            //[取得參數] - 編號
+                            string GetDataID = ((HiddenField)e.Item.FindControl("hf_PicID")).Value;
+                            //[取得參數] - 檔案名稱
+                            string GetThisFile = ((HiddenField)e.Item.FindControl("hf_OldFile")).Value;
+
+                            //[SQL] - 刪除資料
+                            SBSql.AppendLine(" DELETE FROM IT_Help_Attach WHERE (AttachID = @Param_ID) ");
+                            cmd.CommandText = SBSql.ToString();
+                            cmd.Parameters.Clear();
+                            cmd.Parameters.AddWithValue("Param_ID", GetDataID);
+                            if (dbConn.ExecuteSql(cmd, out ErrMsg) == false)
+                            {
+                                fn_Extensions.JsAlert("附件刪除失敗！", PageUrl + "#reply");
+                            }
+                            else
+                            {
+                                //刪除檔案
+                                IOManage.DelFile(Param_FileFolder, GetThisFile);
+
+                                //頁面跳至明細
+                                Response.Redirect(PageUrl + "#reply");
+                            }
+                        }
+                        #endregion
+
+                        break;
+
+                }
+            }
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
     }
 
 
@@ -455,8 +548,14 @@ public partial class IT_HelpEdit : SecurityIn
     {
         string ErrMsg;
         string NewTraceID, IsNotify;
-        string _subject = fn_stringFormat.Filter_Html(this.tb_Help_Subject.Text);
 
+        //判斷是否為資訊代填(打勾)
+        string _subject = "{0}{1}".FormatThis(
+            cb_IsAgent.Checked ? "[資訊代填]" : ""
+            , fn_stringFormat.Filter_Html(this.tb_Help_Subject.Text));
+
+
+        //資料處理
         using (SqlCommand cmd = new SqlCommand())
         {
             //宣告
@@ -497,10 +596,10 @@ public partial class IT_HelpEdit : SecurityIn
             SBSql.Clear();
             //[SQL] - 資料新增
             SBSql.AppendLine(" INSERT INTO IT_Help( ");
-            SBSql.AppendLine("  TraceID, Req_Class, Req_Who, Req_Dept, Help_Subject, Help_Content, Help_Status");
+            SBSql.AppendLine("  TraceID, Req_Class, Req_Who, Req_Dept, Help_Subject, Help_Content, Help_Status, IsAgent");
             SBSql.AppendLine("  , Create_Who, Create_Time");
             SBSql.AppendLine(" ) VALUES ( ");
-            SBSql.AppendLine("  @TraceID, @Req_Class, @Req_Who, @Req_Dept, @Help_Subject, @Help_Content, @Help_Status");
+            SBSql.AppendLine("  @TraceID, @Req_Class, @Req_Who, @Req_Dept, @Help_Subject, @Help_Content, @Help_Status, @IsAgent");
             SBSql.AppendLine("  , @Create_Who, GETDATE() ");
             SBSql.AppendLine(" )");
 
@@ -513,6 +612,7 @@ public partial class IT_HelpEdit : SecurityIn
             cmd.Parameters.AddWithValue("Help_Subject", _subject);
             cmd.Parameters.AddWithValue("Help_Content", this.tb_Help_Content.Text);
             cmd.Parameters.AddWithValue("Help_Status", 9);  // IT_ParamClass, 待處理的ID = 9 (這是固定值)
+            cmd.Parameters.AddWithValue("IsAgent", cb_IsAgent.Checked ? "Y" : "N");
             cmd.Parameters.AddWithValue("Create_Who", fn_Params.UserAccount);
             if (dbConn.ExecuteSql(cmd, out ErrMsg) == false)
             {
@@ -523,7 +623,7 @@ public partial class IT_HelpEdit : SecurityIn
 
         //本頁網址, 含編號
         string NewUri = "IT_HelpEdit.aspx?TraceID={0}".FormatThis(Server.UrlEncode(Cryptograph.MD5Encrypt(NewTraceID, DesKey)));
-        if (false == AttachFiles(ITempList, NewTraceID, out ErrMsg))
+        if (false == AttachFiles(ITempList, NewTraceID, "A", out ErrMsg))
         {
             fn_Extensions.JsAlert("附件上傳失敗，請重新上傳！", NewUri);
             return;
@@ -600,7 +700,7 @@ public partial class IT_HelpEdit : SecurityIn
             }
             //本頁網址, 含編號
             string NewUri = "IT_HelpEdit.aspx?TraceID={0}".FormatThis(Server.UrlEncode(Cryptograph.MD5Encrypt(Param_thisID, DesKey)));
-            if (false == AttachFiles(ITempList, Param_thisID, out ErrMsg))
+            if (false == AttachFiles(ITempList, Param_thisID, "A", out ErrMsg))
             {
                 fn_Extensions.JsAlert("附件上傳失敗！", NewUri);
                 return;
@@ -619,9 +719,10 @@ public partial class IT_HelpEdit : SecurityIn
     /// </summary>
     /// <param name="ITempList"></param>
     /// <param name="TraceID"></param>
+    /// <param name="_type">A需求者/B回覆者</param>
     /// <param name="ErrMsg"></param>
     /// <returns></returns>
-    private bool AttachFiles(List<TempParam> ITempList, string TraceID, out string ErrMsg)
+    private bool AttachFiles(List<TempParam> ITempList, string TraceID, string _type, out string ErrMsg)
     {
         if (ITempList.Count == 0)
         {
@@ -642,10 +743,11 @@ public partial class IT_HelpEdit : SecurityIn
             {
                 SBSql.AppendLine(" SET @New_ID = (SELECT ISNULL(MAX(AttachID), 0) + 1 FROM IT_Help_Attach) ");
                 SBSql.AppendLine(" INSERT INTO IT_Help_Attach( ");
-                SBSql.AppendLine("  AttachID, TraceID, AttachFile, AttachFile_Org");
+                SBSql.AppendLine("  AttachID, TraceID, AttachFile, AttachFile_Org, AttachType");
                 SBSql.AppendLine(" ) VALUES ( ");
                 SBSql.AppendLine("  @New_ID, @TraceID");
                 SBSql.AppendLine(string.Format(", @FileNewName_{0}, @FileOldName_{0}", i));
+                SBSql.AppendLine("  , @AttachType");
                 SBSql.AppendLine(" ); ");
                 cmd.Parameters.AddWithValue("FileNewName_" + i, ITempList[i].Param_Pic);
                 cmd.Parameters.AddWithValue("FileOldName_" + i, ITempList[i].Param_OrgPic);
@@ -654,6 +756,7 @@ public partial class IT_HelpEdit : SecurityIn
             //[SQL] - Command
             cmd.CommandText = SBSql.ToString();
             cmd.Parameters.AddWithValue("TraceID", TraceID);
+            cmd.Parameters.AddWithValue("AttachType", _type);
             if (dbConn.ExecuteSql(cmd, out ErrMsg) == false)
             {
                 return false;
@@ -809,6 +912,22 @@ public partial class IT_HelpEdit : SecurityIn
     /// </summary>
     protected void btn_Done_Click(object sender, EventArgs e)
     {
+        closeCase(true);
+
+    }
+
+
+    /// <summary>
+    /// 結案不通知
+    /// </summary>
+    protected void btn_DoneWithoutMail_Click(object sender, EventArgs e)
+    {
+        closeCase(false);
+    }
+
+
+    private void closeCase(bool sendMail)
+    {
         try
         {
             #region "欄位檢查"
@@ -860,7 +979,10 @@ public partial class IT_HelpEdit : SecurityIn
                 else
                 {
                     //發信給需求者/轉寄者
-                    SendMail_Done(Param_thisID, fn_stringFormat.Filter_Html(this.tb_Help_Subject.Text), this.tb_Email.Text);
+                    if (sendMail)
+                    {
+                        SendMail_Done(Param_thisID, fn_stringFormat.Filter_Html(this.tb_Help_Subject.Text), this.tb_Email.Text);
+                    }
 
                     //導向列表頁
                     Response.Redirect(Page_SearchUrl);
@@ -876,8 +998,8 @@ public partial class IT_HelpEdit : SecurityIn
             fn_Extensions.JsAlert("系統發生錯誤 - 結案", "");
             return;
         }
-
     }
+
 
     /// <summary>
     /// 後悔 - 變更為「處理中」
@@ -958,6 +1080,44 @@ public partial class IT_HelpEdit : SecurityIn
             return;
         }
 
+    }
+
+
+    /// <summary>
+    /// 上傳附件
+    /// </summary>
+    protected void btn_ReplyUpload_Click(object sender, EventArgs e)
+    {
+        //[IO] - 暫存檔案名稱
+        List<TempParam> ITempList = new List<TempParam>();
+        HttpFileCollection hfc = Request.Files;
+
+
+        if (hfc.Count == 0)
+        {
+            fn_Extensions.JsAlert("未選擇檔案！", PageUrl);
+            return;
+        }
+
+        for (int i = 0; i <= hfc.Count - 1; i++)
+        {
+            HttpPostedFile hpf = hfc[i];
+            if (hpf.ContentLength > 0)
+            {
+                //[IO] - 取得檔案名稱
+                IOManage.GetFileName(hpf);
+                ITempList.Add(new TempParam(IOManage.FileNewName, IOManage.FileFullName, hpf));
+            }
+        }
+
+        if (false == AttachFiles(ITempList, Param_thisID, "B", out ErrMsg))
+        {
+            fn_Extensions.JsAlert("附件上傳失敗，請重新上傳！", PageUrl);
+            return;
+        }
+
+        //redirect
+        Response.Redirect(PageUrl + "#reply");
     }
 
     #endregion -- 資料編輯 End --
@@ -1736,6 +1896,5 @@ public partial class IT_HelpEdit : SecurityIn
             this._Param_hpf = Param_hpf;
         }
     }
-
 
 }

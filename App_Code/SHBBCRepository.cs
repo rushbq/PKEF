@@ -968,12 +968,12 @@ namespace SH_BBC.Controllers
                         case "1":
                         case "3":
                             //** 訂單匯入 **
-                            curr_OrderID = val[0].ToString();
+                            curr_OrderID = val[0].ToString().Trim();
                             break;
 
                         default:
                             //** 退貨單匯入 **
-                            curr_OrderID = val[5].ToString();
+                            curr_OrderID = val[5].ToString().Trim();
                             break;
                     }
 
@@ -1023,7 +1023,7 @@ namespace SH_BBC.Controllers
 
                             /*
                              * [判斷商城]
-                             * 1:京東POP / 2:天貓 / 3:京東VC / 4:eService / 5:唯品會 / 6:VC工業品 / 999:通用版
+                             * 1:京東POP / 2:天貓 / 3:京東VC / 4:eService / 5:唯品會 / 6:京東廠送 / 999:通用版
                              */
                             switch (mallID)
                             {
@@ -1173,15 +1173,15 @@ namespace SH_BBC.Controllers
 
 
                                 case "6":
-                                    //京東工業品
+                                    //京東廠送
                                     myProdID = val[1];
-                                    myBuyCnt = string.IsNullOrEmpty(val[3]) ? 0 : Convert.ToInt16(val[3]);
-                                    myBuyPrice = string.IsNullOrEmpty(val[14]) ? 0 : Convert.ToDouble(val[14]);
-                                    myShipmentNo = val[20];
-                                    myShipWho = val[5];
-                                    myShipAddr = val[7];
-                                    myShipTel = val[6];
-                                    myNickName = val[5];
+                                    myBuyCnt = string.IsNullOrEmpty(val[8]) ? 0 : Convert.ToInt16(val[8]);
+                                    myBuyPrice = string.IsNullOrEmpty(val[4]) ? 0 : Convert.ToDouble(val[4]);
+                                    myShipmentNo = val[28];
+                                    myShipWho = val[9];
+                                    myShipAddr = val[11];
+                                    myShipTel = val[10];
+                                    myNickName = val[9];
 
                                     myRemarkTitle = myOrderID + "-" + myShipWho + "-" + myShipmentNo;
 

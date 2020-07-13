@@ -126,7 +126,7 @@
                     data: {
                         keyword: request.term,
                         doBlock: 'Y',
-                        corp: 3
+                        corp: 2
                     },
                     type: "POST",
                     dataType: "json",
