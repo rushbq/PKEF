@@ -32,7 +32,7 @@
             </asp:PlaceHolder>
 
             <!-- 基本資料 Start -->
-            <div id="formData" class="ui form attached green segment">
+            <div id="formData" class="ui form green segment">
                 <div class="fields">
                     <div class="three wide field">
                         <label>來源資料庫&nbsp;<a href="#!" id="openTip1" class="black-text"><i class="question circle icon"></i></a></label>
