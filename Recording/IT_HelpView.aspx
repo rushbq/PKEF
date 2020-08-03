@@ -115,15 +115,13 @@
                 <tr>
                     <td class="TableModifyTdHead" style="width: 120px">追蹤編號
                     </td>
-                    <td class="TableModifyTd styleBlue B">
+                    <td class="TableModifyTd styleBlue B" style="width: 400px;">
                         <asp:Literal ID="lt_TraceID" runat="server">系統自動編號</asp:Literal>
                     </td>
-                </tr>
-                <tr class="Must">
-                    <td class="TableModifyTdHead">需求者
+                    <td class="TableModifyTdHead" style="width: 120px">處理狀態
                     </td>
                     <td class="TableModifyTd">
-                        <asp:Literal ID="lt_ReqWho" runat="server"></asp:Literal>
+                        <asp:Label ID="lb_Help_Status" runat="server" Text="資料新增中" CssClass="styleGraylight"></asp:Label>
                     </td>
                 </tr>
                 <tr class="Must">
@@ -132,18 +130,30 @@
                     <td class="TableModifyTd">
                         <asp:Literal ID="lt_Req_Class" runat="server"></asp:Literal>
                     </td>
+                    <td class="TableModifyTdHead">報修方式
+                    </td>
+                    <td class="TableModifyTd">
+                        <asp:Literal ID="lt_Help_Way" runat="server"></asp:Literal>
+                    </td>
+                </tr>
+                <tr class="Must">
+                    <td class="TableModifyTdHead">需求者
+                    </td>
+                    <td class="TableModifyTd" colspan="3">
+                        <asp:Literal ID="lt_ReqWho" runat="server"></asp:Literal>
+                    </td>
                 </tr>
                 <tr class="Must">
                     <td class="TableModifyTdHead">填寫主旨
                     </td>
-                    <td class="TableModifyTd">
+                    <td class="TableModifyTd" colspan="3">
                         <asp:Literal ID="lt_Help_Subject" runat="server"></asp:Literal>
                     </td>
                 </tr>
                 <tr>
                     <td class="TableModifyTdHead" style="min-height: 25px;">有圖有真相
                     </td>
-                    <td class="TableModifyTd">
+                    <td class="TableModifyTd" colspan="3">
                         <div>
                             <asp:ListView ID="lvDataList" runat="server" GroupPlaceholderID="ph_Group" ItemPlaceholderID="ph_Items"
                                 GroupItemCount="4">
@@ -174,16 +184,11 @@
                 <tr class="Must">
                     <td class="TableModifyTdHead">詳細說明
                     </td>
-                    <td class="TableModifyTd">
+                    <td class="TableModifyTd" colspan="3">
                         <asp:Literal ID="lt_Help_Content" runat="server"></asp:Literal>
                     </td>
                 </tr>
                 <tr>
-                    <td class="TableModifyTdHead">處理狀態
-                    </td>
-                    <td class="TableModifyTd">
-                        <asp:Label ID="lb_Help_Status" runat="server" Text="資料新增中" CssClass="styleGraylight"></asp:Label>
-                    </td>
                 </tr>
                 <asp:PlaceHolder ID="ph_Agree" runat="server" Visible="false">
                     <tr>
@@ -192,8 +197,6 @@
                         <td class="TableModifyTd">
                             <asp:Label ID="lb_IsAgree" runat="server" CssClass="stylePurple B"></asp:Label>
                         </td>
-                    </tr>
-                    <tr>
                         <td class="TableModifyTdHead">同意者/時間
                         </td>
                         <td class="TableModifyTd styleGreen">
@@ -215,7 +218,7 @@
                 <asp:PlaceHolder ID="ph_Showrate" runat="server" Visible="false">
                     <tr class="Must">
                         <td class="TableModifyTdHead" style="min-height: 25px;"><em>(*)</em> 滿意度評分</td>
-                        <td class="TableModifyTd">
+                        <td class="TableModifyTd" colspan="3">
                             <asp:PlaceHolder ID="pl_Rate" runat="server">
                                 <span id="rateMe"></span>
                                 <%--<span class="SiftLight" style="padding-left: 5px;">(若未評分則預設為滿分)</span>--%>
@@ -229,23 +232,50 @@
                     </tr>
                 </asp:PlaceHolder>
                 <tr>
+                    <td class="TableModifyTdHead" style="min-height: 25px;">回覆的附件
+                    </td>
+                    <td class="TableModifyTd" colspan="3">
+                        <asp:ListView ID="lvDataList_Reply" runat="server" GroupPlaceholderID="ph_Group" ItemPlaceholderID="ph_Items"
+                            GroupItemCount="4">
+                            <LayoutTemplate>
+                                <table class="List1" width="100%">
+                                    <asp:PlaceHolder ID="ph_Group" runat="server" />
+                                </table>
+                            </LayoutTemplate>
+                            <GroupTemplate>
+                                <tr>
+                                    <asp:PlaceHolder ID="ph_Items" runat="server" />
+                                </tr>
+                            </GroupTemplate>
+                            <ItemTemplate>
+                                <td align="center" valign="top" width="25%">
+                                    <%#PicUrl(Eval("AttachFile").ToString(), Eval("AttachFile_Org").ToString())%>
+                                </td>
+                            </ItemTemplate>
+                            <EmptyItemTemplate>
+                                <td></td>
+                            </EmptyItemTemplate>
+                        </asp:ListView>
+                    </td>
+                </tr>
+                <tr>
                     <td class="TableModifyTdHead" style="min-height: 25px;">處理工時
                     </td>
-                    <td class="TableModifyTd">
+                    <td class="TableModifyTd" colspan="3">
                         <asp:Literal ID="lt_Reply_Hours" runat="server"></asp:Literal>
                     </td>
                 </tr>
                 <tr>
                     <td class="TableModifyTdHead" style="min-height: 25px;">處理回覆
                     </td>
-                    <td class="TableModifyTd">
+                    <td class="TableModifyTd" colspan="3">
                         <asp:Literal ID="lt_Reply_Content" runat="server"></asp:Literal>
                     </td>
                 </tr>
                 <tr>
                     <td class="TableModifyTdHead" style="min-height: 25px;">回覆日期
                     </td>
-                    <td class="TableModifyTd">
+                    <td class="TableModifyTd" colspan="3">
                         <asp:Literal ID="lt_Reply_Date" runat="server"></asp:Literal>
                     </td>
                 </tr>

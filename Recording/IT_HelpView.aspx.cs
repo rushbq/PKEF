@@ -31,7 +31,7 @@ public partial class IT_HelpView : SecurityIn
                 //取得回覆權限
                 ReplyAuth = fn_CheckAuth.CheckAuth_User("521", out ErrMsg);
 
-                
+
                 //[參數判斷] - 是否有編號
                 if (string.IsNullOrEmpty(Param_thisID))
                 {
@@ -41,6 +41,7 @@ public partial class IT_HelpView : SecurityIn
                 else
                 {
                     View_Data();
+
                 }
             }
             catch (Exception)
@@ -138,6 +139,7 @@ public partial class IT_HelpView : SecurityIn
                         }
                         this.lb_Help_Status.Text = DT.Rows[0]["HStatus"].ToString();
                         this.lb_Help_Status.CssClass = setCss;
+                        lt_Help_Way.Text = GetHelpWayName(DT.Rows[0]["Help_Way"].ToString());
 
                         //主管核示(權限申請)
                         string IsNotify = DT.Rows[0]["Notify"].ToString();
@@ -174,6 +176,9 @@ public partial class IT_HelpView : SecurityIn
 
                         //填入圖片資料
                         LookupDataList();
+
+                        //填入附件資料-2
+                        LookupDataList_Reply();
                     }
                 }
             }
@@ -217,7 +222,43 @@ public partial class IT_HelpView : SecurityIn
         }
     }
 
+
+    /// <summary>
+    /// 副程式 - 顯示附件列表B
+    /// </summary>
+    private void LookupDataList_Reply()
+    {
+        try
+        {
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                string ErrMsg;
+
+                //[SQL] - 清除參數設定
+                cmd.Parameters.Clear();
+
+                //[SQL] - 資料查詢
+                StringBuilder SBSql = new StringBuilder();
+                SBSql.AppendLine("SELECT AttachID, AttachFile, AttachFile_Org FROM IT_Help_Attach WHERE (TraceID = @TraceID) AND (AttachType = 'B')");
+                cmd.CommandText = SBSql.ToString();
+                cmd.Parameters.AddWithValue("TraceID", Param_thisID);
+                using (DataTable DT = dbConn.LookupDT(cmd, out ErrMsg))
+                {
+                    //DataBind            
+                    this.lvDataList_Reply.DataSource = DT.DefaultView;
+                    this.lvDataList_Reply.DataBind();
+                }
+            }
+        }
+        catch (Exception)
+        {
+            fn_Extensions.JsAlert("系統發生錯誤 - 附件列表B！", "");
+        }
+    }
+
+
     #endregion -- 資料顯示 End --
+
 
     #region -- 資料編輯 Start --
     /// <summary>
@@ -268,6 +309,7 @@ public partial class IT_HelpView : SecurityIn
 
     #endregion -- 資料編輯 End --
 
+
     #region -- 其他功能 --
     /// <summary>
     /// 取得圖片連結
@@ -299,7 +341,23 @@ public partial class IT_HelpView : SecurityIn
         return preView;
     }
 
+    private string GetHelpWayName(string val)
+    {
+        switch (val)
+        {
+            case "2":
+                return "即時通";
+
+            case "3":
+                return "電話";
+
+            default:
+                return "自行填寫";
+
+        }
+    }
     #endregion
+
 
     #region -- 參數設定 --
     /// <summary>

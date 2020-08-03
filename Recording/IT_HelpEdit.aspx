@@ -329,17 +329,41 @@
                 <tr>
                     <td class="TableModifyTdHead" style="width: 120px">追蹤編號
                     </td>
-                    <td class="TableModifyTd styleBlue B">
+                    <td class="TableModifyTd styleBlue B" style="width: 400px;">
                         <asp:Literal ID="lt_TraceID" runat="server">系統自動編號</asp:Literal>
                         &nbsp;
                         <asp:CheckBox ID="cb_IsAgent" runat="server" Text="資訊代填" CssClass="styleEarth" />
+                    </td>
+                    <td class="TableModifyTdHead" style="width: 120px">處理狀態
+                    </td>
+                    <td class="TableModifyTd">
+                        <asp:Label ID="lb_Help_Status" runat="server" Text="資料新增中" CssClass="styleGraylight"></asp:Label>
+                    </td>
+                </tr>
+                <tr class="Must">
+                    <td class="TableModifyTdHead">
+                        <em>(*)</em> 問題類別
+                    </td>
+                    <td class="TableModifyTd">
+                        <asp:DropDownList ID="ddl_Req_Class" runat="server"></asp:DropDownList>
+                        &nbsp;<asp:RequiredFieldValidator ID="rfv_ddl_Req_Class" runat="server" ControlToValidate="ddl_Req_Class"
+                            Display="Dynamic" ErrorMessage="-&gt; 請選擇「問題類別」！" ForeColor="Red" ValidationGroup="Add"></asp:RequiredFieldValidator>
+                    </td>
+                    <td class="TableModifyTdHead">報修方式
+                    </td>
+                    <td class="TableModifyTd">
+                        <asp:RadioButtonList ID="rbl_Help_Way" runat="server" RepeatDirection="Horizontal">
+                            <asp:ListItem Value="1" Selected="True">自行填寫</asp:ListItem>
+                            <asp:ListItem Value="2">即時通</asp:ListItem>
+                            <asp:ListItem Value="3">電話</asp:ListItem>
+                        </asp:RadioButtonList>
                     </td>
                 </tr>
                 <tr class="Must">
                     <td class="TableModifyTdHead">
                         <em>(*)</em> 需求者
                     </td>
-                    <td class="TableModifyTd">
+                    <td class="TableModifyTd" colspan="3">
                         <asp:DropDownListGP ID="ddl_Dept" runat="server">
                         </asp:DropDownListGP>
                         <select id="ddl_Employees"></select>
@@ -354,20 +378,10 @@
                 </tr>
                 <tr class="Must">
                     <td class="TableModifyTdHead">
-                        <em>(*)</em> 問題類別
-                    </td>
-                    <td class="TableModifyTd">
-                        <asp:DropDownList ID="ddl_Req_Class" runat="server"></asp:DropDownList>
-                        &nbsp;<asp:RequiredFieldValidator ID="rfv_ddl_Req_Class" runat="server" ControlToValidate="ddl_Req_Class"
-                            Display="Dynamic" ErrorMessage="-&gt; 請選擇「問題類別」！" ForeColor="Red" ValidationGroup="Add"></asp:RequiredFieldValidator>
-                    </td>
-                </tr>
-                <tr class="Must">
-                    <td class="TableModifyTdHead">
                         <em>(*)</em> 填寫主旨
                     </td>
-                    <td class="TableModifyTd">
-                        <asp:TextBox ID="tb_Help_Subject" runat="server" MaxLength="40" Width="400px"></asp:TextBox>
+                    <td class="TableModifyTd" colspan="3">
+                        <asp:TextBox ID="tb_Help_Subject" runat="server" MaxLength="40" Width="80%"></asp:TextBox>
                         <span class="SiftLight">(字數上限: 40 字)</span>
                         &nbsp;<asp:RequiredFieldValidator ID="rfv_tb_Help_Subject" runat="server" ControlToValidate="tb_Help_Subject"
                             Display="Dynamic" ErrorMessage="-&gt; 請填寫「主旨」！" ForeColor="Red" ValidationGroup="Add"></asp:RequiredFieldValidator>
@@ -376,7 +390,7 @@
                 <tr>
                     <td class="TableModifyTdHead">有圖有真相
                     </td>
-                    <td class="TableModifyTd">
+                    <td class="TableModifyTd" colspan="3">
                         <asp:FileUpload ID="fu_Pic" runat="server" />
                         <span class="SiftLight">(可一次上傳多筆, 檔案限制.jpg .png .docx .xlsx .pptx .pdf)</span>
                         <div>
@@ -416,20 +430,13 @@
                     <td class="TableModifyTdHead">
                         <em>(*)</em> 詳細說明
                     </td>
-                    <td class="TableModifyTd">
-                        <asp:TextBox ID="tb_Help_Content" runat="server" Width="90%" Rows="10" TextMode="MultiLine"
+                    <td class="TableModifyTd" colspan="3">
+                        <asp:TextBox ID="tb_Help_Content" runat="server" Width="90%" Rows="6" TextMode="MultiLine"
                             MaxLength="500" placeholder="請填寫「詳細說明」，愈詳細愈好！"></asp:TextBox>
                         <br />
                         <span class="SiftLight">(字數上限: 500 字)</span>
                         &nbsp;<asp:RequiredFieldValidator ID="rfv_tb_Help_Content" runat="server" ControlToValidate="tb_Help_Content"
                             Display="Dynamic" ErrorMessage="-&gt; 請填寫「詳細說明」，愈詳細愈好！" ForeColor="Red" ValidationGroup="Add"></asp:RequiredFieldValidator>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="TableModifyTdHead">處理狀態
-                    </td>
-                    <td class="TableModifyTd">
-                        <asp:Label ID="lb_Help_Status" runat="server" Text="資料新增中" CssClass="styleGraylight"></asp:Label>
                     </td>
                 </tr>
                 <!-- 主管同意欄 -->
@@ -443,8 +450,6 @@
                                 <asp:ListItem Value="Y">是</asp:ListItem>
                             </asp:RadioButtonList>
                         </td>
-                    </tr>
-                    <tr>
                         <td class="TableModifyTdHead">同意者/時間
                         </td>
                         <td class="TableModifyTd styleGreen">
@@ -464,7 +469,7 @@
             </tr>
             <tr>
                 <td class="TableModifyTdHead">通知名單</td>
-                <td class="TableModifyTd">
+                <td class="TableModifyTd" colspan="3">
                     <asp:PlaceHolder ID="ph_MailItem" runat="server">
                         <div>
                             <input type="button" id="showAll" class="btn btn-default" value="展開" />
@@ -515,14 +520,14 @@
                     <tr>
                         <td class="TableModifyTdHead" rowspan="2">附件
                         </td>
-                        <td class="TableModifyTd">
+                        <td class="TableModifyTd" colspan="3">
                             <table class="List1" width="100%">
                                 <tr>
-                                    <td style="width:60%">
+                                    <td style="width: 60%">
                                         <asp:FileUpload ID="fu_Pic_Reply" runat="server" />
                                         <span class="SiftLight">(可一次上傳多筆, 檔案限制.jpg .png .docx .xlsx .pptx .pdf) ----&gt; <b>***** 記得自行按上傳 *****</b></span>
                                     </td>
-                                    <td style="width:60%">
+                                    <td style="width: 60%">
                                         <asp:Button ID="btn_ReplyUpload" runat="server" Text="上傳檔案" OnClick="btn_ReplyUpload_Click" />
                                     </td>
                                 </tr>
@@ -530,7 +535,7 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="TableModifyTd">
+                        <td class="TableModifyTd" colspan="4">
                             <asp:ListView ID="lvDataList_Reply" runat="server" GroupPlaceholderID="ph_Group" ItemPlaceholderID="ph_Items"
                                 GroupItemCount="4" OnItemCommand="lvDataList_Reply_ItemCommand">
                                 <LayoutTemplate>
@@ -565,7 +570,7 @@
                     <tr>
                         <td class="TableModifyTdHead">處理工時
                         </td>
-                        <td class="TableModifyTd">
+                        <td class="TableModifyTd" colspan="3">
                             <asp:TextBox ID="tb_Reply_Hours"
                                 runat="server" MaxLength="4" Style="text-align: center;" type="number" step="0.5" min="0.5"></asp:TextBox>
                             hr(s)
@@ -577,8 +582,8 @@
                     <tr>
                         <td class="TableModifyTdHead">處理回覆
                         </td>
-                        <td class="TableModifyTd">
-                            <asp:TextBox ID="tb_Reply_Content" runat="server" Width="90%" Rows="7" TextMode="MultiLine"
+                        <td class="TableModifyTd" colspan="3">
+                            <asp:TextBox ID="tb_Reply_Content" runat="server" Width="90%" Rows="6" TextMode="MultiLine"
                                 MaxLength="500"></asp:TextBox>
                             <br />
                             <span class="SiftLight">(字數上限: 500 字)</span>
@@ -587,7 +592,7 @@
                     <tr>
                         <td class="TableModifyTdHead">回覆日期
                         </td>
-                        <td class="TableModifyTd">
+                        <td class="TableModifyTd" colspan="3">
                             <asp:TextBox ID="tb_Reply_Date" runat="server" Style="text-align: center" Width="80px"></asp:TextBox>
                         </td>
                     </tr>

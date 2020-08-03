@@ -158,6 +158,7 @@ public partial class IT_HelpEdit : SecurityIn
                         this.tb_Help_Subject.Text = DT.Rows[0]["Help_Subject"].ToString();
                         this.tb_Help_Content.Text = DT.Rows[0]["Help_Content"].ToString();
                         this.rbl_IsAgree.SelectedValue = DT.Rows[0]["IsAgree"].ToString();
+                        this.rbl_Help_Way.SelectedValue = DT.Rows[0]["Help_Way"].ToString();
 
                         //取得狀態
                         string helpStatus = DT.Rows[0]["Help_Status"].ToString();
@@ -596,10 +597,10 @@ public partial class IT_HelpEdit : SecurityIn
             SBSql.Clear();
             //[SQL] - 資料新增
             SBSql.AppendLine(" INSERT INTO IT_Help( ");
-            SBSql.AppendLine("  TraceID, Req_Class, Req_Who, Req_Dept, Help_Subject, Help_Content, Help_Status, IsAgent");
+            SBSql.AppendLine("  TraceID, Req_Class, Req_Who, Req_Dept, Help_Subject, Help_Content, Help_Status, IsAgent, Help_Way");
             SBSql.AppendLine("  , Create_Who, Create_Time");
             SBSql.AppendLine(" ) VALUES ( ");
-            SBSql.AppendLine("  @TraceID, @Req_Class, @Req_Who, @Req_Dept, @Help_Subject, @Help_Content, @Help_Status, @IsAgent");
+            SBSql.AppendLine("  @TraceID, @Req_Class, @Req_Who, @Req_Dept, @Help_Subject, @Help_Content, @Help_Status, @IsAgent, @Help_Way");
             SBSql.AppendLine("  , @Create_Who, GETDATE() ");
             SBSql.AppendLine(" )");
 
@@ -613,6 +614,7 @@ public partial class IT_HelpEdit : SecurityIn
             cmd.Parameters.AddWithValue("Help_Content", this.tb_Help_Content.Text);
             cmd.Parameters.AddWithValue("Help_Status", 9);  // IT_ParamClass, 待處理的ID = 9 (這是固定值)
             cmd.Parameters.AddWithValue("IsAgent", cb_IsAgent.Checked ? "Y" : "N");
+            cmd.Parameters.AddWithValue("Help_Way", rbl_Help_Way.SelectedValue);
             cmd.Parameters.AddWithValue("Create_Who", fn_Params.UserAccount);
             if (dbConn.ExecuteSql(cmd, out ErrMsg) == false)
             {
@@ -670,7 +672,7 @@ public partial class IT_HelpEdit : SecurityIn
             SBSql.AppendLine("  , Req_Who = @Req_Who, Req_Dept = @Req_Dept, Help_Subject = @Help_Subject, Help_Content = @Help_Content");
             SBSql.AppendLine("  , Reply_Hours = @Reply_Hours, Reply_Content = @Reply_Content, Reply_Date = @Reply_Date");
             SBSql.AppendLine("  , Update_Who = @Update_Who, Update_Time = GETDATE() ");
-            SBSql.AppendLine("  , IsAgree = @IsAgree");
+            SBSql.AppendLine("  , IsAgree = @IsAgree, Help_Way = @Help_Way");
 
             //主管
             if (this.rbl_IsAgree.SelectedValue.Equals("Y"))
@@ -693,6 +695,7 @@ public partial class IT_HelpEdit : SecurityIn
             cmd.Parameters.AddWithValue("Reply_Date", string.IsNullOrEmpty(this.tb_Reply_Date.Text) ? DBNull.Value : (Object)this.tb_Reply_Date.Text);
             cmd.Parameters.AddWithValue("Update_Who", fn_Params.UserAccount);
             cmd.Parameters.AddWithValue("IsAgree", this.rbl_IsAgree.SelectedValue);
+            cmd.Parameters.AddWithValue("Help_Way", rbl_Help_Way.SelectedValue);
             if (dbConn.ExecuteSql(cmd, out ErrMsg) == false)
             {
                 fn_Extensions.JsAlert("資料更新失敗！", "");
@@ -1121,6 +1124,7 @@ public partial class IT_HelpEdit : SecurityIn
     }
 
     #endregion -- 資料編輯 End --
+
 
     #region -- 其他功能 --
     /// <summary>
