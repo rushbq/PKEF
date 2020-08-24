@@ -192,11 +192,19 @@ public partial class IT_HelpEdit : SecurityIn
                             this.ph_Reply.Visible = true;
 
                             //填入回覆資料
+                            string _replyDate = DT.Rows[0]["Reply_Date"].ToString();
                             this.tb_Reply_Hours.Text = DT.Rows[0]["Reply_Hours"].ToString();
                             this.tb_Reply_Content.Text = DT.Rows[0]["Reply_Content"].ToString();
-                            this.tb_Reply_Date.Text = string.IsNullOrEmpty(DT.Rows[0]["Reply_Date"].ToString())
+                            this.tb_Reply_Date.Text = string.IsNullOrEmpty(_replyDate)
                                 ? DateTime.Today.ToShortDateString().ToDateString("yyyy/MM/dd")
-                                : DT.Rows[0]["Reply_Date"].ToString().ToDateString("yyyy/MM/dd");
+                                : _replyDate.ToDateString("yyyy/MM/dd");
+
+                            //處理完成時間
+                            string _finishTime = DT.Rows[0]["Finish_Time"].ToString();
+                            tb_Finish_Time.Text = string.IsNullOrEmpty(_finishTime)
+                                ? ""
+                                : _finishTime.ToDateString("yyyy-MM-ddTHH:mm"); //Html5格式
+
 
                             //判斷狀態, 顯示相關按鈕
                             switch (Help_Status)
@@ -553,7 +561,7 @@ public partial class IT_HelpEdit : SecurityIn
         //判斷是否為資訊代填(打勾)
         string _subject = "{0}{1}".FormatThis(
             cb_IsAgent.Checked ? "[資訊代填]" : ""
-            , fn_stringFormat.Filter_Html(this.tb_Help_Subject.Text));
+            , fn_stringFormat.Filter_Html(this.tb_Help_Subject.Text).Replace("+",""));
 
 
         //資料處理
@@ -670,7 +678,7 @@ public partial class IT_HelpEdit : SecurityIn
             SBSql.AppendLine(" UPDATE IT_Help ");
             SBSql.AppendLine(" SET Req_Class = @Req_Class ");
             SBSql.AppendLine("  , Req_Who = @Req_Who, Req_Dept = @Req_Dept, Help_Subject = @Help_Subject, Help_Content = @Help_Content");
-            SBSql.AppendLine("  , Reply_Hours = @Reply_Hours, Reply_Content = @Reply_Content, Reply_Date = @Reply_Date");
+            SBSql.AppendLine("  , Reply_Hours = @Reply_Hours, Reply_Content = @Reply_Content, Reply_Date = @Reply_Date, Finish_Time = @Finish_Time");
             SBSql.AppendLine("  , Update_Who = @Update_Who, Update_Time = GETDATE() ");
             SBSql.AppendLine("  , IsAgree = @IsAgree, Help_Way = @Help_Way");
 
@@ -693,6 +701,7 @@ public partial class IT_HelpEdit : SecurityIn
             cmd.Parameters.AddWithValue("Reply_Hours", string.IsNullOrEmpty(this.tb_Reply_Hours.Text) ? DBNull.Value : (Object)this.tb_Reply_Hours.Text);
             cmd.Parameters.AddWithValue("Reply_Content", this.tb_Reply_Content.Text);
             cmd.Parameters.AddWithValue("Reply_Date", string.IsNullOrEmpty(this.tb_Reply_Date.Text) ? DBNull.Value : (Object)this.tb_Reply_Date.Text);
+            cmd.Parameters.AddWithValue("Finish_Time", string.IsNullOrEmpty(this.tb_Finish_Time.Text) ? DBNull.Value : (Object)this.tb_Finish_Time.Text.ToString().ToDateString("yyyy/MM/dd HH:mm"));
             cmd.Parameters.AddWithValue("Update_Who", fn_Params.UserAccount);
             cmd.Parameters.AddWithValue("IsAgree", this.rbl_IsAgree.SelectedValue);
             cmd.Parameters.AddWithValue("Help_Way", rbl_Help_Way.SelectedValue);

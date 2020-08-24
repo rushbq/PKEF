@@ -116,6 +116,7 @@ public partial class IT_HelpView : SecurityIn
                         this.lt_Reply_Hours.Text = DT.Rows[0]["Reply_Hours"].ToString();
                         this.lt_Reply_Content.Text = DT.Rows[0]["Reply_Content"].ToString().Replace("\r", "<br/>");
                         this.lt_Reply_Date.Text = DT.Rows[0]["Reply_Date"].ToString().ToDateString("yyyy/MM/dd");
+                        lt_Finish_Time.Text = DT.Rows[0]["Finish_Time"].ToString().ToDateString("yyyy/MM/dd HH:mm");
                         this.lb_IsAgree.Text = DT.Rows[0]["IsAgree"].ToString();
 
                         //取得處理狀態
@@ -350,6 +351,9 @@ public partial class IT_HelpView : SecurityIn
 
             case "3":
                 return "電話";
+
+            case "4":
+                return "面談";
 
             default:
                 return "自行填寫";

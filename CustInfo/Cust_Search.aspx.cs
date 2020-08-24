@@ -88,7 +88,7 @@ public partial class Cust_Search : SecurityIn
             int TotalPage = 0;  //總頁數
 
             //[取得參數]
-            string Keyword = fn_stringFormat.Filter_Html(this.tb_Keyword.Text.Trim()).Replace("-", "");
+            string Keyword = fn_stringFormat.Filter_Html(this.tb_Keyword.Text.Trim());
             string Req_Area = fn_stringFormat.Filter_Html(this.ddl_Area.SelectedValue);   //地區別
             string Req_Country = fn_stringFormat.Filter_Html(this.ddl_Country.SelectedValue);   //國家別
 

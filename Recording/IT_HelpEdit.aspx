@@ -60,7 +60,7 @@
             });
 
             /* 日期選擇器 */
-            $("#tb_Reply_Date").datepicker({
+            $(".datepicker").datepicker({
                 showOn: "button",
                 buttonImage: "../images/System/IconCalendary6.png",
                 buttonImageOnly: true,
@@ -356,6 +356,7 @@
                             <asp:ListItem Value="1" Selected="True">自行填寫</asp:ListItem>
                             <asp:ListItem Value="2">即時通</asp:ListItem>
                             <asp:ListItem Value="3">電話</asp:ListItem>
+                            <asp:ListItem Value="4">面談</asp:ListItem>
                         </asp:RadioButtonList>
                     </td>
                 </tr>
@@ -570,7 +571,7 @@
                     <tr>
                         <td class="TableModifyTdHead">處理工時
                         </td>
-                        <td class="TableModifyTd" colspan="3">
+                        <td class="TableModifyTd">
                             <asp:TextBox ID="tb_Reply_Hours"
                                 runat="server" MaxLength="4" Style="text-align: center;" type="number" step="0.5" min="0.5"></asp:TextBox>
                             hr(s)
@@ -578,9 +579,14 @@
                                 Display="Dynamic" ErrorMessage="-&gt; 請輸入數字！" Operator="DataTypeCheck" Type="Double"
                                 ForeColor="Red"></asp:CompareValidator>
                         </td>
+                        <td class="TableModifyTdHead">處理完成時間
+                        </td>
+                        <td class="TableModifyTd">
+                            <asp:TextBox ID="tb_Finish_Time" runat="server" type="datetime-local"></asp:TextBox>
+                        </td>
                     </tr>
                     <tr>
-                        <td class="TableModifyTdHead">處理回覆
+                        <td class="TableModifyTdHead">處理說明
                         </td>
                         <td class="TableModifyTd" colspan="3">
                             <asp:TextBox ID="tb_Reply_Content" runat="server" Width="90%" Rows="6" TextMode="MultiLine"
@@ -593,7 +599,7 @@
                         <td class="TableModifyTdHead">回覆日期
                         </td>
                         <td class="TableModifyTd" colspan="3">
-                            <asp:TextBox ID="tb_Reply_Date" runat="server" Style="text-align: center" Width="80px"></asp:TextBox>
+                            <asp:TextBox ID="tb_Reply_Date" runat="server" CssClass="datepicker" Style="text-align: center" Width="80px"></asp:TextBox>
                         </td>
                     </tr>
                 </tbody>
@@ -611,14 +617,14 @@
                 <td class="TableModifyTd" colspan="3">
                     <table cellpadding="3" border="0">
                         <tr>
-                            <td align="right" width="100px">建立者：
+                            <td align="right" width="120px">建立者：
                             </td>
-                            <td class="styleGreen" width="200px">
+                            <td class="styleGreen" width="300px">
                                 <asp:Literal ID="lt_Create_Who" runat="server" Text="新增資料中"></asp:Literal>
                             </td>
-                            <td align="right" width="100px">建立時間：
+                            <td align="right" width="120px">建立時間：
                             </td>
-                            <td class="styleGreen" width="250px">
+                            <td class="styleGreen" width="300px">
                                 <asp:Literal ID="lt_Create_Time" runat="server" Text="新增資料中"></asp:Literal>
                             </td>
                         </tr>

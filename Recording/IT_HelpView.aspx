@@ -261,12 +261,17 @@
                 <tr>
                     <td class="TableModifyTdHead" style="min-height: 25px;">處理工時
                     </td>
-                    <td class="TableModifyTd" colspan="3">
+                    <td class="TableModifyTd">
                         <asp:Literal ID="lt_Reply_Hours" runat="server"></asp:Literal>
+                    </td>
+                    <td class="TableModifyTdHead" style="min-height: 25px;">處理完成時間
+                    </td>
+                    <td class="TableModifyTd">
+                        <asp:Literal ID="lt_Finish_Time" runat="server"></asp:Literal>
                     </td>
                 </tr>
                 <tr>
-                    <td class="TableModifyTdHead" style="min-height: 25px;">處理回覆
+                    <td class="TableModifyTdHead" style="min-height: 25px;">處理說明
                     </td>
                     <td class="TableModifyTd" colspan="3">
                         <asp:Literal ID="lt_Reply_Content" runat="server"></asp:Literal>
