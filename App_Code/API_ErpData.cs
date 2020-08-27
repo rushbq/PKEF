@@ -690,7 +690,6 @@ public class API_ERPData : System.Web.Services.WebService
     /// 新增資料至EDI (多筆)
     /// </summary>
     /// <param name="myDS">EDI欄位Table</param>
-    /// <param name="TokenID">token驗證ID</param>
     /// <param name="TestMode">是否為測試模式</param>
     /// <param name="ErrMsg"></param>
     /// <returns>bool</returns>
@@ -796,6 +795,106 @@ public class API_ERPData : System.Web.Services.WebService
         }
     }
 
+
+    /// <summary>
+    /// 新增資料至EDI (多筆)
+    /// </summary>
+    /// <param name="myDS">EDI欄位Table</param>
+    /// <param name="ErrMsg"></param>
+    /// <returns>bool</returns>
+    /// <remarks>
+    /// 適用:EF報價匯入
+    /// 
+    /// </remarks>
+    public bool InsertQuote(DataSet myDS, out string ErrMsg)
+    {
+        try
+        {
+            //[判斷參數] - 判斷是否有傳入值
+            if (myDS == null)
+            {
+                ErrMsg = "EDI欄位資料為空";
+                return false;
+            }
+
+            //將DataSet 轉 DataTable
+            DataTable myData = myDS.Tables["MyEDIQuoteTable"];
+
+            #region ** EDI資料新增 **
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                StringBuilder sbSQL = new StringBuilder();
+
+                //[SQL] - 清除參數
+                cmd.Parameters.Clear();
+
+                for (int row = 0; row < myData.Rows.Count; row++)
+                {
+                    sbSQL.Append("INSERT INTO EDIXA( ");
+                    sbSQL.Append("XA001, XA003, XA004, XA005, XA006, XA007, XA017");
+                    sbSQL.Append(", XA002, XA008, XA009, XA010");
+                    sbSQL.Append(", XA011, XA012, XA013, XA014, XA015, XA016, XA018");
+                    sbSQL.Append(", XA020, XA021, XA022, XA023, XA024, XA025, XA026");
+                    sbSQL.Append(", XA027, XA028, XA031, XA032, XA033, XA034");
+                    sbSQL.Append(", CREATE_DATE");
+                    sbSQL.Append(" ) VALUES ( ");
+                    sbSQL.Append("@XA001_{0}, @XA003, @XA004_{0}, NULL, @XA006_{0}, @XA007, @XA017".FormatThis(row));
+                    sbSQL.Append(", @XA002_{0}, @XA008_{0}, @XA009_{0}, @XA010_{0}".FormatThis(row));
+                    sbSQL.Append(", @XA011_{0}, @XA012_{0}, @XA013_{0}, @XA014_{0}, @XA015_{0}, @XA016_{0}, 0".FormatThis(row));
+                    sbSQL.Append(", @XA020_{0}, @XA021_{0}, @XA022_{0}, @XA023_{0}, @XA024_{0}, @XA025_{0}, @XA026_{0}".FormatThis(row));
+                    sbSQL.Append(", @XA027_{0}, @XA028_{0}, @XA031_{0}, @XA032_{0}, @XA033_{0}, @XA034_{0}".FormatThis(row));
+                    sbSQL.AppendLine(", @CREATE_DATE);".FormatThis(row));
+
+                    cmd.Parameters.AddWithValue("XA001_{0}".FormatThis(row), myData.Rows[row]["XA001"].ToString());
+                    cmd.Parameters.AddWithValue("XA002_{0}".FormatThis(row), myData.Rows[row]["XA002"].ToString());
+                    cmd.Parameters.AddWithValue("XA004_{0}".FormatThis(row), myData.Rows[row]["XA004"].ToString());
+                    cmd.Parameters.AddWithValue("XA006_{0}".FormatThis(row), myData.Rows[row]["XA006"].ToString());
+                    cmd.Parameters.AddWithValue("XA008_{0}".FormatThis(row), myData.Rows[row]["XA008"].ToString());
+                    cmd.Parameters.AddWithValue("XA009_{0}".FormatThis(row), myData.Rows[row]["XA009"].ToString());
+                    cmd.Parameters.AddWithValue("XA010_{0}".FormatThis(row), myData.Rows[row]["XA010"].ToString());
+                    cmd.Parameters.AddWithValue("XA011_{0}".FormatThis(row), myData.Rows[row]["XA011"].ToString());
+                    cmd.Parameters.AddWithValue("XA012_{0}".FormatThis(row), myData.Rows[row]["XA012"].ToString());
+                    cmd.Parameters.AddWithValue("XA013_{0}".FormatThis(row), myData.Rows[row]["XA013"].ToString());
+                    cmd.Parameters.AddWithValue("XA014_{0}".FormatThis(row), myData.Rows[row]["XA014"].ToString());
+                    cmd.Parameters.AddWithValue("XA015_{0}".FormatThis(row), myData.Rows[row]["XA015"].ToString());
+                    cmd.Parameters.AddWithValue("XA016_{0}".FormatThis(row), myData.Rows[row]["XA016"].ToString());
+
+                    cmd.Parameters.AddWithValue("XA020_{0}".FormatThis(row), myData.Rows[row]["XA020"].ToString());
+                    cmd.Parameters.AddWithValue("XA021_{0}".FormatThis(row), myData.Rows[row]["XA021"].ToString());
+                    cmd.Parameters.AddWithValue("XA022_{0}".FormatThis(row), myData.Rows[row]["XA022"].ToString());
+                    cmd.Parameters.AddWithValue("XA023_{0}".FormatThis(row), myData.Rows[row]["XA023"].ToString());
+                    cmd.Parameters.AddWithValue("XA024_{0}".FormatThis(row), myData.Rows[row]["XA024"].ToString());
+                    cmd.Parameters.AddWithValue("XA025_{0}".FormatThis(row), myData.Rows[row]["XA025"].ToString());
+                    cmd.Parameters.AddWithValue("XA026_{0}".FormatThis(row), myData.Rows[row]["XA026"].ToString());
+                    cmd.Parameters.AddWithValue("XA027_{0}".FormatThis(row), myData.Rows[row]["XA027"].ToString());
+                    cmd.Parameters.AddWithValue("XA028_{0}".FormatThis(row), myData.Rows[row]["XA028"].ToString());
+                    cmd.Parameters.AddWithValue("XA031_{0}".FormatThis(row), myData.Rows[row]["XA031"].ToString());
+                    cmd.Parameters.AddWithValue("XA032_{0}".FormatThis(row), myData.Rows[row]["XA032"].ToString());
+                    cmd.Parameters.AddWithValue("XA033_{0}".FormatThis(row), myData.Rows[row]["XA033"].ToString());
+
+                    string mySID = myData.Rows[row]["XA034"].ToString();
+                    cmd.Parameters.AddWithValue("XA034_{0}".FormatThis(row), string.IsNullOrWhiteSpace(mySID) ? "9999" : mySID);
+                }
+
+                //[SQL] - SQL Source
+                cmd.CommandText = sbSQL.ToString();
+                cmd.Parameters.AddWithValue("XA003", myData.Rows[0]["XA003"].ToString());
+                cmd.Parameters.AddWithValue("XA007", myData.Rows[0]["XA007"].ToString());
+                cmd.Parameters.AddWithValue("XA017", myData.Rows[0]["XA017"].ToString());
+                cmd.Parameters.AddWithValue("CREATE_DATE", DateTime.Now.ToString().ToDateString("yyyyMMdd"));
+
+                //[SQL] - 執行SQL
+                return dbConn.ExecuteSql(cmd, dbConn.DBS.ERP_DSCSYS, out ErrMsg);
+            }
+
+            #endregion
+        }
+        catch (Exception ex)
+        {
+            ErrMsg = "系統發生錯誤 - 資料無法寫入EDI(3)(WS);" + ex.Message.ToString();
+            return false;
+        }
+    }
 
     #endregion
 

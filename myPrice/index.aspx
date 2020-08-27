@@ -116,7 +116,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="bq-callout orange">
-                        <h4>價格比較表</h4>
+                        <h4>價格比較表&nbsp;<small>(報表中心)</small></h4>
                         <div class="btn-group btn-group-justified">
                             <a href="PriceCompare_Create.aspx" class="btn btn-warning">開&nbsp;始&nbsp;建&nbsp;立</a>
                         </div>

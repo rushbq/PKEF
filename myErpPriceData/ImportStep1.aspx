@@ -89,6 +89,7 @@
                 <div class="ui message">
                     <div class="header">注意事項</div>
                     <ul class="list">
+                        <li class="red-text text-darken-2"><h2>無分量計價導入功能</h2></li>
                         <li class="red-text text-darken-1"><strong>副檔名限制：.xlsx</strong></li>
                         <li>請注意Excel格式及欄位順序，若任意更改欄位位置，系統會抓不到正確的資料。</li>
                         <li>Excel不要留空白列。</li>

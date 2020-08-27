@@ -814,10 +814,10 @@ namespace ERP_PriceData.Controllers
                 sql.AppendLine("  , DT.ProdID AS XA026");
                 sql.AppendLine("  , '2' AS XA027");
                 sql.AppendLine("  , '1' AS XA028");
-                sql.AppendLine("  , '' AS XA031"); //與API對應,不可省略
-                sql.AppendLine("  , '' AS XA032"); //與API對應,不可省略
-                sql.AppendLine("  , '' AS XA033"); //與API對應,不可省略
-                sql.AppendLine("  , RIGHT(('000' + CAST(DT.Data_ID AS VARCHAR(4))), 4) AS XA034"); //自訂序號
+                sql.AppendLine("  , '' AS XA031"); /*與API對應,不可省略*/
+                sql.AppendLine("  , '' AS XA032"); /*與API對應,不可省略*/
+                sql.AppendLine("  , '' AS XA033"); /*與API對應,不可省略*/
+                sql.AppendLine("  , RIGHT(('000' + CAST(DT.Data_ID AS VARCHAR(4))), 4) AS XA034"); /*自訂序號*/
                 sql.AppendLine(" FROM ErpOrderPrice_ImportData Base");
                 sql.AppendLine("  INNER JOIN ErpOrderPrice_ImportData_DT DT ON Base.Data_ID = DT.Parent_ID");
                 sql.AppendLine("  INNER JOIN [PKSYS].dbo.Customer Cust ON Base.CustID = RTRIM(Cust.MA001) AND (Cust.DBS = Cust.DBC)");
@@ -881,15 +881,15 @@ namespace ERP_PriceData.Controllers
                                 using (DataTable myDT = query.CopyToDataTable())
                                 {
                                     //TableName不可修改(與API一致)
-                                    myDT.TableName = "MyEDITable";
+                                    myDT.TableName = "MyEDIQuoteTable";
                                     myDS.Tables.Add(myDT);
                                 }
 
                                 /*
                                  筆數過多會失敗, Http 有上限, 目前設定每 50 筆轉入
                                 */
-                                //回傳Webservice (API_ErpData)資料DataSet, Token, 測試模式(Y/N))
-                                if (false == EDI.Insert(myDS, "N", out ErrMsg))
+                                //回傳Webservice (API_ErpData)資料DataSet)
+                                if (false == EDI.InsertQuote(myDS, out ErrMsg))
                                 {
                                     myError += "列數:{0} ~ {1}發生錯誤...{2}\n".FormatThis(skipNum, skipNum + batchNum, ErrMsg);
                                 }
@@ -930,7 +930,7 @@ namespace ERP_PriceData.Controllers
         /// <param name="_dbs">TW/SH</param>
         /// <param name="ErrMsg"></param>
         /// <returns></returns>
-        public bool CheckJob1(string _parentID, string _custID,string _dbs, out string ErrMsg)
+        public bool CheckJob1(string _parentID, string _custID, string _dbs, out string ErrMsg)
         {
             try
             {
@@ -1039,7 +1039,7 @@ namespace ERP_PriceData.Controllers
                     //----- SQL 查詢語法 -----
                     //將未取得品號的原因寫入(job1~2)
                     sql.AppendLine(" UPDATE ErpOrderPrice_ImportData_DT SET doWhat = ProdID + ',無法取得寶工品號,請檢查ERP客戶品號及產品中心' WHERE (Parent_ID = @ParentID) AND (IsPass = 'N');");
-                    
+
                     ////將已通過檢查的項目設為 E(檢查中) --後續無其他檢查
                     //sql.AppendLine(" UPDATE ErpOrderPrice_ImportData_DT SET IsPass = 'E' WHERE (Parent_ID = @ParentID) AND (IsPass = 'Y');");
 
