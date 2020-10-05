@@ -181,7 +181,7 @@ namespace SH_Invoice.Controllers
                 sql.AppendLine("   , (SELECT Account_Name + ' (' + Display_Name + ')' FROM PKSYS.dbo.User_Profile WHERE (Guid = Base.Update_Who COLLATE Chinese_Taiwan_Stroke_CI_AS)) AS Update_Name");
                 //發票系統已回寫,可UPDATE發票資料
                 sql.AppendLine("   , (SELECT COUNT(*) FROM [SHInvoice].dbo.HTJS_DJXX_HT InvRel WHERE (InvRel.DJBH = Base.Inv_UID)) AS IsRel");
-                sql.AppendLine("   , (SELECT GHFMC FROM [SHInvoice].dbo.HTJS_DJXX_WKP WHERE (DJBH = Base.Inv_UID)) AS vendeename");
+                sql.AppendLine("   , (SELECT TOP 1 GHFMC FROM [SHInvoice].dbo.HTJS_DJXX_WKP WHERE (DJBH = Base.Inv_UID)) AS vendeename");
                 sql.AppendLine(" FROM [SHInvoice].dbo.SH_Invoice_BW Base");
                 sql.AppendLine(" WHERE (1 = 1) ");
 

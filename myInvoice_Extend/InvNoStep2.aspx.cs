@@ -120,7 +120,7 @@ public partial class myInvoice_Extend_InvNoStep2 : SecurityIn
         {
             //----- 原始資料:取得所有資料 -----
             var query = _data.GetErpUnBilledData(compID, custID, startDate, endDate, out ErrMsg);
-
+   
             //----- 資料整理:繫結 ----- 
             lvDataList.DataSource = query;
             lvDataList.DataBind();

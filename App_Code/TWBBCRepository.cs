@@ -473,22 +473,25 @@ namespace TW_BBC.Controllers
                 //資料迴圈
                 foreach (var val in queryVals)
                 {
-                    _ProdID = val[0];
-                    _BuyCnt = Convert.ToInt32(val[1]);
-                    _BuyPrice = Convert.ToDouble(val[2]);
-
-                    if (!string.IsNullOrWhiteSpace(_ProdID))
+                    if (!string.IsNullOrWhiteSpace(val[0]))
                     {
-                        //加入項目
-                        var data = new ImportDataDT
-                        {
-                            ProdID = _ProdID,
-                            BuyCnt = _BuyCnt,
-                            BuyPrice = _BuyPrice
-                        };
+                        _ProdID = val[0];
+                        _BuyCnt = Convert.ToInt32(val[1]);
+                        _BuyPrice = Convert.ToDouble(val[2]);
 
-                        //將項目加入至集合
-                        dataList.Add(data);
+                        if (!string.IsNullOrWhiteSpace(_ProdID))
+                        {
+                            //加入項目
+                            var data = new ImportDataDT
+                            {
+                                ProdID = _ProdID,
+                                BuyCnt = _BuyCnt,
+                                BuyPrice = _BuyPrice
+                            };
+
+                            //將項目加入至集合
+                            dataList.Add(data);
+                        }
                     }
 
                 }

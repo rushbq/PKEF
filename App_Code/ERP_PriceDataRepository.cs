@@ -789,7 +789,7 @@ namespace ERP_PriceData.Controllers
             {
                 //----- SQL 查詢語法 -----
                 sql.AppendLine(" SELECT");
-                sql.AppendLine("  Corp.DB_Name AS XA001");
+                sql.AppendLine("  Corp.Corp_ID AS XA001");
                 sql.AppendLine("  , '3' AS XA002  /*固定為報價單(3)*/");
                 sql.AppendLine("  , Base.OrderType AS XA003");
                 sql.AppendLine("  , ISNULL(Base.OrderNo, '') AS XA004");

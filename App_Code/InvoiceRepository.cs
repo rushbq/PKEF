@@ -204,7 +204,7 @@ namespace Invoice.Controllers
                 //不可與開票中繼檔的資料重複(SZ:航天 / SH:百旺)
                 sql.AppendLine(" WHERE (LEN(TblBase.Erp_SO_ID) >= 1)");
 
-                if (_dbs.Equals("SH"))
+                if (compID.Equals("SH"))
                 {
                     sql.AppendLine("  AND TblBase.Erp_SO_ID NOT IN (");
                     sql.AppendLine("     SELECT DT.Erp_SO_ID COLLATE Chinese_Taiwan_Stroke_BIN");
