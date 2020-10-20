@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using System.Data;
 using System.Data.SqlClient;
 using System.Text;
+using System.Web;
+using System.Web.UI.WebControls;
 using ExtensionMethods;
 
 public partial class Dept_Search : SecurityIn
@@ -114,7 +111,7 @@ public partial class Dept_Search : SecurityIn
         try
         {
             //[參數宣告] - 設定本頁Url
-            this.ViewState["Page_LinkStr"] = Application["WebUrl"] + "TargetSet/Dept_Search.aspx?func=set";
+            this.ViewState["Page_LinkStr"] = Application["WebUrl"] + "TargetSet/Dept_Search.aspx?t=" + Param_Type;
 
             //[參數宣告] - 筆數/分頁設定
             int PageSize = 20;  //每頁筆數
@@ -147,7 +144,7 @@ public partial class Dept_Search : SecurityIn
             SBSql.AppendLine("    FROM Target_Dept TarData ");
             SBSql.AppendLine("      INNER JOIN PKSYS.dbo.Shipping ON TarData.ShipFrom = Shipping.SID ");
             SBSql.AppendLine("      INNER JOIN PKSYS.dbo.User_Dept ON TarData.DeptID = User_Dept.DeptID ");
-            SBSql.AppendLine("    WHERE (1 = 1) ");
+            SBSql.AppendLine("    WHERE (TargetType = @TargetType) ");
 
             #region "查詢條件"
             //[查詢條件] - 出貨地
@@ -176,12 +173,15 @@ public partial class Dept_Search : SecurityIn
             }
 
             #endregion
+
             SBSql.AppendLine("    GROUP BY Shipping.SName, User_Dept.DeptName, TarData.ShipFrom, TarData.DeptID, TarData.SetYear ");
             SBSql.AppendLine(" ) AS TBL ");
             SBSql.AppendLine(" WHERE (RowRank >= @BG_ITEM) AND (RowRank <= @ED_ITEM)");
             SBSql.AppendLine(" ORDER BY RowRank ");
+
             //[SQL] - Command
             cmd.CommandText = SBSql.ToString();
+            cmd.Parameters.AddWithValue("TargetType", Param_Type);
             cmd.Parameters.AddWithValue("BG_ITEM", BgItem);
             cmd.Parameters.AddWithValue("ED_ITEM", EdItem);
 
@@ -193,7 +193,8 @@ public partial class Dept_Search : SecurityIn
             SBSql.AppendLine("  FROM Target_Dept TarData ");
             SBSql.AppendLine("      INNER JOIN PKSYS.dbo.Shipping ON TarData.ShipFrom = Shipping.SID ");
             SBSql.AppendLine("      INNER JOIN PKSYS.dbo.User_Dept ON TarData.DeptID = User_Dept.DeptID ");
-            SBSql.AppendLine("  WHERE (1 = 1) ");
+            SBSql.AppendLine("  WHERE (TargetType = @TargetType) ");
+
             #region "查詢條件"
             //[查詢條件] - 出貨地
             if (false == string.IsNullOrEmpty(ShipFrom))
@@ -217,8 +218,11 @@ public partial class Dept_Search : SecurityIn
 
             SBSql.AppendLine("  GROUP BY TarData.ShipFrom, TarData.DeptID, TarData.SetYear");
             SBSql.AppendLine(" ) AS TblCnt ");
+
             //[SQL] - Command
             cmdTotalCnt.CommandText = SBSql.ToString();
+            cmdTotalCnt.Parameters.AddWithValue("TargetType", Param_Type);
+
             //[SQL] - 取得資料
             using (DataTable DT = dbConn.LookupDTwithPage(cmd, cmdTotalCnt, dbConn.DBS.EFLocal, out TotalCnt, out ErrMsg))
             {
@@ -324,6 +328,7 @@ public partial class Dept_Search : SecurityIn
                 this.ViewState["page"] = page;
                 //暫存目前Url
                 Session["BackListUrl"] = this.ViewState["Page_LinkStr"] + "&page=" + page;
+
                 //DataBind            
                 this.lvDataList.DataSource = DT.DefaultView;
                 this.lvDataList.DataBind();
@@ -386,7 +391,13 @@ public partial class Dept_Search : SecurityIn
 
     #endregion
 
+
     #region -- 前端頁面控制 --
+    protected void btn_New_Click(object sender, EventArgs e)
+    {
+        Response.Redirect("Dept_Edit.aspx?t=" + Param_Type);
+    }
+
     //分頁跳轉
     protected void ddl_Page_List_SelectedIndexChanged(object sender, System.EventArgs e)
     {
@@ -399,7 +410,7 @@ public partial class Dept_Search : SecurityIn
         try
         {
             StringBuilder SBUrl = new StringBuilder();
-            SBUrl.Append("Dept_Search.aspx?func=set");
+            SBUrl.Append("Dept_Search.aspx?t=" + Param_Type);
 
             //[查詢條件] - 出貨地
             if (this.ddl_ShipFrom.SelectedIndex > 0)
@@ -437,5 +448,32 @@ public partial class Dept_Search : SecurityIn
             , strVal);
     }
     #endregion
+
+
+    /// <summary>
+    /// 取得傳遞參數 - Tab ID
+    /// </summary>
+    private string _Param_Type;
+    public string Param_Type
+    {
+        get
+        {
+            string _id = Request.QueryString["t"];
+            string _checkID = _id;
+
+            //若為空值,帶預設值
+            if (string.IsNullOrWhiteSpace(_id) || _id.Equals("0"))
+            {
+                _checkID = "1";
+            }
+
+            return _checkID;
+
+        }
+        set
+        {
+            this._Param_Type = value;
+        }
+    }
 
 }

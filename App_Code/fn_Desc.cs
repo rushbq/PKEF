@@ -8,6 +8,26 @@ using System.Web;
 /// </summary>
 public class fn_Desc
 {
+    public static string TargetTypeDesc(string type)
+    {
+        if (string.IsNullOrEmpty(type))
+        {
+            return "";
+        }
+        else
+        {
+            switch (type)
+            {
+                case "1":
+                    return "工具";
+                case "2":
+                    return "玩具";
+                default:
+                    return "";
+            }
+        }
+    }
+
     /// <summary>
     /// 問卷 & 投票
     /// </summary>
@@ -69,8 +89,7 @@ public class fn_Desc
             }
         }
     }
-
-
+    
     /// <summary>
     /// 共用類
     /// </summary>
@@ -245,4 +264,5 @@ public class fn_Desc
             }
         }
     }
+
 }

@@ -1,15 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Data;
+using System.Data.SqlClient;
+using System.Text;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using System.Data;
-using System.Text;
 using ExtensionMethods;
-using System.Data.SqlClient;
-using System.Text.RegularExpressions;
-using System.Collections;
 
 public partial class Dept_Edit : SecurityIn
 {
@@ -30,7 +26,7 @@ public partial class Dept_Edit : SecurityIn
 
                 //判斷是否有上一頁暫存參數
                 if (Session["BackListUrl"] == null)
-                    Session["BackListUrl"] = Application["WebUrl"] + "TargetSet/Dept_Search.aspx";
+                    Session["BackListUrl"] = Application["WebUrl"] + "TargetSet/Dept_Search.aspx?t=" + Param_Type;
 
                 //[按鈕] - 加入BlockUI
                 this.btn_Save.Attributes["onclick"] = fn_Extensions.BlockJs(
@@ -192,7 +188,7 @@ public partial class Dept_Edit : SecurityIn
             using (SqlCommand cmd = new SqlCommand())
             {
                 StringBuilder SBSql = new StringBuilder();
-                SBSql.AppendLine(" SELECT UID, ShipFrom, DeptID, SetYear, SetMonth");
+                SBSql.AppendLine(" SELECT UID, ShipFrom, DeptID, SetYear, SetMonth, TargetType");
                 SBSql.AppendLine("  , Amount_NTD, Amount_USD, Amount_RMB, OrdAmount_NTD, OrdAmount_USD, OrdAmount_RMB, ChAmount_NTD, ChAmount_USD, ChAmount_RMB");
                 SBSql.AppendLine("  , StartTime, EndTime");
                 SBSql.AppendLine(" FROM Target_Dept ");
@@ -260,13 +256,14 @@ public partial class Dept_Edit : SecurityIn
                 SBSql.AppendLine("  , OrdAmount_NTD, OrdAmount_USD, OrdAmount_RMB");
                 SBSql.AppendLine("  , ChAmount_NTD, ChAmount_USD, ChAmount_RMB");
                 SBSql.AppendLine(" FROM Target_Dept ");
-                SBSql.AppendLine(" WHERE (DeptID = @DeptID) AND (SetYear = @SetYear) ");
+                SBSql.AppendLine(" WHERE (DeptID = @DeptID) AND (SetYear = @SetYear) AND (TargetType = @TargetType) ");
                 SBSql.AppendLine("  AND (ShipFrom IN (SELECT TOP 1 AREA FROM PKSYS.dbo.User_Dept WHERE (DeptID = Target_Dept.DeptID)))");
                 SBSql.AppendLine(" ORDER BY SetMonth ");
                 cmd.CommandText = SBSql.ToString();
                 cmd.Parameters.Clear();
                 cmd.Parameters.AddWithValue("DeptID", this.ddl_Dept.SelectedValue);
                 cmd.Parameters.AddWithValue("SetYear", this.ddl_Year.SelectedValue);
+                cmd.Parameters.AddWithValue("TargetType", Param_Type);
                 using (DataTable DT = dbConn.LookupDT(cmd, dbConn.DBS.EFLocal, out ErrMsg))
                 {
                     //DataBind            
@@ -356,13 +353,14 @@ public partial class Dept_Edit : SecurityIn
                 SBSql.AppendLine("  , OrdAmount_NTD, OrdAmount_USD, OrdAmount_RMB");
                 SBSql.AppendLine("  , ChAmount_NTD, ChAmount_USD, ChAmount_RMB");
                 SBSql.AppendLine(" FROM Target_Dept ");
-                SBSql.AppendLine(" WHERE (DeptID = @DeptID) AND (SetYear = @SetYear) ");
+                SBSql.AppendLine(" WHERE (DeptID = @DeptID) AND (SetYear = @SetYear) AND (TargetType = @TargetType)");
                 SBSql.AppendLine("  AND (ShipFrom IN (SELECT TOP 1 AREA FROM PKSYS.dbo.User_Dept WHERE (DeptID = Target_Dept.DeptID)))");
                 SBSql.AppendLine(" ORDER BY SetMonth ");
                 cmd.CommandText = SBSql.ToString();
                 cmd.Parameters.Clear();
                 cmd.Parameters.AddWithValue("DeptID", this.ddl_Dept.SelectedValue);
                 cmd.Parameters.AddWithValue("SetYear", Convert.ToInt16(this.ddl_Year.SelectedValue) - 1);
+                cmd.Parameters.AddWithValue("TargetType", Param_Type);
                 using (DataTable DT = dbConn.LookupDT(cmd, dbConn.DBS.EFLocal, out ErrMsg))
                 {
                     //DataBind            
@@ -494,12 +492,13 @@ public partial class Dept_Edit : SecurityIn
 
             //--- 判斷資料重複 ---
             SBSql.AppendLine(" SELECT COUNT(*) AS CheckNum FROM Target_Dept ");
-            SBSql.AppendLine(" WHERE (ShipFrom = @ShipFrom) AND (DeptID = @DeptID) AND (SetYear = @SetYear) AND (SetMonth = @SetMonth) ");
+            SBSql.AppendLine(" WHERE (ShipFrom = @ShipFrom) AND (DeptID = @DeptID) AND (SetYear = @SetYear) AND (SetMonth = @SetMonth) AND (TargetType = @TargetType) ");
             cmd.CommandText = SBSql.ToString();
             cmd.Parameters.AddWithValue("ShipFrom", getShipFrom);
             cmd.Parameters.AddWithValue("DeptID", this.ddl_Dept.SelectedValue);
             cmd.Parameters.AddWithValue("SetYear", this.ddl_Year.SelectedValue);
             cmd.Parameters.AddWithValue("SetMonth", this.ddl_Mon.SelectedValue);
+            cmd.Parameters.AddWithValue("TargetType", Param_Type);
             using (DataTable DT = dbConn.LookupDT(cmd, dbConn.DBS.EFLocal, out ErrMsg))
             {
                 if (Convert.ToInt32(DT.Rows[0]["CheckNum"]) > 0)
@@ -530,14 +529,14 @@ public partial class Dept_Edit : SecurityIn
             //--- 開始新增資料 ---
             //[SQL] - 資料新增
             SBSql.AppendLine(" INSERT INTO Target_Dept( ");
-            SBSql.AppendLine("  UID, ShipFrom, DeptID, SetYear, SetMonth");
+            SBSql.AppendLine("  UID, ShipFrom, TargetType, DeptID, SetYear, SetMonth");
             SBSql.AppendLine("  , Amount_NTD, Amount_USD, Amount_RMB");
             SBSql.AppendLine("  , OrdAmount_NTD, OrdAmount_USD, OrdAmount_RMB");
             SBSql.AppendLine("  , ChAmount_NTD, ChAmount_USD, ChAmount_RMB");
             SBSql.AppendLine("  , StartTime, EndTime");
             SBSql.AppendLine("  , Create_Who, Create_Time");
             SBSql.AppendLine(" ) VALUES ( ");
-            SBSql.AppendLine("  @New_ID, @ShipFrom, @DeptID, @SetYear, @SetMonth");
+            SBSql.AppendLine("  @New_ID, @ShipFrom, @TargetType, @DeptID, @SetYear, @SetMonth");
             SBSql.AppendLine("  , @Amount_NTD, @Amount_USD, @Amount_RMB");
             SBSql.AppendLine("  , @OrdAmount_NTD, @OrdAmount_USD, @OrdAmount_RMB");
             SBSql.AppendLine("  , @ChAmount_NTD, @ChAmount_USD, @ChAmount_RMB");
@@ -549,6 +548,7 @@ public partial class Dept_Edit : SecurityIn
             cmd.CommandText = SBSql.ToString();
             cmd.Parameters.AddWithValue("New_ID", New_ID);
             cmd.Parameters.AddWithValue("ShipFrom", getShipFrom);
+            cmd.Parameters.AddWithValue("TargetType", Param_Type);
             cmd.Parameters.AddWithValue("DeptID", this.ddl_Dept.SelectedValue);
             cmd.Parameters.AddWithValue("SetYear", this.ddl_Year.SelectedValue);
             cmd.Parameters.AddWithValue("SetMonth", this.ddl_Mon.SelectedValue);
@@ -583,9 +583,9 @@ public partial class Dept_Edit : SecurityIn
                 {
                     //傳送參數 - 目前年月/出貨地/部門
                     string NextUrl =
-                         "Dept_Edit.aspx?PrevDate=" + Server.UrlEncode(string.Format("{0}/{1}", this.ddl_Year.SelectedValue, this.ddl_Mon.SelectedValue))
+                         "Dept_Edit.aspx?t=" + Param_Type + "&PrevDate=" + Server.UrlEncode(string.Format("{0}/{1}", this.ddl_Year.SelectedValue, this.ddl_Mon.SelectedValue))
                          + "&DeptID=" + Server.UrlEncode(this.ddl_Dept.SelectedValue);
-                    string CurrUrl = "Dept_Edit.aspx?EditID=" + Server.UrlEncode(Cryptograph.Encrypt(New_ID.ToString()));
+                    string CurrUrl = "Dept_Edit.aspx?t=" + Param_Type + "&EditID=" + Server.UrlEncode(Cryptograph.Encrypt(New_ID.ToString()));
                     string js = "if(confirm('資料新增成功！\\n是否要繼續新增下一個月')){location.href='" + NextUrl + "';} else {location.href='" + CurrUrl + "';}";
                     ScriptManager.RegisterClientScriptBlock((Page)HttpContext.Current.Handler, typeof(string), "js", js, true);
                     return;
@@ -625,13 +625,14 @@ public partial class Dept_Edit : SecurityIn
 
             SBSql.AppendLine(" SELECT COUNT(*) AS CheckNum FROM Target_Dept ");
             SBSql.AppendLine(" WHERE (UID <> @UID)");
-            SBSql.AppendLine("   AND (ShipFrom = @ShipFrom) AND (DeptID = @DeptID) AND (SetYear = @SetYear) AND (SetMonth = @SetMonth)");
+            SBSql.AppendLine("   AND (ShipFrom = @ShipFrom) AND (DeptID = @DeptID) AND (SetYear = @SetYear) AND (SetMonth = @SetMonth) AND (TargetType = @TargetType)");
             cmd.CommandText = SBSql.ToString();
             cmd.Parameters.AddWithValue("UID", this.hf_UID.Value);
             cmd.Parameters.AddWithValue("ShipFrom", getShipFrom);
             cmd.Parameters.AddWithValue("DeptID", this.ddl_Dept.SelectedValue);
             cmd.Parameters.AddWithValue("SetYear", this.ddl_Year.SelectedValue);
             cmd.Parameters.AddWithValue("SetMonth", this.ddl_Mon.SelectedValue);
+            cmd.Parameters.AddWithValue("TargetType", Param_Type);
             using (DataTable DT = dbConn.LookupDT(cmd, dbConn.DBS.EFLocal, out ErrMsg))
             {
                 if (Convert.ToInt32(DT.Rows[0]["CheckNum"]) > 0)
@@ -744,8 +745,10 @@ public partial class Dept_Edit : SecurityIn
     {
         get
         {
-            return string.Format(@"Dept_Edit.aspx?EditID={0}"
-                , string.IsNullOrEmpty(Param_thisID) ? "" : HttpUtility.UrlEncode(Cryptograph.Encrypt(Param_thisID)));
+            return string.Format(@"Dept_Edit.aspx?t={1}&EditID={0}"
+                , string.IsNullOrEmpty(Param_thisID) ? "" : HttpUtility.UrlEncode(Cryptograph.Encrypt(Param_thisID))
+                , Param_Type
+                );
         }
         set
         {
@@ -759,7 +762,7 @@ public partial class Dept_Edit : SecurityIn
         get
         {
             string Url =
-                      "Dept_Edit.aspx?SetYear=" + Server.UrlEncode(this.ddl_Year.SelectedValue)
+                      "Dept_Edit.aspx?t=" + Param_Type + "&SetYear=" + Server.UrlEncode(this.ddl_Year.SelectedValue)
                       + "&DeptID=" + Server.UrlEncode(this.ddl_Dept.SelectedValue);
             return Url;
         }
@@ -894,4 +897,30 @@ public partial class Dept_Edit : SecurityIn
     }
     #endregion
 
+
+    /// <summary>
+    /// 取得傳遞參數 - Tab ID
+    /// </summary>
+    private string _Param_Type;
+    public string Param_Type
+    {
+        get
+        {
+            string _id = Request.QueryString["t"];
+            string _checkID = _id;
+
+            //若為空值,帶預設值
+            if (string.IsNullOrWhiteSpace(_id) || _id.Equals("0"))
+            {
+                _checkID = "1";
+            }
+
+            return _checkID;
+
+        }
+        set
+        {
+            this._Param_Type = value;
+        }
+    }
 }

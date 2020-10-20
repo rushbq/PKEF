@@ -24,6 +24,34 @@ namespace ExtensionUI
     {
         private static string ErrMsg;
 
+
+        #region -- 目標設定 --
+
+        /// <summary>
+        /// 產生Tab Html
+        /// </summary>
+        /// <param name="typeID">目前的ID</param>
+        /// <param name="url">目標網址</param>
+        /// <returns></returns>
+        public static string GetTabHtml(string typeID, string url)
+        {
+            StringBuilder html = new StringBuilder();
+
+            html.Append("<ul>");
+            html.Append("<li class=\"{0}\"><a href=\"{1}?t=1\">工具</a></li>".FormatThis(
+                        typeID.Equals("1") ? "TabAc" : ""
+                        , url
+                    ));
+            html.Append("<li class=\"{0}\"><a href=\"{1}?t=2\">玩具</a></li>".FormatThis(
+                        typeID.Equals("2") ? "TabAc" : ""
+                        , url
+                    ));
+            html.Append("</ul>");
+
+            return html.ToString();
+        }
+        #endregion
+
         #region -- EXCEL匯出 --
 
         public static void ExportExcel(DataTable DT, string fileName)
@@ -102,7 +130,7 @@ namespace ExtensionUI
                 memoryStream.WriteTo(httpResponse.OutputStream);
                 memoryStream.Close();
             }
-            
+
             httpResponse.End();
         }
 
@@ -179,7 +207,7 @@ namespace ExtensionUI
             }
             return info.ToString();
         }
-        
+
         #endregion
 
         #region -- 資訊需求 --

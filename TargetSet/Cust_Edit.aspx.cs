@@ -31,12 +31,12 @@ public partial class Cust_Edit : SecurityIn
                 if (fn_CheckAuth.CheckAuth_User("121", out ErrMsg) == false
                     && fn_CheckAuth.CheckAuth_User("122", out ErrMsg))
                 {
-                    this.ViewState["AcParam"] = "?f=userSet";
+                    this.ViewState["AcParam"] = "?t=" + Param_Type;
                 }
 
                 //判斷是否有上一頁暫存參數
                 if (Session["BackListUrl"] == null)
-                    Session["BackListUrl"] = Application["WebUrl"] + "TargetSet/Cust_Search.aspx";
+                    Session["BackListUrl"] = Application["WebUrl"] + "TargetSet/Cust_Search.aspx?t=" + Param_Type;
 
                 //[按鈕] - 加入BlockUI
                 this.btn_Save.Attributes["onclick"] = fn_Extensions.BlockJs(
@@ -239,13 +239,14 @@ public partial class Cust_Edit : SecurityIn
                 SBSql.AppendLine("  , Amount_NTD, Amount_USD, Amount_RMB");
                 SBSql.AppendLine("  , OrdAmount_NTD, OrdAmount_USD, OrdAmount_RMB");
                 SBSql.AppendLine(" FROM Target_Customer ");
-                SBSql.AppendLine(" WHERE (ShipFrom = @ShipFrom) AND (CustID = @CustID) AND (SetYear = @SetYear) ");
+                SBSql.AppendLine(" WHERE (ShipFrom = @ShipFrom) AND (CustID = @CustID) AND (SetYear = @SetYear) AND (TargetType = @TargetType)");
                 SBSql.AppendLine(" ORDER BY SetMonth ");
                 cmd.CommandText = SBSql.ToString();
                 cmd.Parameters.Clear();
                 cmd.Parameters.AddWithValue("ShipFrom", this.ddl_ShipFrom.SelectedValue);
                 cmd.Parameters.AddWithValue("CustID", this.tb_CustID.Text);
                 cmd.Parameters.AddWithValue("SetYear", this.ddl_Year.SelectedValue);
+                cmd.Parameters.AddWithValue("TargetType", Param_Type);
                 using (DataTable DT = dbConn.LookupDT(cmd, dbConn.DBS.EFLocal, out ErrMsg))
                 {
                     //DataBind            
@@ -335,13 +336,14 @@ public partial class Cust_Edit : SecurityIn
                 SBSql.AppendLine("  , Amount_NTD, Amount_USD, Amount_RMB");
                 SBSql.AppendLine("  , OrdAmount_NTD, OrdAmount_USD, OrdAmount_RMB");
                 SBSql.AppendLine(" FROM Target_Customer ");
-                SBSql.AppendLine(" WHERE (ShipFrom = @ShipFrom) AND (CustID = @CustID) AND (SetYear = @SetYear) ");
+                SBSql.AppendLine(" WHERE (ShipFrom = @ShipFrom) AND (CustID = @CustID) AND (SetYear = @SetYear) AND (TargetType = @TargetType)");
                 SBSql.AppendLine(" ORDER BY SetMonth ");
                 cmd.CommandText = SBSql.ToString();
                 cmd.Parameters.Clear();
                 cmd.Parameters.AddWithValue("ShipFrom", this.ddl_ShipFrom.SelectedValue);
                 cmd.Parameters.AddWithValue("CustID", this.tb_CustID.Text);
                 cmd.Parameters.AddWithValue("SetYear", Convert.ToInt16(this.ddl_Year.SelectedValue) - 1);
+                cmd.Parameters.AddWithValue("TargetType", Param_Type);
                 using (DataTable DT = dbConn.LookupDT(cmd, dbConn.DBS.EFLocal, out ErrMsg))
                 {
                     //DataBind            
@@ -456,12 +458,13 @@ public partial class Cust_Edit : SecurityIn
             //[SQL] - 資料判斷
             StringBuilder SBSql = new StringBuilder();
             SBSql.AppendLine(" SELECT COUNT(*) AS CheckNum FROM Target_Customer ");
-            SBSql.AppendLine(" WHERE (ShipFrom = @ShipFrom) AND (CustID = @CustID) AND (SetYear = @SetYear) AND (SetMonth = @SetMonth) ");
+            SBSql.AppendLine(" WHERE (ShipFrom = @ShipFrom) AND (CustID = @CustID) AND (SetYear = @SetYear) AND (SetMonth = @SetMonth) AND (TargetType = @TargetType)");
             cmd.CommandText = SBSql.ToString();
             cmd.Parameters.AddWithValue("ShipFrom", this.ddl_ShipFrom.SelectedValue);
             cmd.Parameters.AddWithValue("CustID", this.tb_CustID.Text);
             cmd.Parameters.AddWithValue("SetYear", this.ddl_Year.SelectedValue);
             cmd.Parameters.AddWithValue("SetMonth", this.ddl_Mon.SelectedValue);
+            cmd.Parameters.AddWithValue("TargetType", Param_Type);
             using (DataTable DT = dbConn.LookupDT(cmd, dbConn.DBS.EFLocal, out ErrMsg))
             {
                 if (Convert.ToInt32(DT.Rows[0]["CheckNum"]) > 0)
@@ -490,12 +493,12 @@ public partial class Cust_Edit : SecurityIn
             SBSql.Clear();
             //[SQL] - 資料新增
             SBSql.AppendLine(" INSERT INTO Target_Customer( ");
-            SBSql.AppendLine("  UID, ShipFrom, CustID, SetYear, SetMonth");
+            SBSql.AppendLine("  UID, ShipFrom, TargetType, CustID, SetYear, SetMonth");
             SBSql.AppendLine("  , Amount_NTD, Amount_USD, Amount_RMB");
             SBSql.AppendLine("  , OrdAmount_NTD, OrdAmount_USD, OrdAmount_RMB");
             SBSql.AppendLine("  , Create_Who, Create_Time");
             SBSql.AppendLine(" ) VALUES ( ");
-            SBSql.AppendLine("  @New_ID, @ShipFrom, @CustID, @SetYear, @SetMonth");
+            SBSql.AppendLine("  @New_ID, @ShipFrom, @TargetType, @CustID, @SetYear, @SetMonth");
             SBSql.AppendLine("  , @Amount_NTD, @Amount_USD, @Amount_RMB");
             SBSql.AppendLine("  , @OrdAmount_NTD, @OrdAmount_USD, @OrdAmount_RMB");
             SBSql.AppendLine("  , @Param_CreateWho, GETDATE() ");
@@ -505,6 +508,7 @@ public partial class Cust_Edit : SecurityIn
             cmd.CommandText = SBSql.ToString();
             cmd.Parameters.AddWithValue("New_ID", New_ID);
             cmd.Parameters.AddWithValue("ShipFrom", this.ddl_ShipFrom.SelectedValue);
+            cmd.Parameters.AddWithValue("TargetType", Param_Type);
             cmd.Parameters.AddWithValue("CustID", this.tb_CustID.Text);
             cmd.Parameters.AddWithValue("SetYear", this.ddl_Year.SelectedValue);
             cmd.Parameters.AddWithValue("SetMonth", this.ddl_Mon.SelectedValue);
@@ -532,7 +536,7 @@ public partial class Cust_Edit : SecurityIn
                 {
                     //傳送參數 - 目前年月/出貨地/客戶代號
                     string NextUrl =
-                         "Cust_Edit.aspx?ShowDT=Y&PrevDate=" + Server.UrlEncode(string.Format("{0}/{1}", this.ddl_Year.SelectedValue, this.ddl_Mon.SelectedValue))
+                         "Cust_Edit.aspx?t=" + Param_Type + "&ShowDT=Y&PrevDate=" + Server.UrlEncode(string.Format("{0}/{1}", this.ddl_Year.SelectedValue, this.ddl_Mon.SelectedValue))
                          + "&ShipFrom=" + Server.UrlEncode(this.ddl_ShipFrom.SelectedValue)
                          + "&CustID=" + Server.UrlEncode(this.tb_CustID.Text);
                     string js = "if(confirm('資料新增成功！\\n是否要繼續新增下一個月')){location.href='" + NextUrl + "';} else {location.href='" + PageUrl_byYear + "';}";
@@ -558,10 +562,11 @@ public partial class Cust_Edit : SecurityIn
             StringBuilder SBSql = new StringBuilder();
             SBSql.AppendLine(" SELECT COUNT(*) AS CheckNum FROM Target_Customer ");
             SBSql.AppendLine(" WHERE (UID <> @UID)");
-            SBSql.AppendLine("   AND (ShipFrom = @ShipFrom) AND (CustID = @CustID) AND (SetYear = @SetYear) AND (SetMonth = @SetMonth)");
+            SBSql.AppendLine("   AND (ShipFrom = @ShipFrom) AND (CustID = @CustID) AND (SetYear = @SetYear) AND (SetMonth = @SetMonth) AND (TargetType = @TargetType)");
             cmd.CommandText = SBSql.ToString();
             cmd.Parameters.AddWithValue("UID", this.hf_UID.Value);
             cmd.Parameters.AddWithValue("ShipFrom", this.ddl_ShipFrom.SelectedValue);
+            cmd.Parameters.AddWithValue("TargetType", Param_Type);
             cmd.Parameters.AddWithValue("CustID", this.tb_CustID.Text);
             cmd.Parameters.AddWithValue("SetYear", this.ddl_Year.SelectedValue);
             cmd.Parameters.AddWithValue("SetMonth", this.ddl_Mon.SelectedValue);
@@ -672,8 +677,10 @@ public partial class Cust_Edit : SecurityIn
     {
         get
         {
-            return string.Format(@"Cust_Edit.aspx?EditID={0}"
-                , string.IsNullOrEmpty(Param_thisID) ? "" : HttpUtility.UrlEncode(Cryptograph.Encrypt(Param_thisID)));
+            return string.Format(@"Cust_Edit.aspx?t={1}&EditID={0}"
+                , string.IsNullOrEmpty(Param_thisID) ? "" : HttpUtility.UrlEncode(Cryptograph.Encrypt(Param_thisID))
+                , Param_Type
+                );
         }
         set
         {
@@ -687,7 +694,7 @@ public partial class Cust_Edit : SecurityIn
         get
         {
             string Url =
-                      "Cust_Edit.aspx?ShowDT=Y&SetYear=" + Server.UrlEncode(this.ddl_Year.SelectedValue)
+                      "Cust_Edit.aspx?t=" + Param_Type + "&ShowDT=Y&SetYear=" + Server.UrlEncode(this.ddl_Year.SelectedValue)
                       + "&ShipFrom=" + Server.UrlEncode(this.ddl_ShipFrom.SelectedValue)
                       + "&CustID=" + Server.UrlEncode(this.tb_CustID.Text);
             return Url;
@@ -776,4 +783,31 @@ public partial class Cust_Edit : SecurityIn
         }
     }
     #endregion
+
+    /// <summary>
+    /// 取得傳遞參數 - Tab ID
+    /// </summary>
+    private string _Param_Type;
+    public string Param_Type
+    {
+        get
+        {
+            string _id = Request.QueryString["t"];
+            string _checkID = _id;
+
+            //若為空值,帶預設值
+            if (string.IsNullOrWhiteSpace(_id) || _id.Equals("0"))
+            {
+                _checkID = "1";
+            }
+
+            return _checkID;
+
+        }
+        set
+        {
+            this._Param_Type = value;
+        }
+    }
+
 }

@@ -58,7 +58,7 @@
                 <%=Application["WebName"]%></a>&gt;<a>目標設定</a>&gt;<span>部門目標設定</span>
         </div>
         <div class="h2Head">
-            <h2>部門目標設定</h2>
+            <h2>部門目標設定 - <strong class="styleRed"><%=fn_Desc.TargetTypeDesc(Param_Type) %></strong></h2>
         </div>
         <asp:Panel ID="pl_Message" runat="server" CssClass="ListIllusArea BgGray">
             <div class="JQ-ui-state-error">
@@ -81,10 +81,6 @@
                         <em>(*)</em> 部門
                     </td>
                     <td class="TableModifyTd" style="width: 350px">
-                        <%--<asp:DropDownList ID="ddl_ShipFrom" runat="server">
-                    </asp:DropDownList>
-                    <asp:RequiredFieldValidator ID="rfv_ddl_ShipFrom" runat="server" ErrorMessage="-&gt; 請填入「出貨地」!"
-                        ControlToValidate="ddl_ShipFrom" Display="Dynamic" ForeColor="Red" ValidationGroup="Add"></asp:RequiredFieldValidator>--%>
                         <asp:DropDownListGP ID="ddl_Dept" runat="server">
                         </asp:DropDownListGP>
                         <asp:RequiredFieldValidator ID="rfv_ddl_Dept" runat="server" ErrorMessage="-&gt; 請填入「部門」!"
@@ -92,7 +88,9 @@
 
                     </td>
                     <td class="TableModifyTdHead" style="width: 100px"></td>
-                    <td class="TableModifyTd"></td>
+                    <td class="TableModifyTd">
+                         
+                    </td>
                 </tr>
                 <tr class="Must">
                     <td class="TableModifyTdHead">
@@ -339,7 +337,7 @@
                                     <%#fn_stringFormat.C_format(Eval("ChAmount_RMB").ToString())%>
                                 </td>
                                 <td align="center">
-                                    <a class="Edit" href="Dept_Edit.aspx?EditID=<%# Server.UrlEncode(Cryptograph.Encrypt(Eval("UID").ToString()))%>">修改</a><br />
+                                    <a class="Edit" href="Dept_Edit.aspx?t=<%=Param_Type %>&EditID=<%# Server.UrlEncode(Cryptograph.Encrypt(Eval("UID").ToString()))%>">修改</a><br />
                                     <asp:LinkButton ID="lbtn_Delete" runat="server" CommandName="Del" CssClass="Delete"
                                         OnClientClick="return confirm('是否確定刪除本月設定!?')">刪除</asp:LinkButton>
                                     <asp:HiddenField ID="hf_DataID" runat="server" Value='<%# Eval("UID")%>' />

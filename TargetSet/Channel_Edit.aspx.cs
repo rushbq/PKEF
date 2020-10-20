@@ -30,7 +30,7 @@ public partial class Channel_Edit : SecurityIn
 
                 //判斷是否有上一頁暫存參數
                 if (Session["BackListUrl"] == null)
-                    Session["BackListUrl"] = Application["WebUrl"] + "TargetSet/Channel_Search.aspx";
+                    Session["BackListUrl"] = Application["WebUrl"] + "TargetSet/Channel_Search.aspx?t=" + Param_Type;
 
                 //[按鈕] - 加入BlockUI
                 this.btn_Save.Attributes["onclick"] = fn_Extensions.BlockJs(
@@ -463,12 +463,12 @@ public partial class Channel_Edit : SecurityIn
             SBSql.Clear();
             //[SQL] - 資料新增
             SBSql.AppendLine(" INSERT INTO Target_Channel( ");
-            SBSql.AppendLine("  UID, ShipFrom, CID, SetYear, SetMonth");
+            SBSql.AppendLine("  UID, ShipFrom, TargetType, CID, SetYear, SetMonth");
             SBSql.AppendLine("  , Amount_NTD, Amount_USD, Amount_RMB");
             SBSql.AppendLine("  , OrdAmount_NTD, OrdAmount_USD, OrdAmount_RMB");
             SBSql.AppendLine("  , Create_Who, Create_Time");
             SBSql.AppendLine(" ) VALUES ( ");
-            SBSql.AppendLine("  @New_ID, @ShipFrom, @CID, @SetYear, @SetMonth");
+            SBSql.AppendLine("  @New_ID, @ShipFrom, @TargetType, @CID, @SetYear, @SetMonth");
             SBSql.AppendLine("  , @Amount_NTD, @Amount_USD, @Amount_RMB");
             SBSql.AppendLine("  , @OrdAmount_NTD, @OrdAmount_USD, @OrdAmount_RMB");
             SBSql.AppendLine("  , @Param_CreateWho, GETDATE() ");
@@ -478,6 +478,7 @@ public partial class Channel_Edit : SecurityIn
             cmd.CommandText = SBSql.ToString();
             cmd.Parameters.AddWithValue("New_ID", New_ID);
             cmd.Parameters.AddWithValue("ShipFrom", this.ddl_ShipFrom.SelectedValue);
+            cmd.Parameters.AddWithValue("TargetType", Param_Type);
             cmd.Parameters.AddWithValue("CID", this.ddl_Channel.SelectedValue);
             cmd.Parameters.AddWithValue("SetYear", this.ddl_Year.SelectedValue);
             cmd.Parameters.AddWithValue("SetMonth", this.ddl_Mon.SelectedValue);
@@ -505,7 +506,7 @@ public partial class Channel_Edit : SecurityIn
                 {
                     //傳送參數 - 目前年月/出貨地/通路代號
                     string NextUrl =
-                         "Channel_Edit.aspx?ShowDT=Y&PrevDate=" + Server.UrlEncode(string.Format("{0}/{1}", this.ddl_Year.SelectedValue, this.ddl_Mon.SelectedValue))
+                         "Channel_Edit.aspx?t=" + Param_Type + "&ShowDT=Y&PrevDate=" + Server.UrlEncode(string.Format("{0}/{1}", this.ddl_Year.SelectedValue, this.ddl_Mon.SelectedValue))
                          + "&ShipFrom=" + Server.UrlEncode(this.ddl_ShipFrom.SelectedValue)
                          + "&CID=" + Server.UrlEncode(this.ddl_Channel.SelectedValue);
                     string js = "if(confirm('資料新增成功！\\n是否要繼續新增下一個月')){location.href='" + NextUrl + "';} else {location.href='" + PageUrl_byYear + "';}";
@@ -640,8 +641,9 @@ public partial class Channel_Edit : SecurityIn
     {
         get
         {
-            return string.Format(@"Channel_Edit.aspx?EditID={0}"
-                , string.IsNullOrEmpty(Param_thisID) ? "" : HttpUtility.UrlEncode(Cryptograph.Encrypt(Param_thisID)));
+            return string.Format(@"Channel_Edit.aspx?t={1}&EditID={0}"
+                , string.IsNullOrEmpty(Param_thisID) ? "" : HttpUtility.UrlEncode(Cryptograph.Encrypt(Param_thisID))
+                , Param_Type);
         }
         set
         {
@@ -655,7 +657,7 @@ public partial class Channel_Edit : SecurityIn
         get
         {
             string Url =
-                      "Channel_Edit.aspx?ShowDT=Y&SetYear=" + Server.UrlEncode(this.ddl_Year.SelectedValue)
+                      "Channel_Edit.aspx?t=" + Param_Type + "&ShowDT=Y&SetYear=" + Server.UrlEncode(this.ddl_Year.SelectedValue)
                       + "&ShipFrom=" + Server.UrlEncode(this.ddl_ShipFrom.SelectedValue)
                       + "&CID=" + Server.UrlEncode(this.ddl_Channel.SelectedValue);
             return Url;
@@ -745,4 +747,30 @@ public partial class Channel_Edit : SecurityIn
     }
     #endregion
 
+
+    /// <summary>
+    /// 取得傳遞參數 - Tab ID
+    /// </summary>
+    private string _Param_Type;
+    public string Param_Type
+    {
+        get
+        {
+            string _id = Request.QueryString["t"];
+            string _checkID = _id;
+
+            //若為空值,帶預設值
+            if (string.IsNullOrWhiteSpace(_id) || _id.Equals("0"))
+            {
+                _checkID = "1";
+            }
+
+            return _checkID;
+
+        }
+        set
+        {
+            this._Param_Type = value;
+        }
+    }
 }

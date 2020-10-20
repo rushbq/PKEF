@@ -24,7 +24,7 @@
                 <%=Application["WebName"]%></a>&gt;<a>目標設定</a>&gt;<span>業務目標設定</span>
         </div>
         <div class="h2Head">
-            <h2>業務目標設定</h2>
+            <h2>業務目標設定 - <strong class="styleRed"><%=fn_Desc.TargetTypeDesc(Param_Type) %></strong></h2>
         </div>
         <asp:Panel ID="pl_Message" runat="server" CssClass="ListIllusArea BgGray">
             <div class="JQ-ui-state-error">
@@ -43,7 +43,6 @@
             <tbody>
                 <tr class="Must">
                     <td class="TableModifyTdHead" style="width: 100px">
-                        <%--<em>(*)</em> 出貨地--%>
                         <em>(*)</em> 部門
                     </td>
                     <td class="TableModifyTd" style="width: 350px">
@@ -292,7 +291,7 @@
                                     <%#fn_stringFormat.C_format(Eval("OrdAmount_RMB").ToString())%>
                                 </td>
                                 <td align="center">
-                                    <asp:PlaceHolder ID="ph_Edit" runat="server" Visible="true"><a class="Edit" href="Sales_Edit.aspx?EditID=<%# Server.UrlEncode(Cryptograph.Encrypt(Eval("UID").ToString()))%>">修改</a><br />
+                                    <asp:PlaceHolder ID="ph_Edit" runat="server" Visible="true"><a class="Edit" href="Sales_Edit.aspx?t=<%=Param_Type %>&EditID=<%# Server.UrlEncode(Cryptograph.Encrypt(Eval("UID").ToString()))%>">修改</a><br />
                                         <asp:LinkButton ID="lbtn_Delete" runat="server" CommandName="Del" CssClass="Delete"
                                             OnClientClick="return confirm('是否確定刪除本月設定!?')">刪除</asp:LinkButton>
                                         <asp:HiddenField ID="hf_DataID" runat="server" Value='<%# Eval("UID")%>' />
@@ -318,26 +317,17 @@
                         <LayoutTemplate>
                             <table class="List1" width="100%">
                                 <tr class="tdHead">
-                                    <td width="60px" rowspan="2">月份
-                                    </td>
-                                    <td colspan="3">銷售
-                                    </td>
-                                    <td colspan="3">接單
-                                    </td>
+                                    <td width="60px" rowspan="2">月份</td>
+                                    <td colspan="3">銷售</td>
+                                    <td colspan="3">接單</td>
                                 </tr>
                                 <tr class="tdHead">
-                                    <td>USD
-                                    </td>
-                                    <td>NTD
-                                    </td>
-                                    <td>RMB
-                                    </td>
-                                    <td>USD
-                                    </td>
-                                    <td>NTD
-                                    </td>
-                                    <td>RMB
-                                    </td>
+                                    <td>USD</td>
+                                    <td>NTD</td>
+                                    <td>RMB</td>
+                                    <td>USD</td>
+                                    <td>NTD</td>
+                                    <td>RMB</td>
                                 </tr>
                                 <asp:PlaceHolder ID="ph_Items" runat="server"></asp:PlaceHolder>
                             </table>

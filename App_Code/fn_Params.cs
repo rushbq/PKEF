@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 
 /// <summary>
-/// fn_Params 的摘要描述
+/// 各類參數
 /// </summary>
 public class fn_Params
 {

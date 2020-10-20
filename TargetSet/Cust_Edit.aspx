@@ -64,7 +64,7 @@
                 <%=Application["WebName"]%></a>&gt;<a>目標設定</a>&gt;<span>客戶目標設定</span>
         </div>
         <div class="h2Head">
-            <h2>客戶目標設定</h2>
+            <h2>客戶目標設定 - <strong class="styleRed"><%=fn_Desc.TargetTypeDesc(Param_Type) %></strong></h2>
         </div>
         <asp:Panel ID="pl_Message" runat="server" CssClass="ListIllusArea BgGray">
             <div class="JQ-ui-state-error">
@@ -129,10 +129,8 @@
                     <td class="TableModifyTd">
                         <table class="TableS3">
                             <tr>
-                                <td class="TS3Head TableS3Dark styleBluelight B">銷售
-                                </td>
-                                <td class="TS3Head TableS3Dark">接單
-                                </td>
+                                <td class="TS3Head TableS3Dark styleBluelight B">銷售</td>
+                                <td class="TS3Head TableS3Dark">接單</td>
                             </tr>
                             <tr>
                                 <td>
@@ -265,7 +263,7 @@
                                     <%#fn_stringFormat.C_format(Eval("OrdAmount_RMB").ToString())%>
                                 </td>
                                 <td align="center">
-                                    <a class="Edit" href="Cust_Edit.aspx?EditID=<%# Server.UrlEncode(Cryptograph.Encrypt(Eval("UID").ToString()))%>">修改</a><br />
+                                    <a class="Edit" href="Cust_Edit.aspx?t=<%=Param_Type %>&EditID=<%# Server.UrlEncode(Cryptograph.Encrypt(Eval("UID").ToString()))%>">修改</a><br />
                                     <asp:LinkButton ID="lbtn_Delete" runat="server" CommandName="Del" CssClass="Delete"
                                         OnClientClick="return confirm('是否確定刪除本月設定!?')">刪除</asp:LinkButton>
                                     <asp:HiddenField ID="hf_DataID" runat="server" Value='<%# Eval("UID")%>' />
@@ -289,26 +287,17 @@
                         <LayoutTemplate>
                             <table class="List1" width="100%">
                                 <tr class="tdHead">
-                                    <td width="60px" rowspan="2">月份
-                                    </td>
-                                    <td colspan="3">銷售
-                                    </td>
-                                    <td colspan="3">接單
-                                    </td>
+                                    <td width="60px" rowspan="2">月份</td>
+                                    <td colspan="3">銷售</td>
+                                    <td colspan="3">接單</td>
                                 </tr>
                                 <tr class="tdHead">
-                                    <td>USD
-                                    </td>
-                                    <td>NTD
-                                    </td>
-                                    <td>RMB
-                                    </td>
-                                    <td>USD
-                                    </td>
-                                    <td>NTD
-                                    </td>
-                                    <td>RMB
-                                    </td>
+                                    <td>USD</td>
+                                    <td>NTD</td>
+                                    <td>RMB</td>
+                                    <td>USD</td>
+                                    <td>NTD</td>
+                                    <td>RMB</td>
                                 </tr>
                                 <asp:PlaceHolder ID="ph_Items" runat="server"></asp:PlaceHolder>
                             </table>

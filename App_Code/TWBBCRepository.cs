@@ -1150,19 +1150,19 @@ namespace TW_BBC.Controllers
                         sql.AppendLine(" , ShipFrom = RTRIM(Prod.Ship_From)");
 
                     sql.AppendLine(" FROM (");
-                    sql.AppendLine("     SELECT TblGrp.MG002, TblGrp.MG003");
+                    sql.AppendLine("     SELECT TblGrp.Ship, TblGrp.MG002, TblGrp.MG003");
                     sql.AppendLine("     FROM (");
-                    sql.AppendLine("         SELECT ERPData_TW.MG002, ERPData_TW.MG003");
+                    sql.AppendLine("         SELECT 'TW' AS Ship, ERPData_TW.MG002, ERPData_TW.MG003");
                     sql.AppendLine("         FROM [prokit2].dbo.COPMG ERPData_TW WITH(NOLOCK)");
                     sql.AppendLine("         WHERE (ERPData_TW.MG001 = @CustID)");
                     sql.AppendLine("         UNION ALL");
-                    sql.AppendLine("         SELECT ERPData_SH.MG002, ERPData_SH.MG003");
+                    sql.AppendLine("         SELECT 'SH' AS Ship, ERPData_SH.MG002, ERPData_SH.MG003");
                     sql.AppendLine("         FROM [SHPK2].dbo.COPMG ERPData_SH WITH(NOLOCK)");
                     sql.AppendLine("         WHERE (ERPData_SH.MG001 = @CustID)");
                     sql.AppendLine("     ) AS TblGrp");
-                    sql.AppendLine("     GROUP BY TblGrp.MG002, TblGrp.MG003");
+                    sql.AppendLine("     GROUP BY TblGrp.Ship, TblGrp.MG002, TblGrp.MG003");
                     sql.AppendLine(" ) AS TblErp");
-                    sql.AppendLine("  INNER JOIN [ProductCenter].dbo.Prod_Item Prod ON TblErp.MG002 = Prod.Model_No COLLATE Chinese_Taiwan_Stroke_BIN");
+                    sql.AppendLine("  INNER JOIN [ProductCenter].dbo.Prod_Item Prod ON TblErp.MG002 = Prod.Model_No COLLATE Chinese_Taiwan_Stroke_BIN AND TblErp.Ship = Prod.Ship_From");
                     sql.AppendLine(" WHERE (UPPER(TWBBC_ImportData_DT.ProdID) COLLATE Chinese_Taiwan_Stroke_BIN = UPPER(TblErp.MG003))");
                     sql.AppendLine("  AND (Parent_ID = @ParentID)");
 
