@@ -2937,13 +2937,19 @@ namespace SZ_BBC.Controllers
 
         #region >> 客戶商品對應 <<
 
+        public IQueryable<RefModel> GetRefModelList(Dictionary<string, string> search, int sort, out string ErrMsg)
+        {
+            return GetRefModelList(search, sort, "SZ", out ErrMsg);
+        }
+
         /// <summary>
         /// [BBC] 自訂客戶商品對應 (仿ERP.COPMG)
         /// </summary>
         /// <param name="search"></param>
         /// <param name="ErrMsg"></param>
+        /// <param name="comp">SH/SZ</param>
         /// <returns></returns>
-        public IQueryable<RefModel> GetRefModelList(Dictionary<string, string> search, int sort, out string ErrMsg)
+        public IQueryable<RefModel> GetRefModelList(Dictionary<string, string> search, int sort, string comp, out string ErrMsg)
         {
             //----- 宣告 -----
             List<RefModel> dataList = new List<RefModel>();
@@ -2955,7 +2961,7 @@ namespace SZ_BBC.Controllers
                 //----- SQL 查詢語法 -----
                 sql.AppendLine(" SELECT Base.Data_ID, Base.MG002, Base.MG003, ISNULL(Base.MG006, '') AS MG006");
                 sql.AppendLine(" FROM refCOPMG Base");
-                sql.AppendLine(" WHERE (Base.DB = 'SZ')");
+                sql.AppendLine(" WHERE (Base.DB = @Comp)");
 
                 #region >> filter <<
                 if (search != null)
@@ -3012,7 +3018,7 @@ namespace SZ_BBC.Controllers
 
                 //----- SQL 執行 -----
                 cmd.CommandText = sql.ToString();
-
+                cmd.Parameters.AddWithValue("Comp", comp.ToUpper());
 
                 //----- 資料取得 -----
                 using (DataTable DT = dbConn.LookupDT(cmd, dbConn.DBS.PKSYS, out ErrMsg))

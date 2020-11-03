@@ -1072,8 +1072,9 @@ namespace SH_BBC.Controllers
                                     myShipAddr = val[10];
                                     myShipTel = "{0}{1}".FormatThis(val[11], string.IsNullOrEmpty(val[12]) ? "" : ";" + val[12]);
                                     myNickName = val[3];
-                                    myBuyRemark = val[17]; //買家備註
                                     mySellRemark = val[16]; //賣家備註
+                                    myBuyRemark = val[17]; //買家備註
+                                    myInvMessage = val[18];  //發票類型(僅供參考)
 
                                     curr_Remark = myOrderID + "-" + myShipWho + "-" + myShipmentNo;
                                     //[處理合併儲存格] - 目前欄位非空值, 填入暫存值
@@ -2937,13 +2938,19 @@ namespace SH_BBC.Controllers
 
         #region >> 客戶商品對應 <<
 
+        public IQueryable<RefModel> GetRefModelList(Dictionary<string, string> search, int sort, out string ErrMsg)
+        {
+            return GetRefModelList(search, sort, "Sh", out ErrMsg);
+        }
+
         /// <summary>
-        /// [BBC] 自訂客戶商品對應 (仿ERP.COPMG)-PKSYS
+        /// [BBC] 自訂客戶商品對應 (仿ERP.COPMG)
         /// </summary>
         /// <param name="search"></param>
         /// <param name="ErrMsg"></param>
+        /// <param name="comp">SH/SZ</param>
         /// <returns></returns>
-        public IQueryable<RefModel> GetRefModelList(Dictionary<string, string> search, int sort, out string ErrMsg)
+        public IQueryable<RefModel> GetRefModelList(Dictionary<string, string> search, int sort, string comp, out string ErrMsg)
         {
             //----- 宣告 -----
             List<RefModel> dataList = new List<RefModel>();
@@ -2955,7 +2962,7 @@ namespace SH_BBC.Controllers
                 //----- SQL 查詢語法 -----
                 sql.AppendLine(" SELECT Base.Data_ID, Base.MG002, Base.MG003, ISNULL(Base.MG006, '') AS MG006");
                 sql.AppendLine(" FROM refCOPMG Base");
-                sql.AppendLine(" WHERE (Base.DB = 'SH')");
+                sql.AppendLine(" WHERE (Base.DB = @Comp)");
 
                 #region >> filter <<
                 if (search != null)
@@ -3012,7 +3019,7 @@ namespace SH_BBC.Controllers
 
                 //----- SQL 執行 -----
                 cmd.CommandText = sql.ToString();
-
+                cmd.Parameters.AddWithValue("Comp", comp.ToUpper());
 
                 //----- 資料取得 -----
                 using (DataTable DT = dbConn.LookupDT(cmd, dbConn.DBS.PKSYS, out ErrMsg))

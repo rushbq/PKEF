@@ -1109,7 +1109,7 @@ namespace SZ_Invoice.Aisino.Controllers
                     sql.AppendLine("         , SUM(CAST(COPTH.TH038 AS MONEY)) AS taxation	--//稅額");
                     sql.AppendLine("         , COPTH.TH005 AS tradename	--//品名");
                     sql.AppendLine("         , RTRIM(COPTH.TH004) AS model	--//品號");
-                    sql.AppendLine("         , (CASE COPTH.TH009 WHEN 'PCE' THEN N'个' WHEN 'PCS' THEN N'个' WHEN 'SET' THEN N'套' ELSE COPTH.TH009 END) AS unit");
+                    sql.AppendLine("         , (CASE COPTH.TH009 WHEN 'PCE' THEN N'个' WHEN 'BAG' THEN N'包' WHEN 'PCS' THEN N'个' WHEN 'SET' THEN N'套' ELSE COPTH.TH009 END) AS unit");
                     sql.AppendLine("         , 'Y' AS taxprice  --//含稅(Y/N)");
                     sql.AppendLine("         , '1.0' AS bmbbh  --//編碥版本");
                     sql.AppendLine("         , (CASE WHEN RTRIM(COPTH.TH004) = 'B009' THEN '202' ELSE '108040412' END) AS ssflbm   --//稅收分類編碼(會變動)");

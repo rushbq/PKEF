@@ -1131,7 +1131,7 @@ namespace SH_Invoice.Controllers
                     sql.AppendLine("         , SUM(CAST(COPTH.TH038 AS MONEY)) AS taxation	--//稅額(開票系統會自動算)");
                     sql.AppendLine("         , COPTH.TH005 AS tradename	--//品名");
                     sql.AppendLine("         , RTRIM(COPTH.TH004) AS model	--//品號");
-                    sql.AppendLine("         , (CASE COPTH.TH009 WHEN 'PCE' THEN N'个' WHEN 'PCS' THEN N'个' WHEN 'SET' THEN N'套' ELSE COPTH.TH009 END) AS unit");                  
+                    sql.AppendLine("         , (CASE COPTH.TH009 WHEN 'PCE' THEN N'个' WHEN 'PCS' THEN N'个' WHEN 'BAG' THEN N'包' WHEN 'SET' THEN N'套' ELSE COPTH.TH009 END) AS unit");                  
                     sql.AppendLine("         , (");
                     sql.AppendLine("               SELECT CASE WHEN Rel.TG017 IN ('1','2') THEN '1' ELSE '0' END");
                     sql.AppendLine("               FROM [SHPK2].dbo.COPTG Rel");

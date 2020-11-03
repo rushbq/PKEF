@@ -99,7 +99,7 @@
                                         <th class="grey-bg lighten-3">收貨人</th>
                                         <th class="grey-bg lighten-3">買家備註</th>
                                         <th class="grey-bg lighten-3">賣家備註</th>
-                                        <th class="grey-bg lighten-3">發票類型</th>
+                                        <th class="grey-bg lighten-3">發票參考信息</th>
                                         <th class="grey-bg lighten-3">發票抬頭</th>
                                         <th class="grey-bg lighten-3">納稅人識別號</th>
                                     </tr>
@@ -304,6 +304,8 @@
                 //button 加入loading
                 saveBtn.addClass("loading");
 
+                console.log(_value);
+
                 var request = $.ajax({
                     url: '<%=fn_Params.WebUrl%>' + "mySHBBC/Ashx_BBCTempNewItem.ashx",
                     method: "POST",
@@ -439,7 +441,7 @@
                 value: 'ID'
             },
             apiSettings: {
-                url: '<%=fn_Params.WebUrl%>Ajax_Data/GetData_RefCopmg.ashx?cust=' + _cust + '&mall=' + _mall + '&q={query}&v=1.2'
+                url: '<%=fn_Params.WebUrl%>Ajax_Data/GetData_RefCopmg_SH.ashx?cust=' + _cust + '&mall=' + _mall + '&q={query}&v=1.2'
             }
 
         });
