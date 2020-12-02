@@ -87,7 +87,7 @@
                 <li>處理狀態：
                     <asp:DropDownList ID="ddl_Help_Status" runat="server" CssClass="styleBlack"></asp:DropDownList>
                 </li>
-                <li>關鍵字：<asp:TextBox ID="tb_Keyword" runat="server" MaxLength="50" Width="180px" ToolTip="追蹤編號, 主旨, 需求者工號" CssClass="styleBlack"></asp:TextBox>
+                <li>關鍵字：<asp:TextBox ID="tb_Keyword" runat="server" MaxLength="50" Width="180px" placeholder="追蹤編號, 主旨, 需求者工號" CssClass="styleBlack"></asp:TextBox>
                 </li>
                 <li>
                     <asp:Button ID="btn_Search" runat="server" Text="查詢" OnClick="btn_Search_Click" CssClass="btnBlock colorGray" />

@@ -240,7 +240,7 @@
 
             }
             , apiSettings: {
-                url: '<%=fn_Params.WebUrl%>Ajax_Data/GetData_Prod_v1.ashx?q={query}',
+                url: '<%=fn_Params.WebUrl%>Ajax_Data/GetData_Prod_v1.ashx?q={query}&V=1',
                 onResponse: function (ajaxResp) {
                     //宣告空陣列
                     var response = {
@@ -258,7 +258,7 @@
                     $.each(ajaxResp.results, function (index, item) {
                         var
                           categoryContent = item.Category || 'Unknown',
-                          maxResults = 20
+                          maxResults = 30
                         ;
                         if (index >= maxResults) {
                             return false;

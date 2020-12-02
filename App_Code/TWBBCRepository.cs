@@ -1366,18 +1366,19 @@ namespace TW_BBC.Controllers
                 using (SqlCommand cmd = new SqlCommand())
                 {
                     //----- SQL 查詢語法[取得單身資料](條件IsPass=E=檢查中) -----
-                    sql.AppendLine(" SELECT DBName, ERP_ModelNo, InputCnt");
-                    sql.AppendLine(" FROM TWBBC_ImportData_DT");
-                    sql.AppendLine(" WHERE (Parent_ID = @ParentID) AND (IsPass = 'E')");
+                    sql.AppendLine(" SELECT DT.DBName, DT.ERP_ModelNo, DT.InputCnt, Base.Currency");
+                    sql.AppendLine(" FROM TWBBC_ImportData Base");
+                    sql.AppendLine("  INNER JOIN TWBBC_ImportData_DT DT ON Base.Data_ID = DT.Parent_ID");
+                    sql.AppendLine(" WHERE (DT.Parent_ID = @ParentID) AND (DT.IsPass = 'E')");
 
                     //--@Step3新增品項時使用@
                     if (!string.IsNullOrWhiteSpace(_detailID))
                     {
-                        sql.Append("  AND (Data_ID = @Data_ID)");
+                        sql.Append("  AND (DT.Data_ID = @Data_ID)");
                         cmd.Parameters.AddWithValue("Data_ID", _detailID);
                     }
 
-                    sql.AppendLine(" ORDER BY DBName, ERP_ModelNo");
+                    sql.AppendLine(" ORDER BY DT.DBName, DT.ERP_ModelNo");
 
                     //----- SQL 執行 -----
                     cmd.CommandText = sql.ToString();
@@ -1401,7 +1402,8 @@ namespace TW_BBC.Controllers
                             {
                                 DBS = el.Field<string>("DBName"),
                                 ItemNo = el.Field<string>("ERP_ModelNo"),
-                                Qty = el.Field<Int32>("InputCnt")
+                                Qty = el.Field<Int32>("InputCnt"),
+                                Currency = el.Field<string>("Currency")
                             });
 
                         //DBS Group
@@ -1438,8 +1440,11 @@ namespace TW_BBC.Controllers
                                 aryQty.Add(item.Qty);
                             }
 
+                            //幣別
+                            string curr = filterData.FirstOrDefault().Currency;
+
                             //取價(SP)
-                            DataTable getPrice = GetQuotePrice(_dbs, _custID, aryModelNo, aryQty, out ErrMsg);
+                            DataTable getPrice = GetQuotePrice(_dbs, _custID, aryModelNo, aryQty, curr, out ErrMsg);
                             if (getPrice == null)
                             {
                                 //無報價資料
@@ -1494,12 +1499,14 @@ namespace TW_BBC.Controllers
         /// Job5
         /// </summary>
         /// <param name="_DBS"></param>
-        /// <param name="_CustID"></param>
-        /// <param name="aryModelNo"></param>
-        /// <param name="aryQty"></param>
+        /// <param name="_CustID">客戶代號</param>
+        /// <param name="aryModelNo">品號(多筆)</param>
+        /// <param name="aryQty">數量(多筆)</param>
+        /// <param name="_currency">幣別</param>
         /// <param name="ErrMsg"></param>
         /// <returns></returns>
         public DataTable GetQuotePrice(string _DBS, string _CustID, ArrayList aryModelNo, ArrayList aryQty
+            , string _currency
             , out string ErrMsg)
         {
             try
@@ -1530,6 +1537,7 @@ namespace TW_BBC.Controllers
                     cmd.CommandText = "TWBBC_GetQuotePrice";
                     cmd.Parameters.AddWithValue("DBS", _DBS);
                     cmd.Parameters.AddWithValue("CustIDs", _CustID);
+                    cmd.Parameters.AddWithValue("Currency", _currency);
                     cmd.Parameters.AddWithValue("ModelNos", string.IsNullOrEmpty(strModelNo) ? DBNull.Value : (Object)strModelNo);
                     cmd.Parameters.AddWithValue("Qty", string.IsNullOrEmpty(strQty.ToString()) ? DBNull.Value : (Object)strQty);
                     //取得回傳值, 輸出參數

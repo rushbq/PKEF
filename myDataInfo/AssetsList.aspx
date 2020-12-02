@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/SiteMaster.master" AutoEventWireup="true" CodeFile="AssetsList.aspx.cs" Inherits="myDataInfo_AssetsList" %>
+﻿<%@ Page Title="台灣資產設備" Language="C#" MasterPageFile="~/SiteMaster.master" AutoEventWireup="true" CodeFile="AssetsList.aspx.cs" Inherits="myDataInfo_AssetsList" %>
 
 <%@ Import Namespace="PKLib_Method.Methods" %>
 
@@ -11,7 +11,7 @@
             <div class="row">
                 <div class="col s12 m12 l12">
                     <ol class="breadcrumb">
-                        <li><a>MIS資產設備</a></li>
+                        <li><a>台灣資產設備</a></li>
                         <li class="active">資料查詢</li>
                     </ol>
                 </div>
