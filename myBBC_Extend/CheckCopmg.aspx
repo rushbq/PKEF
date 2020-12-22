@@ -1,4 +1,4 @@
-﻿<%@ Page Title="客戶品號重複檢查" Language="C#" MasterPageFile="~/Site_S_UI.master" AutoEventWireup="true" CodeFile="CheckCopmg.aspx.cs" Inherits="myBBC_Extend_CheckCopmg" %>
+﻿<%@ Page Title="客戶品號重複檢查 (ERP)" Language="C#" MasterPageFile="~/Site_S_UI.master" AutoEventWireup="true" CodeFile="CheckCopmg.aspx.cs" Inherits="myBBC_Extend_CheckCopmg" %>
 
 <%@ Import Namespace="PKLib_Method.Methods" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="CssContent" runat="Server">
@@ -14,7 +14,7 @@
                     <div class="section">BBC</div>
                     <i class="right angle icon divider"></i>
                     <div class="active section">
-                        客戶品號重複檢查
+                        客戶品號重複檢查 (ERP)
                     </div>
                 </div>
             </div>
@@ -77,7 +77,10 @@
             <!-- Section End -->
             <div class="ui segments">
                 <div class="ui blue segment">
-                    <h5 class="ui header">查詢結果&nbsp;<small><asp:Literal ID="lt_CustID" runat="server"></asp:Literal></small></h5>
+                    <h5 class="ui header">
+                        查詢結果&nbsp;<small><asp:Literal ID="lt_CustID" runat="server"></asp:Literal></small>
+                        &nbsp;<small class="grey-text text-darken-2">(資料來源：ERP客戶品號資料)</small>
+                    </h5>
                 </div>
                 <div class="ui segment">
                     <asp:ListView ID="lvDataList" runat="server" ItemPlaceholderID="ph_Items">

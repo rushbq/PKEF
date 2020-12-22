@@ -30,7 +30,7 @@ public partial class myTWBBC_Mall_ShipmentList : SecurityIn
             if (!IsPostBack)
             {
                 //[權限判斷]
-                if (fn_CheckAuth.CheckAuth_User("1232", out ErrMsg) == false)
+                if (fn_CheckAuth.CheckAuth_User("1233", out ErrMsg) == false)
                 {
                     Response.Redirect(string.Format("../Unauthorized.aspx?ErrMsg={0}", HttpUtility.UrlEncode(ErrMsg)), true);
                     return;

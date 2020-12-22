@@ -1786,7 +1786,7 @@ namespace TWBBC_Mall.Controllers
                 sql.AppendLine("  INNER JOIN [PKEF].dbo.TWBBC_Mall_ImportData_DT AS DT ON Base.Data_ID = DT.Parent_ID AND DT.Data_ID = RelDT.SrcDataID");
                 sql.AppendLine("  INNER JOIN [PKEF].dbo.TWBBC_Mall_RefClass Cls ON Base.MallID = Cls.Class_ID");
                 sql.AppendLine("  INNER JOIN TblERP ON DT.OrderID = TblERP.OrderID AND DT.ERP_ModelNo = TblERP.ModelNo AND Base.CustID = TblERP.CustID");
-                sql.AppendLine(" WHERE (1=1)");
+                sql.AppendLine(" WHERE (DT.IsPass = 'Y')");
 
                 #region >> filter <<
                 if (search != null)

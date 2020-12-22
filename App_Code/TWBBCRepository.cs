@@ -1448,7 +1448,7 @@ namespace TW_BBC.Controllers
                             if (getPrice == null)
                             {
                                 //無報價資料
-                                ErrMsg = "請檢查ERP客戶商品計價.";
+                                ErrMsg += ";SP取價失敗(" + string.Join(", ", aryModelNo.OfType<string>()) + ")";
                                 return false;
                             }
 
@@ -1548,7 +1548,7 @@ namespace TW_BBC.Controllers
                     {
                         if (DT.Rows.Count == 0)
                         {
-                            ErrMsg = "查無資料";
+                            ErrMsg += "(資料回傳筆數為 0)";
                             return null;
                         }
 
@@ -1627,7 +1627,7 @@ namespace TW_BBC.Controllers
                 return dbConn.ExecuteSql(cmd, out ErrMsg);
             }
         }
-        
+
 
         #endregion
 

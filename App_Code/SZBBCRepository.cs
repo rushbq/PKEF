@@ -1939,7 +1939,7 @@ namespace SZ_BBC.Controllers
                 sql.AppendLine("  INNER JOIN [PKEF].dbo.BBC_RefClass Cls ON Base.MallID = Cls.Class_ID");
                 sql.AppendLine("  INNER JOIN TblERP ON DT.OrderID = TblERP.OrderID AND DT.ERP_ModelNo = TblERP.ModelNo AND DT.ProdID = TblERP.CustModelNo");
                 sql.AppendLine("  LEFT JOIN TblInvItem InvItem ON DT.OrderID = InvItem.OrderID AND Base.TraceID = InvItem.TraceID AND InvItem.RowRank = 1");
-                sql.AppendLine(" WHERE (1=1)");
+                sql.AppendLine(" WHERE (DT.IsPass = 'Y')");
 
                 //條件:已匯過的不顯示
                 sql.AppendLine("  AND (DT.OrderID NOT IN(");
@@ -2241,7 +2241,7 @@ namespace SZ_BBC.Controllers
                 sql.AppendLine("  INNER JOIN [PKEF].dbo.BBC_RefClass Cls ON Base.MallID = Cls.Class_ID");
                 sql.AppendLine("  INNER JOIN TblERP ON DT.OrderID = TblERP.OrderID AND DT.ERP_ModelNo = TblERP.ModelNo AND DT.ProdID = TblERP.CustModelNo");
                 sql.AppendLine("  LEFT JOIN TblInvItem InvItem ON DT.OrderID = InvItem.OrderID AND Base.TraceID = InvItem.TraceID AND InvItem.RowRank = 1");
-                sql.AppendLine(" WHERE (1=1)");
+                sql.AppendLine(" WHERE (DT.IsPass = 'Y')");
 
                 #region >> filter <<
                 if (search != null)

@@ -1275,7 +1275,7 @@ public partial class IT_HelpEdit : SecurityIn
     }
 
     /// <summary>
-    /// [需求登記] CC(5)
+    /// [需求登記] 轉寄通知,CC(5)
     /// </summary>
     /// <param name="TraceID">追蹤編號</param>
     /// <param name="Subject">主旨</param>
@@ -1603,8 +1603,8 @@ public partial class IT_HelpEdit : SecurityIn
 
             case "3":
                 //回覆通知
-                mailBody.AppendLine("<div style=\"padding-top:10px;\">{0}</div>".FormatThis("您的需求登記正在處理中，<br/>目前尚有些問題待確認，{0}。"
-                    .FormatThis("<a href=\"{0}\" style=\"text-decoration:none;font-weight:bold;\">請點我查看，並提供更詳細的資料</a>"
+                mailBody.AppendLine("<div style=\"padding-top:10px;\">{0}</div>".FormatThis("您的需求登記目前有新的回覆，{0}。"
+                    .FormatThis("<a href=\"{0}\" style=\"text-decoration:none;font-weight:bold;\">請點我看看發生了什麼事?</a>"
                         .FormatThis(
                             "{0}?t=ITHelp_View&dataID={1}".FormatThis(Application["WebUrl"].ToString(), Server.UrlEncode(Cryptograph.MD5Encrypt(traceID, DesKey)))
                         ))));
@@ -1617,7 +1617,7 @@ public partial class IT_HelpEdit : SecurityIn
             case "4":
                 //結案通知
                 mailBody.AppendLine("<div style=\"padding-top:10px;\">{0}</div>".FormatThis("您的需求登記已結案，{0}。"
-                   .FormatThis("<a href=\"{0}\" style=\"text-decoration:none;font-weight:bold;\">請點我查看，並填寫滿意度評分</a>"
+                   .FormatThis("<a href=\"{0}\" style=\"text-decoration:none;font-weight:bold;\">請點我查看詳細，並填寫滿意度評分</a>"
                        .FormatThis(
                            "{0}?t=ITHelp_View&dataID={1}".FormatThis(Application["WebUrl"].ToString(), Server.UrlEncode(Cryptograph.MD5Encrypt(traceID, DesKey)))
                        ))));
@@ -1647,7 +1647,7 @@ public partial class IT_HelpEdit : SecurityIn
                         if (DT.Rows.Count > 0)
                         {
                             mailBody.AppendLine("<div>");
-                            mailBody.AppendLine("<h4>【需求登記】</h4>");
+                            mailBody.AppendLine("<h4>【需求登記】【轉寄通知】</h4>");
                             mailBody.AppendLine("</div>");
                             mailBody.AppendLine("<div>");
                             mailBody.AppendLine("    <table style=\"background: #dfebc7;border-spacing: 1px;line-height: 25px;width: 100%; font-size:12px;\">");
