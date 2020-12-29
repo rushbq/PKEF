@@ -4569,7 +4569,7 @@ namespace SH_BBC.Controllers
             {
                 if (DT == null)
                 {
-                    ErrMsg = "無法取得ERP報價資料.(Check_Step3)";
+                    ErrMsg = "無法取得ERP報價資料.(Check_Step3)." + ErrMsg;
                     return false;
                 }
                 if (DT.Rows.Count == 0)

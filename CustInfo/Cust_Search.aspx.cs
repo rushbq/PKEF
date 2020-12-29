@@ -527,12 +527,12 @@ public partial class Cust_Search : SecurityIn
         }
 
         //深圳寶工
-        if (Tab_SZ)
-        {
-            html.Append("<li class=\"{0}\"><a href=\"Cust_Search.aspx?t=2\">深圳寶工</a></li>".FormatThis(
-                    (Param_Type.Equals("2")) ? "TabAc" : ""
-                ));
-        }
+        //if (Tab_SZ)
+        //{
+        //    html.Append("<li class=\"{0}\"><a href=\"Cust_Search.aspx?t=2\">深圳寶工</a></li>".FormatThis(
+        //            (Param_Type.Equals("2")) ? "TabAc" : ""
+        //        ));
+        //}
 
         html.Append("</ul>");
 
