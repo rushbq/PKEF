@@ -444,7 +444,7 @@ public partial class Dept_Search : SecurityIn
     protected string myUrl_ViewItem(string[] strVal)
     {
         return fn_Extensions.CreateUrl("Dept_ViewItem.aspx"
-            , new string[] { "ShipFrom", "DeptID", "SetYear", "Column", "SetTitle", "DeptName" }
+            , new string[] { "t", "ShipFrom", "DeptID", "SetYear", "Column", "SetTitle", "DeptName" }
             , strVal);
     }
     #endregion

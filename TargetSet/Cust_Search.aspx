@@ -123,45 +123,45 @@
                             </div>
                         </td>
                         <td class="JQ-ui-state-default">
-                            <a href="Cust_ViewAll.aspx?ShipFrom=<%# Server.UrlEncode(Eval("ShipFrom").ToString())%>&CustID=<%# Server.UrlEncode(Eval("CustID").ToString())%>&SetYear=<%# Server.UrlEncode(Eval("SetYear").ToString())%>&TitleName=<%# Server.UrlEncode(Eval("CustName").ToString())%>"
+                            <a href="Cust_ViewAll.aspx?t=<%#Param_Type %>&ShipFrom=<%# Server.UrlEncode(Eval("ShipFrom").ToString())%>&CustID=<%# Server.UrlEncode(Eval("CustID").ToString())%>&SetYear=<%# Server.UrlEncode(Eval("SetYear").ToString())%>&TitleName=<%# Server.UrlEncode(Eval("CustName").ToString())%>"
                                 class="styleGreen B infoBox" title="展開 - 年度目標">
                                 <%#Eval("SetYear")%>
                                 <span class="JQ-ui-icon ui-icon-newwin"></span></a>
                         </td>
                         <%-- 銷售 --%>
                         <td class="JQ-ui-state-default">
-                            <a href="Cust_ViewItem.aspx?ShipFrom=<%# Server.UrlEncode(Eval("ShipFrom").ToString())%>&CustID=<%# Server.UrlEncode(Eval("CustID").ToString())%>&SetYear=<%# Server.UrlEncode(Eval("SetYear").ToString())%>&Column=Amount_USD&SetTitle=<%# Server.UrlEncode("銷售金額(USD)") %>&TitleName=<%# Server.UrlEncode(Eval("CustName").ToString())%>"
+                            <a href="Cust_ViewItem.aspx?t=<%#Param_Type %>&ShipFrom=<%# Server.UrlEncode(Eval("ShipFrom").ToString())%>&CustID=<%# Server.UrlEncode(Eval("CustID").ToString())%>&SetYear=<%# Server.UrlEncode(Eval("SetYear").ToString())%>&Column=Amount_USD&SetTitle=<%# Server.UrlEncode("銷售金額(USD)") %>&TitleName=<%# Server.UrlEncode(Eval("CustName").ToString())%>"
                                 class="styleBlue infoBox" title="展開 - 銷售金額(USD)">
                                 <%#fn_stringFormat.C_format(Eval("Amount_USD").ToString())%>
                                 <span class="JQ-ui-icon ui-icon-newwin"></span></a>
                         </td>
                         <td class="JQ-ui-state-default">
-                            <a href="Cust_ViewItem.aspx?ShipFrom=<%# Server.UrlEncode(Eval("ShipFrom").ToString())%>&CustID=<%# Server.UrlEncode(Eval("CustID").ToString())%>&SetYear=<%# Server.UrlEncode(Eval("SetYear").ToString())%>&Column=Amount_NTD&SetTitle=<%# Server.UrlEncode("銷售金額(NTD)") %>&TitleName=<%# Server.UrlEncode(Eval("CustName").ToString())%>"
+                            <a href="Cust_ViewItem.aspx?t=<%#Param_Type %>&ShipFrom=<%# Server.UrlEncode(Eval("ShipFrom").ToString())%>&CustID=<%# Server.UrlEncode(Eval("CustID").ToString())%>&SetYear=<%# Server.UrlEncode(Eval("SetYear").ToString())%>&Column=Amount_NTD&SetTitle=<%# Server.UrlEncode("銷售金額(NTD)") %>&TitleName=<%# Server.UrlEncode(Eval("CustName").ToString())%>"
                                 class="styleBlue infoBox" title="展開 - 銷售金額(NTD)">
                                 <%#fn_stringFormat.C_format(Eval("Amount_NTD").ToString())%>
                                 <span class="JQ-ui-icon ui-icon-newwin"></span></a>
                         </td>
                         <td class="JQ-ui-state-default">
-                            <a href="Cust_ViewItem.aspx?ShipFrom=<%# Server.UrlEncode(Eval("ShipFrom").ToString())%>&CustID=<%# Server.UrlEncode(Eval("CustID").ToString())%>&SetYear=<%# Server.UrlEncode(Eval("SetYear").ToString())%>&Column=Amount_RMB&SetTitle=<%# Server.UrlEncode("銷售金額(RMB)") %>&TitleName=<%# Server.UrlEncode(Eval("CustName").ToString())%>"
+                            <a href="Cust_ViewItem.aspx?t=<%#Param_Type %>&ShipFrom=<%# Server.UrlEncode(Eval("ShipFrom").ToString())%>&CustID=<%# Server.UrlEncode(Eval("CustID").ToString())%>&SetYear=<%# Server.UrlEncode(Eval("SetYear").ToString())%>&Column=Amount_RMB&SetTitle=<%# Server.UrlEncode("銷售金額(RMB)") %>&TitleName=<%# Server.UrlEncode(Eval("CustName").ToString())%>"
                                 class="styleBlue infoBox" title="展開 - 銷售金額(RMB)">
                                 <%#fn_stringFormat.C_format(Eval("Amount_RMB").ToString())%>
                                 <span class="JQ-ui-icon ui-icon-newwin"></span></a>
                         </td>
                         <%-- 接單 --%>
                         <td class="JQ-ui-state-default">
-                            <a href="Cust_ViewItem.aspx?ShipFrom=<%# Server.UrlEncode(Eval("ShipFrom").ToString())%>&CustID=<%# Server.UrlEncode(Eval("CustID").ToString())%>&SetYear=<%# Server.UrlEncode(Eval("SetYear").ToString())%>&Column=OrdAmount_USD&SetTitle=<%# Server.UrlEncode("接單金額(USD)") %>&TitleName=<%# Server.UrlEncode(Eval("CustName").ToString())%>"
+                            <a href="Cust_ViewItem.aspx?t=<%#Param_Type %>&ShipFrom=<%# Server.UrlEncode(Eval("ShipFrom").ToString())%>&CustID=<%# Server.UrlEncode(Eval("CustID").ToString())%>&SetYear=<%# Server.UrlEncode(Eval("SetYear").ToString())%>&Column=OrdAmount_USD&SetTitle=<%# Server.UrlEncode("接單金額(USD)") %>&TitleName=<%# Server.UrlEncode(Eval("CustName").ToString())%>"
                                 class="infoBox styleGreen" title="展開 - 接單金額(USD)">
                                 <%#fn_stringFormat.C_format(Eval("OrdAmount_USD").ToString())%>
                                 <span class="JQ-ui-icon ui-icon-newwin"></span></a>
                         </td>
                         <td class="JQ-ui-state-default">
-                            <a href="Cust_ViewItem.aspx?ShipFrom=<%# Server.UrlEncode(Eval("ShipFrom").ToString())%>&CustID=<%# Server.UrlEncode(Eval("CustID").ToString())%>&SetYear=<%# Server.UrlEncode(Eval("SetYear").ToString())%>&Column=OrdAmount_NTD&SetTitle=<%# Server.UrlEncode("接單金額(NTD)") %>&TitleName=<%# Server.UrlEncode(Eval("CustName").ToString())%>"
+                            <a href="Cust_ViewItem.aspx?t=<%#Param_Type %>&ShipFrom=<%# Server.UrlEncode(Eval("ShipFrom").ToString())%>&CustID=<%# Server.UrlEncode(Eval("CustID").ToString())%>&SetYear=<%# Server.UrlEncode(Eval("SetYear").ToString())%>&Column=OrdAmount_NTD&SetTitle=<%# Server.UrlEncode("接單金額(NTD)") %>&TitleName=<%# Server.UrlEncode(Eval("CustName").ToString())%>"
                                 class="infoBox styleGreen" title="展開 - 接單金額(NTD)">
                                 <%#fn_stringFormat.C_format(Eval("OrdAmount_NTD").ToString())%>
                                 <span class="JQ-ui-icon ui-icon-newwin"></span></a>
                         </td>
                         <td class="JQ-ui-state-default">
-                            <a href="Cust_ViewItem.aspx?ShipFrom=<%# Server.UrlEncode(Eval("ShipFrom").ToString())%>&CustID=<%# Server.UrlEncode(Eval("CustID").ToString())%>&SetYear=<%# Server.UrlEncode(Eval("SetYear").ToString())%>&Column=OrdAmount_RMB&SetTitle=<%# Server.UrlEncode("接單金額(RMB)") %>&TitleName=<%# Server.UrlEncode(Eval("CustName").ToString())%>"
+                            <a href="Cust_ViewItem.aspx?t=<%#Param_Type %>&ShipFrom=<%# Server.UrlEncode(Eval("ShipFrom").ToString())%>&CustID=<%# Server.UrlEncode(Eval("CustID").ToString())%>&SetYear=<%# Server.UrlEncode(Eval("SetYear").ToString())%>&Column=OrdAmount_RMB&SetTitle=<%# Server.UrlEncode("接單金額(RMB)") %>&TitleName=<%# Server.UrlEncode(Eval("CustName").ToString())%>"
                                 class="infoBox styleGreen" title="展開 - 接單金額(RMB)">
                                 <%#fn_stringFormat.C_format(Eval("OrdAmount_RMB").ToString())%>
                                 <span class="JQ-ui-icon ui-icon-newwin"></span></a>

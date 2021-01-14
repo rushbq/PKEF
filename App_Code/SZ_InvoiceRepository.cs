@@ -1027,7 +1027,7 @@ namespace SZ_Invoice.Aisino.Controllers
                         line.qty, line.price, line.shpamt, line.taxrate, line.taxation, line.disamt, line.oldprice));
                     //, tradename, model, unit, taxprice
                     sql.Append(" ,N'{0}', N'{1}', N'{2}', '{3}'".FormatThis(
-                        line.tradename, line.model, line.unit, line.taxprice));
+                        line.tradename.Replace("'", "''"), line.model, line.unit, line.taxprice));
                     //, bmbbh, ssflbm, xsyhzc
                     sql.Append(" ,N'{0}', N'{1}', N'{2}'".FormatThis(
                         line.bmbbh, line.ssflbm, line.xsyhzc));

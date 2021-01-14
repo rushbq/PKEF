@@ -1034,7 +1034,7 @@ namespace SH_Invoice.Controllers
                     sql.Append(" '{0}', '{1}'".FormatThis(line.unino, row.ToString()));
                     //SPMC, GGXH, JLDW
                     sql.Append(" , N'{0}', N'{1}', N'{2}'".FormatThis(
-                        line.tradename, line.model, line.unit
+                        line.tradename.Replace("'","''"), line.model, line.unit
                         ));
                     //SPSL, DJ, JE, SL
                     sql.Append(" , {0}, {1}, {2}, {3}".FormatThis(

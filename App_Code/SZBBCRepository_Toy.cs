@@ -4530,13 +4530,10 @@ namespace SZBBC_Toy.Controllers
                 //** 更新價格 **
                 sql.AppendLine(" UPDATE SZBBC_Toy_ImportData_DT");
                 sql.AppendLine(" SET Cnt_Price = (");
-                sql.AppendLine("     SELECT (");
-                sql.AppendLine("         (");
-                sql.AppendLine("          (SELECT TOP 1 TotalPrice FROM SZBBC_Toy_ImportData_DT Ref WHERE (Ref.Parent_ID = @DataID) AND (Ref.OrderID = Data.OrderID))");
-                //sql.AppendLine("          + SUM(Data.Freight)");
-                sql.AppendLine("         ) ");
-                sql.AppendLine("          - SUM(Data.ERP_Price * Data.BuyCnt)");
-                sql.AppendLine("     ) AS Cnt_Price");
+                sql.AppendLine("     SELECT CONVERT(FLOAT,(");
+                sql.AppendLine("          CONVERT(numeric(21, 2), (SELECT TOP 1 TotalPrice FROM SZBBC_Toy_ImportData_DT Ref WHERE (Ref.Parent_ID = @DataID) AND (Ref.OrderID = Data.OrderID)))");
+                sql.AppendLine("          - CONVERT(numeric(21, 2), SUM(Data.ERP_Price * Data.BuyCnt))");
+                sql.AppendLine("     )) AS Cnt_Price");
                 sql.AppendLine("     FROM SZBBC_Toy_ImportData_DT Data");
                 sql.AppendLine("     WHERE (Data.Parent_ID = @DataID) AND (Data.OrderID = SZBBC_Toy_ImportData_DT.OrderID) AND (Data.IsGift = 'N')");
                 sql.AppendLine("     GROUP BY Data.OrderID");

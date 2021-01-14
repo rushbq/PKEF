@@ -1099,7 +1099,7 @@ namespace SH_BBC.Controllers
                                 case "3":
                                     //京東VC
                                     myProdID = val[3];
-                                    myBuyCnt = string.IsNullOrEmpty(val[12]) ? 0 : Convert.ToInt16(val[12]);
+                                    myBuyCnt = string.IsNullOrEmpty(val[13]) ? 0 : Convert.ToInt16(val[13]);
 
                                     myShipWho = val[9];
                                     myShipAddr = val[8];
@@ -5057,17 +5057,17 @@ namespace SH_BBC.Controllers
 
                 //----- SQL 查詢語法 -----
                 //** 更新價格 **
+                /*
+                 * 注意:float在零減零時會出現不正常數值, 故轉換為numeric
+                 */
                 sql.AppendLine(" UPDATE SHBBC_ImportData_DT");
                 sql.AppendLine(" SET Cnt_Price = (");
-                sql.AppendLine("     SELECT (");
-                sql.AppendLine("         (");
-                sql.AppendLine("          (SELECT TOP 1 TotalPrice FROM SHBBC_ImportData_DT Ref WHERE (Ref.Parent_ID = @DataID) AND (Ref.OrderID = Data.OrderID))");
-                //sql.AppendLine("          + SUM(Data.Freight)");
-                sql.AppendLine("         ) ");
-                sql.AppendLine("          - SUM(Data.ERP_Price * Data.BuyCnt)");
-                sql.AppendLine("     ) AS Cnt_Price");
+                sql.AppendLine("     SELECT CONVERT(FLOAT,(");
+                sql.AppendLine("          CONVERT(numeric(21, 2), (SELECT TOP 1 CONVERT(FLOAT, Ref.TotalPrice) FROM SHBBC_ImportData_DT Ref WHERE (Ref.Parent_ID = @DataID) AND (Ref.OrderID = Data.OrderID)))");
+                sql.AppendLine("          - CONVERT(numeric(21, 2), SUM(Data.ERP_Price * Data.BuyCnt))");
+                sql.AppendLine("     )) AS Cnt_Price");
                 sql.AppendLine("     FROM SHBBC_ImportData_DT Data");
-                sql.AppendLine("     WHERE (Data.Parent_ID = @DataID) AND (Data.OrderID = SHBBC_ImportData_DT.OrderID) AND (Data.IsGift = 'N')");
+                sql.AppendLine("     WHERE (Data.Parent_ID = @DataID) AND (Data.OrderID = SHBBC_ImportData_DT.OrderID) AND (Data.IsGift = 'N') AND (Data.IsPass = 'Y')");
                 sql.AppendLine("     GROUP BY Data.OrderID");
                 sql.AppendLine(" )");
                 sql.AppendLine(" WHERE (Parent_ID = @DataID);");

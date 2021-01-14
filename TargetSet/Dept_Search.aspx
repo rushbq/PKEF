@@ -114,7 +114,7 @@
                             </div>
                         </td>
                         <td align="center" class="JQ-ui-state-default">
-                            <a href="Dept_ViewAll.aspx?ShipFrom=<%# Server.UrlEncode(Eval("ShipFrom").ToString())%>&DeptID=<%# Server.UrlEncode(Eval("DeptID").ToString())%>&SetYear=<%# Server.UrlEncode(Eval("SetYear").ToString())%>&DeptName=<%# Server.UrlEncode(Eval("DeptName").ToString())%>"
+                            <a href="Dept_ViewAll.aspx?t=<%#Param_Type %>&ShipFrom=<%# Server.UrlEncode(Eval("ShipFrom").ToString())%>&DeptID=<%# Server.UrlEncode(Eval("DeptID").ToString())%>&SetYear=<%# Server.UrlEncode(Eval("SetYear").ToString())%>&DeptName=<%# Server.UrlEncode(Eval("DeptName").ToString())%>"
                                 class="styleGreen B infoBox" title="展開 - 年度目標">
                                 <%#Eval("SetYear")%>
                                 <span class="JQ-ui-icon ui-icon-newwin"></span></a>
@@ -122,7 +122,8 @@
                         <%-- 銷售 --%>
                         <td align="center" class="JQ-ui-state-default">
                             <a href="<%# myUrl_ViewItem(new string[]{
-                                    Eval("ShipFrom").ToString()
+                                    Param_Type
+                                    , Eval("ShipFrom").ToString()
                                     , Eval("DeptID").ToString()
                                     , Eval("SetYear").ToString()
                                     ,"Amount_USD", "銷售金額(USD)"
@@ -133,7 +134,8 @@
                         </td>
                         <td align="center" class="JQ-ui-state-default">
                             <a href="<%# myUrl_ViewItem(new string[]{
-                                    Eval("ShipFrom").ToString()
+                                    Param_Type
+                                    , Eval("ShipFrom").ToString()
                                     , Eval("DeptID").ToString()
                                     , Eval("SetYear").ToString()
                                     ,"Amount_NTD", "銷售金額(NTD)"
@@ -144,7 +146,8 @@
                         </td>
                         <td align="center" class="JQ-ui-state-default">
                             <a href="<%# myUrl_ViewItem(new string[]{
-                                    Eval("ShipFrom").ToString()
+                                    Param_Type
+                                    , Eval("ShipFrom").ToString()
                                     , Eval("DeptID").ToString()
                                     , Eval("SetYear").ToString()
                                     ,"Amount_RMB", "銷售金額(RMB)"
@@ -156,7 +159,8 @@
                         <%-- 接單 --%>
                         <td align="center" class="JQ-ui-state-default">
                             <a href="<%# myUrl_ViewItem(new string[]{
-                                    Eval("ShipFrom").ToString()
+                                    Param_Type
+                                    , Eval("ShipFrom").ToString()
                                     , Eval("DeptID").ToString()
                                     , Eval("SetYear").ToString()
                                     ,"OrdAmount_USD", "接單金額(USD)"
@@ -167,7 +171,8 @@
                         </td>
                         <td align="center" class="JQ-ui-state-default">
                             <a href="<%# myUrl_ViewItem(new string[]{
-                                    Eval("ShipFrom").ToString()
+                                    Param_Type
+                                    , Eval("ShipFrom").ToString()
                                     , Eval("DeptID").ToString()
                                     , Eval("SetYear").ToString()
                                     ,"OrdAmount_NTD", "接單金額(NTD)"
@@ -178,7 +183,8 @@
                         </td>
                         <td align="center" class="JQ-ui-state-default">
                             <a href="<%# myUrl_ViewItem(new string[]{
-                                    Eval("ShipFrom").ToString()
+                                    Param_Type
+                                    , Eval("ShipFrom").ToString()
                                     , Eval("DeptID").ToString()
                                     , Eval("SetYear").ToString()
                                     ,"OrdAmount_RMB", "接單金額(RMB)"
@@ -190,7 +196,8 @@
                         <%-- 挑戰 --%>
                         <td align="center" class="JQ-ui-state-default">
                             <a href="<%# myUrl_ViewItem(new string[]{
-                                    Eval("ShipFrom").ToString()
+                                    Param_Type
+                                    , Eval("ShipFrom").ToString()
                                     , Eval("DeptID").ToString()
                                     , Eval("SetYear").ToString()
                                     ,"ChAmount_USD", "挑戰金額(USD)"
@@ -201,7 +208,8 @@
                         </td>
                         <td align="center" class="JQ-ui-state-default">
                             <a href="<%# myUrl_ViewItem(new string[]{
-                                    Eval("ShipFrom").ToString()
+                                    Param_Type
+                                    , Eval("ShipFrom").ToString()
                                     , Eval("DeptID").ToString()
                                     , Eval("SetYear").ToString()
                                     ,"ChAmount_NTD", "挑戰金額(NTD)"
@@ -212,7 +220,8 @@
                         </td>
                         <td align="center" class="JQ-ui-state-default">
                             <a href="<%# myUrl_ViewItem(new string[]{
-                                    Eval("ShipFrom").ToString()
+                                    Param_Type
+                                    , Eval("ShipFrom").ToString()
                                     , Eval("DeptID").ToString()
                                     , Eval("SetYear").ToString()
                                     ,"ChAmount_RMB", "挑戰金額(RMB)"

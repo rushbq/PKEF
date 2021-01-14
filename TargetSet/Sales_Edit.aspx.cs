@@ -312,11 +312,11 @@ public partial class Sales_Edit : SecurityIn
                 SBSql.AppendLine("  , Target_Sales.OrdAmount_NTD, Target_Sales.OrdAmount_USD, Target_Sales.OrdAmount_RMB");
                 SBSql.AppendLine("  , Target_Dept.StartTime, Target_Dept.EndTime");
                 SBSql.AppendLine(" FROM Target_Sales ");
-                SBSql.AppendLine("  LEFT JOIN Target_Dept ON Target_Sales.ShipFrom = Target_Dept.ShipFrom ");
+                SBSql.AppendLine("  LEFT JOIN Target_Dept ON Target_Sales.ShipFrom = Target_Dept.ShipFrom AND Target_Dept.TargetType = Target_Sales.TargetType");
                 SBSql.AppendLine("  AND Target_Sales.DeptID = Target_Dept.DeptID ");
                 SBSql.AppendLine("  AND Target_Sales.SetYear = Target_Dept.SetYear ");
                 SBSql.AppendLine("  AND Target_Sales.SetMonth = Target_Dept.SetMonth ");
-                SBSql.AppendLine(" WHERE (Target_Sales.DeptID = @DeptID) ");
+                SBSql.AppendLine(" WHERE (Target_Sales.DeptID = @DeptID) AND (Target_Sales.TargetType = @TargetType)");
                 SBSql.AppendLine("   AND (Target_Sales.SetYear = @SetYear) AND (Target_Sales.StaffID = @StaffID) ");
                 SBSql.AppendLine("   AND (Target_Sales.ShipFrom IN (SELECT TOP 1 AREA FROM PKSYS.dbo.User_Dept WHERE (DeptID = Target_Sales.DeptID)))");
                 SBSql.AppendLine(" ORDER BY Target_Sales.SetMonth ");
@@ -325,6 +325,7 @@ public partial class Sales_Edit : SecurityIn
                 cmd.Parameters.AddWithValue("DeptID", this.ddl_Dept.SelectedValue);
                 cmd.Parameters.AddWithValue("SetYear", this.ddl_Year.SelectedValue);
                 cmd.Parameters.AddWithValue("StaffID", this.ddl_Employee.SelectedValue);
+                cmd.Parameters.AddWithValue("TargetType", Param_Type);
                 using (DataTable DT = dbConn.LookupDT(cmd, dbConn.DBS.EFLocal, out ErrMsg))
                 {
                     //DataBind            
@@ -447,7 +448,7 @@ public partial class Sales_Edit : SecurityIn
                 SBSql.AppendLine("  , Amount_NTD, Amount_USD, Amount_RMB");
                 SBSql.AppendLine("  , OrdAmount_NTD, OrdAmount_USD, OrdAmount_RMB");
                 SBSql.AppendLine(" FROM Target_Sales ");
-                SBSql.AppendLine(" WHERE (DeptID = @DeptID) AND (SetYear = @SetYear) AND (StaffID = @StaffID) ");
+                SBSql.AppendLine(" WHERE (DeptID = @DeptID) AND (SetYear = @SetYear) AND (StaffID = @StaffID) AND (TargetType = @TargetType)");
                 SBSql.AppendLine("  AND (ShipFrom IN (SELECT TOP 1 AREA FROM PKSYS.dbo.User_Dept WHERE (DeptID = Target_Sales.DeptID)))");
                 SBSql.AppendLine(" ORDER BY SetMonth ");
                 cmd.CommandText = SBSql.ToString();
@@ -455,6 +456,7 @@ public partial class Sales_Edit : SecurityIn
                 cmd.Parameters.AddWithValue("DeptID", this.ddl_Dept.SelectedValue);
                 cmd.Parameters.AddWithValue("SetYear", Convert.ToInt16(this.ddl_Year.SelectedValue) - 1);
                 cmd.Parameters.AddWithValue("StaffID", this.ddl_Employee.SelectedValue);
+                cmd.Parameters.AddWithValue("TargetType", Param_Type);
                 using (DataTable DT = dbConn.LookupDT(cmd, dbConn.DBS.EFLocal, out ErrMsg))
                 {
                     //DataBind            
@@ -587,7 +589,7 @@ public partial class Sales_Edit : SecurityIn
             SBSql.Clear();
 
             SBSql.AppendLine(" SELECT COUNT(*) AS CheckNum FROM Target_Sales ");
-            SBSql.AppendLine(" WHERE (ShipFrom = @ShipFrom) AND (DeptID = @DeptID) AND (SetYear = @SetYear) AND (SetMonth = @SetMonth) ");
+            SBSql.AppendLine(" WHERE (ShipFrom = @ShipFrom) AND (DeptID = @DeptID) AND (SetYear = @SetYear) AND (SetMonth = @SetMonth) AND (TargetType = @TargetType)");
             SBSql.AppendLine("  AND (StaffID = @StaffID) ");
             cmd.CommandText = SBSql.ToString();
             cmd.Parameters.AddWithValue("ShipFrom", getShipFrom);
@@ -595,6 +597,7 @@ public partial class Sales_Edit : SecurityIn
             cmd.Parameters.AddWithValue("SetYear", this.ddl_Year.SelectedValue);
             cmd.Parameters.AddWithValue("SetMonth", this.ddl_Mon.SelectedValue);
             cmd.Parameters.AddWithValue("StaffID", this.ddl_Employee.SelectedValue);
+            cmd.Parameters.AddWithValue("TargetType", Param_Type);
             using (DataTable DT = dbConn.LookupDT(cmd, dbConn.DBS.EFLocal, out ErrMsg))
             {
                 if (Convert.ToInt32(DT.Rows[0]["CheckNum"]) > 0)
@@ -710,7 +713,7 @@ public partial class Sales_Edit : SecurityIn
             //--- 判斷資料重複 ---
             SBSql.AppendLine(" SELECT COUNT(*) AS CheckNum FROM Target_Sales ");
             SBSql.AppendLine(" WHERE (UID <> @UID)");
-            SBSql.AppendLine("   AND (ShipFrom = @ShipFrom) AND (DeptID = @DeptID) AND (SetYear = @SetYear) AND (SetMonth = @SetMonth)");
+            SBSql.AppendLine("   AND (ShipFrom = @ShipFrom) AND (DeptID = @DeptID) AND (SetYear = @SetYear) AND (SetMonth = @SetMonth) AND (TargetType = @TargetType)");
             SBSql.AppendLine("   AND (StaffID = @StaffID) ");
             cmd.CommandText = SBSql.ToString();
             cmd.Parameters.AddWithValue("UID", this.hf_UID.Value);
@@ -719,6 +722,7 @@ public partial class Sales_Edit : SecurityIn
             cmd.Parameters.AddWithValue("SetYear", this.ddl_Year.SelectedValue);
             cmd.Parameters.AddWithValue("SetMonth", this.ddl_Mon.SelectedValue);
             cmd.Parameters.AddWithValue("StaffID", this.ddl_Employee.SelectedValue);
+            cmd.Parameters.AddWithValue("TargetType", Param_Type);
             using (DataTable DT = dbConn.LookupDT(cmd, dbConn.DBS.EFLocal, out ErrMsg))
             {
                 if (Convert.ToInt32(DT.Rows[0]["CheckNum"]) > 0)

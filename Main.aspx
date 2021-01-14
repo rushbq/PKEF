@@ -49,14 +49,14 @@
                 </div>
                 <div class="ui attached segment">
                     <div class="ui three cards">
-                        <a class="red card" href="<%=fn_Params.WebUrl %>mySZBBC/ImportList.aspx">
+                        <a class="red card" href="<%=fn_Params.WebUrl %>mySHBBC/ImportList.aspx">
                             <div class="content">
-                                <div class="header">深圳工具BBC</div>
+                                <div class="header">上海工具BBC</div>
                                 <div class="meta">
-                                    <span class="category">資料庫:深圳</span>
+                                    <span class="category">資料庫:上海</span>
                                 </div>
                                 <div class="description">
-                                    <p>深圳電商訂單</p>
+                                    <p>上海電商訂單</p>
                                 </div>
                             </div>
                         </a>
@@ -68,17 +68,6 @@
                                 </div>
                                 <div class="description">
                                     <p>玩具訂單</p>
-                                </div>
-                            </div>
-                        </a>
-                        <a class="orange card" href="<%=fn_Params.WebUrl %>mySHBBC/ImportList.aspx">
-                            <div class="content">
-                                <div class="header">上海工具BBC</div>
-                                <div class="meta">
-                                    <span class="category">資料庫:上海</span>
-                                </div>
-                                <div class="description">
-                                    <p>上海電商訂單</p>
                                 </div>
                             </div>
                         </a>

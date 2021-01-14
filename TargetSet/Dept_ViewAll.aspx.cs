@@ -67,13 +67,14 @@ public partial class Dept_ViewAll : SecurityIn
                 SBSql.AppendLine("  , OrdAmount_NTD, OrdAmount_USD, OrdAmount_RMB");
                 SBSql.AppendLine("  , ChAmount_NTD, ChAmount_USD, ChAmount_RMB");
                 SBSql.AppendLine(" FROM Target_Dept ");
-                SBSql.AppendLine(" WHERE (ShipFrom = @ShipFrom) AND (DeptID = @DeptID) AND (SetYear = @SetYear) ");
+                SBSql.AppendLine(" WHERE (ShipFrom = @ShipFrom) AND (DeptID = @DeptID) AND (SetYear = @SetYear) AND (TargetType = @TargetType)");
                 SBSql.AppendLine(" ORDER BY SetMonth ");
                 cmd.CommandText = SBSql.ToString();
                 cmd.Parameters.Clear();
                 cmd.Parameters.AddWithValue("ShipFrom", Param_ShipFrom);
                 cmd.Parameters.AddWithValue("DeptID", Param_DeptID);
                 cmd.Parameters.AddWithValue("SetYear", Param_SetYear);
+                cmd.Parameters.AddWithValue("TargetType", Param_Type);
                 using (DataTable DT = dbConn.LookupDT(cmd, dbConn.DBS.EFLocal, out ErrMsg))
                 {
                     //DataBind            
@@ -213,6 +214,32 @@ public partial class Dept_ViewAll : SecurityIn
         set
         {
             this._Param_Column = value;
+        }
+    }
+
+    /// <summary>
+    /// 取得傳遞參數 - Tab ID
+    /// </summary>
+    private string _Param_Type;
+    public string Param_Type
+    {
+        get
+        {
+            string _id = Request.QueryString["t"];
+            string _checkID = _id;
+
+            //若為空值,帶預設值
+            if (string.IsNullOrWhiteSpace(_id) || _id.Equals("0"))
+            {
+                _checkID = "1";
+            }
+
+            return _checkID;
+
+        }
+        set
+        {
+            this._Param_Type = value;
         }
     }
     #endregion
