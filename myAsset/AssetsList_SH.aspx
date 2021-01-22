@@ -1,4 +1,4 @@
-﻿<%@ Page Title="上海資產設備" Language="C#" MasterPageFile="~/SiteMaster.master" AutoEventWireup="true" CodeFile="AssetsList_SH.aspx.cs" Inherits="myDataInfo_AssetsList_SH" %>
+﻿<%@ Page Title="上海資產設備" Language="C#" MasterPageFile="~/SiteMaster.master" AutoEventWireup="true" CodeFile="AssetsList_SH.aspx.cs" Inherits="myAsset_AssetsList_SH" %>
 
 <%@ Import Namespace="PKLib_Method.Methods" %>
 

@@ -1,4 +1,4 @@
-﻿<%@ WebHandler Language="C#" Class="GetData_Customer_v1" %>
+﻿<%@ WebHandler Language="C#" Class="GetData_Asset" %>
 
 using System.Web;
 using System.Linq;
@@ -8,69 +8,64 @@ using Newtonsoft.Json;
 using PKLib_Data.Controllers;
 using PKLib_Data.Assets;
 
-public class GetData_Customer_v1 : IHttpHandler
+public class GetData_Asset : IHttpHandler
 {
+
     /// <summary>
-    /// 取得客戶資料(Ajax)
-    /// 使用Semantic UI的Search UI
+    /// 取得資產清單(MIS)
+    /// 使用Semantic UI的Search UI(type=category)
     /// </summary>
     /// <remarks>
-    /// [corp]
-    /// 1=TW, 2=SZ, 3=SH
+    /// 資料來源
+    /// PKLibrary-Data
     /// </remarks>
     public void ProcessRequest(HttpContext context)
     {
         //[接收參數] 查詢字串
         string searchVal = context.Request["q"];
-        string corp = context.Request["corp"];
         string dbs = context.Request["dbs"];
 
-        //dbs轉corp
-        if (!string.IsNullOrWhiteSpace(dbs))
-        {
-            switch (dbs.ToUpper())
-            {
-                case "TW":
-                    corp = "1";
-                    break;
-
-                case "SZ":
-                    corp = "2";
-                    break;
-                    
-                case "SH":
-                    corp = "3";
-                    break;
-                    
-                default:
-                    corp = "";
-                    break;
-            }
-        }
-
         //----- 宣告:資料參數 -----
-        CustomersRepository _data = new CustomersRepository();
+        EquipmentRepository _data = new EquipmentRepository();
         Dictionary<int, string> search = new Dictionary<int, string>();
 
 
         //----- 原始資料:條件篩選 -----
+        
+        //固定參數(不使用MIS指定條件)
+        search.Add((int)Common.mySearch.IsMIS, "N");
+
+        //關鍵字
         if (!string.IsNullOrEmpty(searchVal))
         {
-            search.Add((int)Common.CustSearch.Keyword, searchVal);
-        }
-        if (!string.IsNullOrEmpty(corp))
-        {
-            search.Add((int)Common.CustSearch.Corp, corp);
+            search.Add((int)Common.mySearch.Keyword, searchVal);
         }
 
         //----- 原始資料:取得所有資料 -----
-        var results = _data.GetCustomers(search)
+        IQueryable results = null;
+
+        if (dbs.Equals("TW"))
+        {
+            results = _data.GetDataList(search)
                 .Select(fld =>
                     new
                     {
-                        ID = fld.CustID,
-                        Label = "(" + fld.Corp_Name + ") " + fld.CustName
+                        ID = fld.ID,
+                        Label = fld.Name + " (" + fld.Spec + ")",
+                        Category = fld.SupName
                     }).Take(50);
+        }
+        else
+        {
+            results = _data.GetDataList_SH(search)
+                .Select(fld =>
+                    new
+                    {
+                        ID = fld.ID,
+                        Label = fld.Name + " (" + fld.Spec + ")",
+                        Category = fld.SupName
+                    }).Take(50);
+        }
 
 
         var data = new { results };
@@ -90,6 +85,7 @@ public class GetData_Customer_v1 : IHttpHandler
 
 
     }
+
 
     public bool IsReusable
     {

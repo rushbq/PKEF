@@ -633,7 +633,7 @@ public partial class IT_HelpSearch : SecurityIn
                 SBSql.Append(" SELECT");
                 SBSql.Append("  YEAR(Main.Create_Time) AS '年' , MONTH(Main.Create_Time) AS '月', DAY(Main.Create_Time) AS '日'");
                 SBSql.Append("  , Main.Help_Subject AS '主旨', ReqClass.Class_Name AS '問題類別', HelpStatus.Class_Name AS '處理狀態'");
-                SBSql.Append("  , Main.Help_Content AS '需求說明', ISNULL(Main.Reply_Hours, 0) AS '處理工時' ");
+                SBSql.Append("  , REPLACE(REPLACE(Main.Help_Content, CHAR(10), ''), CHAR(13), '')  AS '需求說明', ISNULL(Main.Reply_Hours, 0) AS '處理工時' ");
                 SBSql.Append("  , (Prof.Account_Name + ' (' + Prof.Display_Name + ')') AS '需求者'");
                 SBSql.Append("  , (RepProf.Account_Name + ' (' + RepProf.Display_Name + ')') AS '回覆者'");
                 SBSql.Append("  , Main.TraceID AS '追蹤編號'");

@@ -74,7 +74,7 @@
                                 <label>品號</label>
                                 <div class="ui fluid search ac-ModelNo">
                                     <div class="ui left icon right labeled input">
-                                        <asp:TextBox ID="filter_ModelNo" runat="server" CssClass="prompt" placeholder="輸入品號或品名關鍵字"></asp:TextBox>
+                                        <asp:TextBox ID="filter_ModelNo" runat="server" CssClass="prompt" placeholder="輸入品號關鍵字"></asp:TextBox>
                                         <i class="search icon"></i>
                                         <asp:Panel ID="lb_ModelNo" runat="server" CssClass="ui label">輸入關鍵字,選擇項目</asp:Panel>
                                     </div>

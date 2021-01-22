@@ -14,7 +14,7 @@ using CustomController;
 using ExtensionUI;
 using System.Data;
 
-public partial class myDataInfo_AssetsList : SecurityIn
+public partial class myAsset_AssetsList_SH : SecurityIn
 {
     public string ErrMsg;
 
@@ -25,7 +25,7 @@ public partial class myDataInfo_AssetsList : SecurityIn
             if (!IsPostBack)
             {
                 //[權限判斷]
-                if (fn_CheckAuth.CheckAuth_User("540", out ErrMsg) == false)
+                if (fn_CheckAuth.CheckAuth_User("552", out ErrMsg) == false)
                 {
                     Response.Redirect(string.Format("../Unauthorized.aspx?ErrMsg={0}", HttpUtility.UrlEncode(ErrMsg)), true);
                     return;
@@ -97,6 +97,8 @@ public partial class myDataInfo_AssetsList : SecurityIn
         //----- 原始資料:條件篩選 -----
 
         #region >> 條件篩選 <<
+        //固定參數
+        search.Add((int)Common.mySearch.IsMIS, "Y");
 
         //[取得參數] - Keyword
         if (!string.IsNullOrEmpty(Req_Keyword))
@@ -132,7 +134,7 @@ public partial class myDataInfo_AssetsList : SecurityIn
 
 
         //----- 原始資料:取得所有資料 -----
-        var query = _data.GetDataList(search);
+        var query = _data.GetDataList_SH(search);
 
 
         //----- 資料整理:取得總筆數 -----
@@ -189,7 +191,7 @@ public partial class myDataInfo_AssetsList : SecurityIn
         menu.Items.Clear();
 
         //----- 原始資料:取得所有資料 -----
-        var query = _data.GetDepts(null, Common.DeptArea.TW);
+        var query = _data.GetDepts(null, Common.DeptArea.SH);
 
         //index 0
         if (showRoot)
@@ -318,7 +320,7 @@ public partial class myDataInfo_AssetsList : SecurityIn
 
 
         //----- 原始資料:取得所有資料 -----
-        var query = _data.GetDataList(search);
+        var query = _data.GetDataList_SH(search);
 
         //將IQueryable轉成DataTable
         DataTable myDT = fn_CustomUI.LINQToDataTable(query);
@@ -442,7 +444,7 @@ public partial class myDataInfo_AssetsList : SecurityIn
     {
         get
         {
-            return "{0}myDataInfo/AssetsList.aspx".FormatThis(Application["WebUrl"]);
+            return "{0}myAsset/AssetsList_SH.aspx".FormatThis(Application["WebUrl"]);
         }
         set
         {

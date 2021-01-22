@@ -157,14 +157,14 @@ public partial class Left : SecurityIn
                 //[SQL] - 執行SQL
                 StringBuilder SBSql = new StringBuilder();
 
-                SBSql.AppendLine(" SELECT Program.Prog_ID, Program.Prog_Link, Program.Sort, Program.CssStyle ");
+                SBSql.AppendLine(" SELECT Program.Prog_ID, Program.Prog_Link, Program.Sort, Program.CssStyle, Program.NewOpen");
                 //[SQL] - 判斷&顯示(目前語系)
                 SBSql.AppendLine(string.Format(", Program.Prog_Name_{0} AS Prog_Name ", fn_Language.Param_Lang));
                 SBSql.AppendLine(" FROM Program INNER JOIN User_Profile_Rel_Program UserRel ON Program.Prog_ID = UserRel.Prog_ID ");
                 SBSql.AppendLine(" WHERE (Program.Display = 'Y') AND (Program.MenuDisplay = 'PKEF') AND (Program.Lv = 2) ");
                 SBSql.AppendLine("  AND (Program.Up_Id = @Param_UpID) AND (UserRel.Guid = @UserGUID)");
                 SBSql.AppendLine(" ORDER BY Program.Sort, Program.Prog_ID ");
- 
+
                 cmd.CommandText = SBSql.ToString();
                 cmd.Parameters.AddWithValue("UserGUID", fn_Params.UserGuid);
                 cmd.Parameters.AddWithValue("Param_UpID", Up_ID);
@@ -183,6 +183,7 @@ public partial class Left : SecurityIn
                             //params
                             string menuID = DT.Rows[i]["Prog_ID"].ToString();
                             string url = DT.Rows[i]["Prog_Link"].ToString();
+                            string NewOpen = DT.Rows[i]["NewOpen"].ToString();
 
                             //replace url
                             rtUrl = rtUrl
@@ -190,13 +191,14 @@ public partial class Left : SecurityIn
                                 .Replace("$url$", url);
 
                             //html
-                            SBHtml.AppendLine(string.Format("<li id=\"li_{0}\"><a href=\"{1}\" onclick=\"fmenu('{2}', 'Y', '{5}');SubClick('{3}');\">{4}</a></li>"
+                            SBHtml.AppendLine(string.Format("<li id=\"li_{0}\"><a href=\"{1}\" target=\"{6}\" onclick=\"fmenu('{2}', 'Y', '{5}');SubClick('{3}');\">{4}</a></li>"
                                         , menuID
                                         , rtUrl
                                         , Sort
                                         , menuID
                                         , DT.Rows[i]["Prog_Name"].ToString()
-                                        , CssStyle));
+                                        , CssStyle
+                                        , NewOpen.Equals("Y") ? "_blank" : ""));
                         }
                         SBHtml.AppendLine(" </ul>");
                         SBHtml.AppendLine("</li>");

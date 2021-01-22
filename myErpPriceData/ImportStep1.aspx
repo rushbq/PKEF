@@ -184,7 +184,7 @@
                 $("#MainContent_val_Cust").val(result.ID);
             }
             , apiSettings: {
-                url: '<%=fn_Params.WebUrl%>Ajax_Data/GetData_Customer_v1.ashx?dbs=<%=Req_DBS%>&q={query}'
+                url: '<%=fn_Params.WebUrl%>Ajax_Data/GetData_Customer_v1.ashx?q={query}'
             }
 
         });
