@@ -99,7 +99,6 @@
                                         </div>
                                     </div>
                                 </div>
-
                                 <div class="fields">
                                     <div class="six wide field">
                                         <label>IP</label>
@@ -110,7 +109,6 @@
                                         <asp:TextBox ID="tb_WebUrl" runat="server" MaxLength="100" placeholder="200字" autocomplete="off"></asp:TextBox>
                                     </div>
                                 </div>
-
                                 <div class="fields">
                                     <div class="sixteen wide field">
                                         <label>說明</label>
@@ -153,7 +151,6 @@
                                         </div>
                                         <div class="four wide field">
                                             <asp:Button ID="btn_SaveDetail" runat="server" Text="新增" CssClass="ui teal small button" OnClick="btn_SaveDetail_Click" />
-
                                         </div>
                                     </div>
                                 </div>
@@ -201,7 +198,6 @@
                                                 <td class="center aligned"><%#Eval("Who") %></td>
                                                 <td class="center aligned collapsing">
                                                     <asp:LinkButton ID="lbtn_Del" runat="server" CssClass="ui small orange basic icon button" ValidationGroup="List" CommandName="doDel" OnClientClick="return confirm('確定刪除?')"><i class="trash alternate icon"></i></asp:LinkButton>
-
                                                     <asp:HiddenField ID="hf_DataID" runat="server" Value='<%#Eval("Data_ID") %>' />
                                                 </td>
                                             </tr>
@@ -268,7 +264,6 @@
                             <a href="#section2" class="item">資產清單</a>
                             <a href="#top" class="item"><i class="angle double up icon"></i>到頂端</a>
                         </div>
-
                         <div class="ui vertical text menu">
                             <div class="header item">功能按鈕</div>
                             <div class="item">

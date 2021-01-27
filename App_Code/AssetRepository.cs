@@ -102,6 +102,7 @@ namespace AssetData.Controllers
                             switch (item.Key)
                             {
                                 case "DataID":
+                                    //指定資料編號
                                     sql.Append(" AND (Base.Data_ID = @DataID)");
 
                                     sqlParamList.Add(new SqlParameter("@DataID", item.Value));

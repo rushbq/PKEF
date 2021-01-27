@@ -109,7 +109,6 @@ public partial class myAsset_EqEdit : SecurityIn
                 tb_WebUrl.Text = item.Field<string>("WebUrl").ToString();
                 tb_Remark.Text = item.Field<string>("Remark").ToString();
 
-
                 //維護資訊
                 info_Creater.Text = item.Field<string>("Create_Name").ToString();
                 info_CreateTime.Text = item.Field<string>("Create_Time").ToString().ToDateString("yyyy-MM-dd HH:mm");
@@ -123,14 +122,12 @@ public partial class myAsset_EqEdit : SecurityIn
             }
 
 
-
             #region >> 其他功能 <<
 
             //-- 載入其他資料 --
             LookupData_DTList();
 
             #endregion
-
 
         }
         catch (Exception)
@@ -150,46 +147,60 @@ public partial class myAsset_EqEdit : SecurityIn
     /// 取得類別
     /// </summary>
     /// <param name="clsType">A,B</param>
-    /// <param name="ddl"></param>
-    /// <param name="rootName"></param>
-    /// <param name="inputValue"></param>
+    /// <param name="ddl">控制項</param>
+    /// <param name="rootName">根目錄名稱</param>
+    /// <param name="inputValue">輸入值</param>
     private void Get_ClassList(string clsType, DropDownList ddl, string rootName, string inputValue)
     {
         //----- 宣告:資料參數 -----
         AssetRepository _data = new AssetRepository();
 
-        //----- 原始資料:取得所有資料 -----
-        DataTable query = _data.GetClass_Asset(clsType, out ErrMsg);
-
-        //----- 資料整理 -----
-        ddl.Items.Clear();
-
-        if (!string.IsNullOrEmpty(rootName))
+        try
         {
-            ddl.Items.Add(new ListItem(rootName, ""));
-        }
+            //----- 原始資料:取得所有資料 -----
+            DataTable query = _data.GetClass_Asset(clsType, out ErrMsg);
 
-        for (int row = 0; row < query.Rows.Count; row++)
+            //----- 資料整理 -----
+            ddl.Items.Clear();
+
+            if (!string.IsNullOrEmpty(rootName))
+            {
+                ddl.Items.Add(new ListItem(rootName, ""));
+            }
+
+            for (int row = 0; row < query.Rows.Count; row++)
+            {
+                ddl.Items.Add(new ListItem(
+                    query.Rows[row]["Label"].ToString()
+                    , query.Rows[row]["ID"].ToString()
+                    ));
+            }
+
+            //被選擇值
+            if (!string.IsNullOrWhiteSpace(inputValue))
+            {
+                ddl.SelectedIndex = ddl.Items.IndexOf(ddl.Items.FindByValue(inputValue));
+            }
+
+            query = null;
+        }
+        catch (Exception)
         {
-            ddl.Items.Add(new ListItem(
-                query.Rows[row]["Label"].ToString()
-                , query.Rows[row]["ID"].ToString()
-                ));
-        }
 
-        //被選擇值
-        if (!string.IsNullOrWhiteSpace(inputValue))
+            throw;
+        }
+        finally
         {
-            ddl.SelectedIndex = ddl.Items.IndexOf(ddl.Items.FindByValue(inputValue));
+            _data = null;
         }
-
-        query = null;
     }
     #endregion
 
 
     #region -- 資料編輯:基本資料 --
-    //SAVE-基本資料
+    /// <summary>
+    /// SAVE-基本資料
+    /// </summary>
     protected void btn_doSaveBase_Click(object sender, EventArgs e)
     {
         string errTxt = "";
@@ -222,7 +233,7 @@ public partial class myAsset_EqEdit : SecurityIn
     }
 
     /// <summary>
-    /// 資料新增
+    /// 副程式-資料新增
     /// </summary>
     private void Add_Data()
     {
@@ -288,7 +299,7 @@ public partial class myAsset_EqEdit : SecurityIn
 
 
     /// <summary>
-    /// 資料修改
+    /// 副程式-資料修改
     /// </summary>
     private void Edit_Data()
     {
@@ -345,7 +356,6 @@ public partial class myAsset_EqEdit : SecurityIn
         {
             _data = null;
         }
-
     }
 
     #endregion
@@ -354,7 +364,7 @@ public partial class myAsset_EqEdit : SecurityIn
     #region -- 資料顯示:資產清單 --
 
     /// <summary>
-    /// 顯示供應商清單, 未加入
+    /// 顯示資產清單
     /// </summary>
     private void LookupData_DTList()
     {
@@ -420,31 +430,6 @@ public partial class myAsset_EqEdit : SecurityIn
         }
     }
 
-    protected void lv_CheckedSup_ItemDataBound(object sender, ListViewItemEventArgs e)
-    {
-        try
-        {
-            if (e.Item.ItemType == ListViewItemType.DataItem)
-            {
-                ListViewDataItem dataItem = (ListViewDataItem)e.Item;
-
-                //取得資料:檢查品項數
-                Int32 _DTCnt = Convert.ToInt32(DataBinder.Eval(dataItem.DataItem, "DataCheck"));
-                Literal lt_ChkMsg = (Literal)e.Item.FindControl("lt_ChkMsg");
-                if (_DTCnt == 0)
-                {
-                    lt_ChkMsg.Text = "<span class=\"red-text text-darken-1\">未建立品項</span>";
-                }
-
-            }
-        }
-        catch (Exception)
-        {
-            throw;
-        }
-    }
-
-
     #endregion
 
 
@@ -471,20 +456,33 @@ public partial class myAsset_EqEdit : SecurityIn
         //----- 宣告:資料參數 -----
         AssetRepository _data = new AssetRepository();
 
-        //----- 方法:建立資料 -----
-        if (!_data.Create_AssetItem(_dataID, _assetVal, out ErrMsg))
+        try
         {
-            CustomExtension.AlertMsg("單身資料建立失敗", thisPage);
-            return;
+            //----- 方法:建立資料 -----
+            if (!_data.Create_AssetItem(_dataID, _assetVal, out ErrMsg))
+            {
+                CustomExtension.AlertMsg("單身資料建立失敗", thisPage);
+                return;
+            }
+            else
+            {
+                //導向本頁
+                Response.Redirect(thisPage + "#section1");
+            }
         }
-        else
+        catch (Exception)
         {
-            //導向本頁
-            Response.Redirect(thisPage + "#section1");
+
+            throw;
+        }
+        finally
+        {
+            _data = null;
         }
     }
 
     #endregion
+
 
     #region -- 傳遞參數 --
     /// <summary>
@@ -541,8 +539,6 @@ public partial class myAsset_EqEdit : SecurityIn
         }
     }
 
-
-
     /// <summary>
     /// 本頁網址
     /// </summary>
@@ -558,7 +554,6 @@ public partial class myAsset_EqEdit : SecurityIn
             _thisPage = value;
         }
     }
-
 
     #endregion
 }
