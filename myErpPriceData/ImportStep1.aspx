@@ -76,7 +76,7 @@
                     </div>
                     <div class="disabled field">
                         <label>單號 <small>(依單別決定是否填寫)</small></label>
-                        <asp:TextBox ID="tb_OrderNo" runat="server"></asp:TextBox>
+                        <asp:TextBox ID="tb_OrderNo" runat="server" MaxLength="11"></asp:TextBox>
                     </div>
                 </div>
                 <div class="fields">
@@ -154,7 +154,7 @@
                 var fld_OrderNo = $("#MainContent_tb_OrderNo");
                 if (_way == "4") {
                     //開放手填單號
-                    fld_OrderNo.prop("disabled", false).prop("readonly", false).prop("placeholder", "請填寫單號");
+                    fld_OrderNo.prop("disabled", false).prop("readonly", false).prop("placeholder", "請填寫單號,最多 11 碼");
                     fld_OrderNo.parent().removeClass("disabled field").addClass("required error field");
                 } else {
                     fld_OrderNo.prop("disabled", true).prop("readonly", true).prop("placeholder", "").val('');
