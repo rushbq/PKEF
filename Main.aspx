@@ -12,7 +12,8 @@
                     </h5>
                 </div>
                 <div class="ui small form attached segment">
-                    <a href="<%=fn_Params.WebUrl %>Recording/IT_HelpEdit.aspx" class="ui large blue icon button"><i class="pencil icon"></i>填寫資訊需求</a>
+                    <a href="<%=fn_Params.WebUrl %>AirMIS/ITHelp_Edit.aspx" class="ui large blue icon button" target="_blank"><i class="pencil icon"></i>填寫資訊需求</a>
+                    <a href="<%=fn_Params.WebUrl %>AirMIS/ITHelp_Search.aspx?who=<%=fn_Params.UserAccount %>" class="ui large green icon button" target="_blank"><i class="tasks icon"></i>追蹤我的需求</a>
                 </div>
             </div>
             <div class="ui segments">

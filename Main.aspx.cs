@@ -6,7 +6,7 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using PKLib_Method.Methods;
 
-public partial class Main : System.Web.UI.Page
+public partial class Main : SecurityIn
 {
     protected void Page_Load(object sender, EventArgs e)
     {
@@ -27,20 +27,20 @@ public partial class Main : System.Web.UI.Page
                             Response.Redirect("WorkReport/WR_Write.aspx");
                             break;
 
-                        case "ithelp_reply":
-                            //資訊需求登記 - 回覆連結
-                            Response.Redirect("Recording/IT_HelpEdit.aspx?TraceID={0}".FormatThis(Server.UrlEncode(dataID)));
-                            break;
+                        //case "ithelp_reply":
+                        //    //資訊需求登記 - 回覆連結
+                        //    Response.Redirect("Recording/IT_HelpEdit.aspx?TraceID={0}".FormatThis(Server.UrlEncode(dataID)));
+                        //    break;
 
-                        case "ithelp_view":
-                            //資訊需求登記 - 觀看連結
-                            Response.Redirect("Recording/IT_HelpView.aspx?TraceID={0}".FormatThis(Server.UrlEncode(dataID)));
-                            break;
+                        //case "ithelp_view":
+                        //    //資訊需求登記 - 觀看連結
+                        //    Response.Redirect("Recording/IT_HelpView.aspx?TraceID={0}".FormatThis(Server.UrlEncode(dataID)));
+                        //    break;
 
-                        case "ithelp":
-                            //資訊需求登記 - 查詢頁
-                            Response.Redirect("Recording/IT_HelpSearch.aspx");
-                            break;
+                        //case "ithelp":
+                        //    //資訊需求登記 - 查詢頁
+                        //    Response.Redirect("Recording/IT_HelpSearch.aspx");
+                        //    break;
 
                         case "ophelp_reply":
                             //品號需求登記 - 回覆連結

@@ -21,6 +21,13 @@ namespace AssetData.Controllers
 
         #region -----// Read //-----
 
+        /// <summary>
+        /// 取得不分頁的清單
+        /// </summary>
+        /// <param name="search"></param>
+        /// <param name="dbs"></param>
+        /// <param name="ErrMsg"></param>
+        /// <returns></returns>
         public DataTable GetOne_AssetList(Dictionary<string, string> search, string dbs, out string ErrMsg)
         {
             int DataCnt = 0;

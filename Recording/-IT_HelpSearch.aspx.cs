@@ -527,8 +527,6 @@ public partial class IT_HelpSearch : SecurityIn
                 PlaceHolder ph_None = (PlaceHolder)e.Item.FindControl("ph_None");
                 //判斷可刪除狀態, 待處理&是自己的單 ; 有權限的人員
                 if (ReplyAuth)
-                //if ((helpStatus.Equals("9") && DataBinder.Eval(dataItem.DataItem, "Req_Who").Equals(fn_Params.UserAccount))
-                //    || ReplyAuth)
                 {
                     lbtn_Delete.Visible = true;
                     ph_Edit.Visible = true;

@@ -92,7 +92,23 @@ public class fn_Params
     private static string _DesKey;
 
     /// <summary>
-    /// User Guid
+    /// 系統寄件者
+    /// </summary>
+    public static string SysMail_Sender
+    {
+        get
+        {
+            return System.Web.Configuration.WebConfigurationManager.AppSettings["SysMail_Sender"];
+        }
+        set
+        {
+            _SysMail_Sender = value;
+        }
+    }
+    private static string _SysMail_Sender;
+
+    /// <summary>
+    /// AD Guid
     /// </summary>
     public static string UserGuid
     {
@@ -109,7 +125,7 @@ public class fn_Params
 
 
     /// <summary>
-    /// UserAccount
+    /// 工號
     /// </summary>
     public static string UserAccount
     {
@@ -126,7 +142,7 @@ public class fn_Params
 
 
     /// <summary>
-    /// UserAccountName
+    /// AD Display Name
     /// </summary>
     public static string UserAccountName
     {
@@ -140,4 +156,54 @@ public class fn_Params
         }
     }
     private static string _UserAccountName;
+
+
+
+    /// <summary>
+    /// FTP_Username
+    /// </summary>
+    public static string ftp_Username
+    {
+        get
+        {
+            return System.Web.Configuration.WebConfigurationManager.AppSettings["FTP_Username"];
+        }
+        set
+        {
+            _ftp_Username = value;
+        }
+    }
+    private static string _ftp_Username;
+
+    /// <summary>
+    /// Password
+    /// </summary>
+    public static string ftp_Password
+    {
+        get
+        {
+            return System.Web.Configuration.WebConfigurationManager.AppSettings["FTP_Password"];
+        }
+        set
+        {
+            _ftp_Password = value;
+        }
+    }
+    private static string _ftp_Password;
+
+    /// <summary>
+    /// ServerUrl
+    /// </summary>
+    public static string ftp_ServerUrl
+    {
+        get
+        {
+            return System.Web.Configuration.WebConfigurationManager.AppSettings["FTP_Url"];
+        }
+        set
+        {
+            _ftp_ServerUrl = value;
+        }
+    }
+    private static string _ftp_ServerUrl;
 }

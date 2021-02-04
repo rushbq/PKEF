@@ -22,7 +22,7 @@ public partial class IT_HelpSummary : SecurityIn
                 string ErrMsg;
 
                 //[權限判斷] - 資訊需求統計
-                if (fn_CheckAuth.CheckAuth_User("530", out ErrMsg) == false)
+                if (fn_CheckAuth.CheckAuth_User("9813", out ErrMsg) == false)
                 {
                     Response.Redirect(string.Format("../Unauthorized.aspx?ErrMsg={0}", HttpUtility.UrlEncode(ErrMsg)), true);
                     return;

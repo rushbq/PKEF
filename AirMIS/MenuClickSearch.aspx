@@ -9,7 +9,7 @@
         <div class="ui small menu toolbar">
             <div class="item">
                 <div class="ui small breadcrumb">
-                    <div class="section">資訊管理</div>
+                    <div class="section">資訊服務</div>
                     <i class="right angle icon divider"></i>
                     <div class="active section red-text text-darken-2">
                         網站功能點擊記錄

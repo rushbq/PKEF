@@ -493,7 +493,7 @@
     <form id="form1" runat="server">
         <div class="Navi">
             <a>
-                <%=Application["WebName"]%></a>&gt;<a>需求記錄表</a>&gt;<span>資訊需求統計</span>
+                <%=Application["WebName"]%></a>&gt;<a>資訊服務</a>&gt;<span>資訊需求統計</span>
         </div>
         <div class="h2Head">
             <h2>資訊需求統計</h2>
@@ -506,6 +506,7 @@
                     <input type="text" class="endDate styleBlack" style="text-align: center; width: 90px;" />
                     &nbsp;&nbsp;&nbsp;
                     <input type="button" id="doSearch" class="btnBlock colorGray" value="查詢" />
+                    &nbsp;&nbsp;&nbsp;<a href="../AirMIS/ITHelp_Search.aspx">返回資訊需求</a>
                 </li>
             </ul>
         </div>

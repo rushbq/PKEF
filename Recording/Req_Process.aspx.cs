@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
 using System.Text;
-using System.Web;
-using System.Web.UI;
-using System.Web.UI.WebControls;
 using PKLib_Method.Methods;
 
 public partial class Recording_Req_Process : SecurityIn
@@ -71,11 +66,11 @@ public partial class Recording_Req_Process : SecurityIn
             SBSql.AppendLine("  , Prof.Account_Name, Prof.Display_Name");
             SBSql.AppendLine(" FROM IT_Help Base");
             SBSql.AppendLine("  INNER JOIN PKSYS.dbo.User_Profile Prof ON Base.Req_Who = Prof.Account_Name");
-            SBSql.AppendLine(" WHERE (Base.TraceID = @TraceID) AND (Base.Agree_Who IS NULL)");
+            SBSql.AppendLine(" WHERE (Base.DataID = @ID) AND (Base.Agree_Who IS NULL)");
 
             cmd.CommandText = SBSql.ToString();
             cmd.Parameters.Clear();
-            cmd.Parameters.AddWithValue("TraceID", Req_DataID);
+            cmd.Parameters.AddWithValue("ID", Req_DataID);
             using (DataTable DT = dbConn.LookupDT(cmd, out ErrMsg))
             {
                 if (DT.Rows.Count == 0)
@@ -88,7 +83,7 @@ public partial class Recording_Req_Process : SecurityIn
                 else
                 {
                     //[填入資料]
-                    this.lt_TraceID.Text = DT.Rows[0]["TraceID"].ToString().Insert(2, "-").Insert(11, "-");
+                    this.lt_TraceID.Text = DT.Rows[0]["TraceID"].ToString();
                     this.lt_ReqWho.Text = "({0}) {1}".FormatThis(DT.Rows[0]["Account_Name"].ToString(), DT.Rows[0]["Display_Name"].ToString());
                     this.lt_Help_Subject.Text = DT.Rows[0]["Help_Subject"].ToString();
                     this.lt_Help_Content.Text = DT.Rows[0]["Help_Content"].ToString().Replace("\r", "<br/>");
@@ -114,12 +109,12 @@ public partial class Recording_Req_Process : SecurityIn
             StringBuilder SBSql = new StringBuilder();
 
             SBSql.AppendLine(" UPDATE IT_Help SET IsAgree = 'N', Agree_Who = @Agree_Who, Agree_Time = GETDATE()");
-            SBSql.AppendLine(" WHERE (TraceID = @TraceID)");
+            SBSql.AppendLine(" WHERE (DataID = @ID)");
 
             cmd.CommandText = SBSql.ToString();
             cmd.Parameters.Clear();
-            cmd.Parameters.AddWithValue("TraceID", Req_DataID);
-            cmd.Parameters.AddWithValue("Agree_Who", fn_Params.UserAccount);
+            cmd.Parameters.AddWithValue("ID", Req_DataID);
+            cmd.Parameters.AddWithValue("Agree_Who", fn_Params.UserGuid); //guid
             if (false == dbConn.ExecuteSql(cmd, out ErrMsg))
             {
                 this.ph_Error.Visible = true;
@@ -147,12 +142,12 @@ public partial class Recording_Req_Process : SecurityIn
             StringBuilder SBSql = new StringBuilder();
 
             SBSql.AppendLine(" UPDATE IT_Help SET IsAgree = 'Y', Agree_Who = @Agree_Who, Agree_Time = GETDATE()");
-            SBSql.AppendLine(" WHERE (TraceID = @TraceID)");
+            SBSql.AppendLine(" WHERE (DataID = @ID)");
 
             cmd.CommandText = SBSql.ToString();
             cmd.Parameters.Clear();
-            cmd.Parameters.AddWithValue("TraceID", Req_DataID);
-            cmd.Parameters.AddWithValue("Agree_Who", fn_Params.UserAccount);
+            cmd.Parameters.AddWithValue("ID", Req_DataID);
+            cmd.Parameters.AddWithValue("Agree_Who", fn_Params.UserGuid);
             if (false == dbConn.ExecuteSql(cmd, out ErrMsg))
             {
                 this.ph_Error.Visible = true;

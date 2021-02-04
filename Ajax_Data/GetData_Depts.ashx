@@ -1,30 +1,28 @@
-﻿<%@ WebHandler Language="C#" Class="GetData_Users" %>
+﻿<%@ WebHandler Language="C#" Class="GetData_Depts" %>
 
-using System;
 using System.Web;
 using System.Linq;
-using System.Text;
 using System.Data;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using PKLib_Data.Controllers;
 using PKLib_Data.Assets;
 
-public class GetData_Users : IHttpHandler
+public class GetData_Depts : IHttpHandler
 {
 
     /// <summary>
-    /// 取得人員資料(Ajax)
-    /// 舊版autocomplete使用
+    /// 取得部門資料(Ajax)
+    /// 使用Semantic UI的Search UI
     /// </summary>
     public void ProcessRequest(HttpContext context)
     {
         //[接收參數] 查詢字串
-        string searchVal = context.Request["keyword"];
+        string searchVal = context.Request["q"];
 
 
         //----- 宣告:資料參數 -----
-        UsersRepository _product = new UsersRepository();
+        DeptsRepository _datalist = new DeptsRepository();
         Dictionary<int, string> search = new Dictionary<int, string>();
 
 
@@ -34,30 +32,30 @@ public class GetData_Users : IHttpHandler
             search.Add((int)Common.UserSearch.Keyword, searchVal);
         }
 
-
         //----- 原始資料:取得所有資料 -----
-        var query = _product.GetUsers(search, null);
+        var results = _datalist.GetDepts(search)
+                .OrderBy(o => o.AreaSort)
+                .ThenBy(o => o.Sort)
+                .ThenBy(o => o.DeptID)
+                .Select(fld =>
+                    new
+                    {
+                        ID = fld.DeptID,
+                        Label = fld.DeptName,
+                        Email = fld.Email,
+                        Category = fld.GroupName
+                    }).Take(50);
 
 
-        //----- 資料整理:顯示筆數 -----
-        var _data = query
-            .Select(fld =>
-             new
-             {
-                 ID = fld.ProfID,
-                 Label = fld.ProfName,
-                 CategoryID = fld.DeptID,
-                 Category = fld.DeptName
-             })
-            .Take(100);
+        var data = new { results };
 
 
         //----- 資料整理:序列化 ----- 
-        string jdata = JsonConvert.SerializeObject(_data, Formatting.Indented);
+        string jdata = JsonConvert.SerializeObject(data, Formatting.None);
 
         /*
          * [回傳格式] - Json
-         * data：資料
+         * results：資料
          */
 
         //輸出Json
