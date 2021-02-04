@@ -804,7 +804,7 @@ namespace ERP_PriceData.Controllers
                 sql.AppendLine("  , DT.StockType AS XA014");
                 sql.AppendLine("  , Cust.MA027 AS XA015");
                 sql.AppendLine("  , CONVERT(CHAR(10),GETDATE(),112) AS XA016");
-                sql.AppendLine("  , CONVERT(CHAR(10),GETDATE(),112) AS XA017");
+                sql.AppendLine("  , Base.ValidDate AS XA017"); //生效日
                 sql.AppendLine("  , '1' AS XA020");
                 sql.AppendLine("  , 0 AS XA021");
                 sql.AppendLine("  , RTRIM(Cust.MA004) AS XA022");
