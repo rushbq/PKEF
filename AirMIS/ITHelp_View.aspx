@@ -1,4 +1,4 @@
-﻿<%@ Page Title="資訊需求" Language="C#" MasterPageFile="~/Site_S_UI.master" AutoEventWireup="true" CodeFile="ITHelp_View.aspx.cs" Inherits="AirMIS_ITHelp_View" %>
+﻿<%@ Page Title="資訊需求-檢視頁" Language="C#" MasterPageFile="~/Site_S_UI.master" AutoEventWireup="true" CodeFile="ITHelp_View.aspx.cs" Inherits="AirMIS_ITHelp_View" %>
 
 <%@ Import Namespace="PKLib_Method.Methods" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="CssContent" runat="Server">
@@ -50,7 +50,7 @@
                                 <!-- 基本資料 Start -->
                                 <div class="fields">
                                     <!-- Left Block -->
-                                    <div class="nine wide field">
+                                    <div class="eight wide field">
                                         <div class="fields">
                                             <div class="ten wide field">
                                                 <label>追蹤編號</label>
@@ -79,22 +79,10 @@
                                                 </div>
                                             </div>
                                         </div>
-
-                                        <!-- 權限主管同意 -->
-                                        <asp:PlaceHolder ID="ph_Agree" runat="server" Visible="false">
-                                            <div class="fields">
-                                                <div class="sixteen wide field">
-                                                    <label>權限申請同意狀態</label>
-                                                    <div class="ui grey large label">
-                                                        <asp:Literal ID="lt_AuthAgree" runat="server">未同意</asp:Literal>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </asp:PlaceHolder>
                                     </div>
 
                                     <!-- Right Block -->
-                                    <div class="seven wide field">
+                                    <div class="eight wide field">
                                         <div class="two fields">
                                             <div class="field">
                                                 <label>處理狀態</label>
@@ -107,11 +95,20 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="fields">
-                                            <div class="sixteen wide field">
+                                        <div class="two fields">
+                                            <div class="field">
                                                 <label>需求者</label>
                                                 <asp:Label ID="lb_Emp" runat="server" CssClass="ui large label"></asp:Label>
                                             </div>
+                                            <!-- 權限主管同意 -->
+                                            <asp:PlaceHolder ID="ph_Agree" runat="server" Visible="false">
+                                                <div class="field">
+                                                    <label>權限申請同意狀態</label>
+                                                    <div class="ui grey large label">
+                                                        <asp:Literal ID="lt_AuthAgree" runat="server">未同意</asp:Literal>
+                                                    </div>
+                                                </div>
+                                            </asp:PlaceHolder>
                                         </div>
                                     </div>
                                 </div>
@@ -121,9 +118,9 @@
                                         <div class="ui piled large segment">
                                             <h4 class="ui header">
                                                 <asp:Literal ID="tb_ReqSubject" runat="server"></asp:Literal></h4>
-                                            <p class="grey-text text-darken-3" style="line-height: 1.6em;">
+                                            <strong class="brown-text text-darken-1" style="line-height: 1.6em;">
                                                 <asp:Literal ID="tb_ReqContent" runat="server"></asp:Literal>
-                                            </p>
+                                            </strong>
                                         </div>
                                     </div>
                                 </div>
@@ -155,7 +152,7 @@
                                         </div>
                                         <!-- 附件清單 tab Start -->
                                         <div class="ui active tab" data-tab="tab-name1">
-                                            <asp:ListView ID="lv_Attachment" runat="server" ItemPlaceholderID="ph_Items" GroupPlaceholderID="ph_Group" GroupItemCount="2">
+                                            <asp:ListView ID="lv_Attachment" runat="server" ItemPlaceholderID="ph_Items" GroupPlaceholderID="ph_Group" GroupItemCount="2" OnItemDataBound="lv_Attachment_ItemDataBound">
                                                 <LayoutTemplate>
                                                     <table class="ui celled table">
                                                         <tbody>
@@ -170,7 +167,7 @@
                                                 </GroupTemplate>
                                                 <ItemTemplate>
                                                     <td style="width: 50%">
-                                                        <a href="<%#fn_Params.RefUrl %><%#UploadFolder %><%=lt_TraceID.Text %>/<%#Eval("AttachFile") %>" target="_blank"><%#Eval("AttachFile_Org") %></a>
+                                                        <asp:Literal ID="lt_FileUrl" runat="server"></asp:Literal>
                                                     </td>
                                                 </ItemTemplate>
                                                 <EmptyItemTemplate>
@@ -179,7 +176,7 @@
                                                 <EmptyDataTemplate>
                                                     <div class="ui message">
                                                         <div class="content">
-                                                            <div class="header">附件未上傳</div>
+                                                            <div class="header">沒有附件可以參考</div>
                                                         </div>
                                                     </div>
                                                 </EmptyDataTemplate>
@@ -202,7 +199,7 @@
                                                                 </div>
                                                             </ItemTemplate>
                                                             <EmptyDataTemplate>
-                                                                <p>未設定通知人員</p>
+                                                                <p class="grey-text">沒有人需要轉寄通知</p>
                                                             </EmptyDataTemplate>
                                                         </asp:ListView>
                                                     </div>
@@ -332,7 +329,7 @@
                                     </div>
                                 </asp:PlaceHolder>
                                 <asp:PlaceHolder ID="ph_section3_data" runat="server">
-                                    <div id="section3-form" class="ui small form segment">
+                                    <div id="section3-form" class="ui form segment">
                                         <div class="field">
                                             <label>滿意度&nbsp;(1 ~ 5分)</label>
                                             <asp:RadioButtonList ID="rbl_RateScore" runat="server" RepeatDirection="Horizontal">

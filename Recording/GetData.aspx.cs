@@ -33,7 +33,7 @@ public partial class Google_GetData : System.Web.UI.Page
             //[SQL] - SQL Statement
             sbSQL.Append(" SELECT COUNT(Main.TraceID) AS GroupCnt, ReqClass.Class_ID AS GroupID, ReqClass.Class_Name AS GroupName ");
             sbSQL.Append(" FROM IT_Help Main ");
-            sbSQL.Append("  INNER JOIN IT_ParamClass ReqClass ON Main.Req_Class = ReqClass.Class_ID ");
+            sbSQL.Append("  INNER JOIN IT_Help_ParamClass ReqClass ON Main.Req_Class = ReqClass.Class_ID ");
             sbSQL.Append(" WHERE (ReqClass.Display = 'Y')");
 
             //[查詢條件] - 開始日期
@@ -164,12 +164,12 @@ public partial class Google_GetData : System.Web.UI.Page
             cmd.Parameters.Clear();
 
             //[SQL] - SQL Statement
-            sbSQL.Append(" SELECT SUM(ISNULL(Base.Reply_Hours, 0)) AS GroupSum");
+            sbSQL.Append(" SELECT SUM(ISNULL(Base.Finish_Hours, 0)) AS GroupSum");
             sbSQL.Append("  , COUNT(Base.TraceID) AS GroupCnt");
             sbSQL.Append("  , ReqClass.Class_Name AS GroupName");
             sbSQL.Append(" FROM IT_Help Base ");
-            sbSQL.Append("  INNER JOIN IT_ParamClass ReqClass ON Base.Req_Class = ReqClass.Class_ID ");
-            sbSQL.Append(" WHERE (ReqClass.Display = 'Y') AND (Base.Reply_Hours > 0)");
+            sbSQL.Append("  INNER JOIN IT_Help_ParamClass ReqClass ON Base.Req_Class = ReqClass.Class_ID ");
+            sbSQL.Append(" WHERE (ReqClass.Display = 'Y') AND (Base.Finish_Hours > 0)");
 
             //[查詢條件] - 開始日期
             if (false == string.IsNullOrEmpty(StartDate))
@@ -234,13 +234,13 @@ public partial class Google_GetData : System.Web.UI.Page
             cmd.Parameters.Clear();
 
             //[SQL] - 查詢
-            sbSQL.Append(" SELECT SUM(Base.Reply_Hours) AS GroupSum");
+            sbSQL.Append(" SELECT SUM(Base.Finish_Hours) AS GroupSum");
             sbSQL.Append("  , COUNT(Base.TraceID) AS GroupCnt");
             sbSQL.Append("  , Prof.Account_Name + ' (' + Prof.Display_Name + ')' AS GroupName");
             sbSQL.Append(" FROM IT_Help Base");
-            sbSQL.Append("  INNER JOIN PKSYS.dbo.User_Profile Prof ON Base.Update_Who = Prof.Account_Name");
+            sbSQL.Append("  INNER JOIN PKSYS.dbo.User_Profile Prof ON Base.Update_Who = Prof.Guid");
             sbSQL.Append("  INNER JOIN PKSYS.dbo.User_Dept Dept ON Prof.DeptID = Dept.DeptID");
-            sbSQL.Append(" WHERE (Base.Update_Who IS NOT NULL) AND (Base.Reply_Hours > 0) AND (Prof.Display = 'Y')");
+            sbSQL.Append(" WHERE (Base.Update_Who IS NOT NULL) AND (Base.Finish_Hours > 0) AND (Prof.Display = 'Y')");
 
             //[查詢條件] - 開始日期
             if (false == string.IsNullOrEmpty(StartDate))

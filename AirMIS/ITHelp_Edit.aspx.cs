@@ -128,6 +128,8 @@ public partial class AirMIS_ITHelp_Edit : SecurityIn
             string _currStatus = query.Help_Status.ToString();
             //需求類別ID
             string _currReqCls = query.Req_Class.ToString();
+            //申請類別
+            string _currAppType = query.Apply_Type.ToString();
 
             //填入資料
             hf_DataID.Value = query.DataID.ToString();
@@ -139,7 +141,7 @@ public partial class AirMIS_ITHelp_Edit : SecurityIn
             tb_Help_Benefit.Text = query.Help_Benefit;
             lt_ReqClass.Text = query.Req_ClassName; //需求類別
             //申請類別
-            rbl_ApplyType.SelectedValue = query.Apply_Type.ToString();
+            rbl_ApplyType.SelectedValue = _currAppType;
             rbl_ApplyType.Enabled = _ReplyAuth;
             //報修方式
             rbl_Help_Way.SelectedValue = query.Help_Way.ToString();
@@ -147,7 +149,7 @@ public partial class AirMIS_ITHelp_Edit : SecurityIn
 
             //需求者
             filter_Emp.Text = query.Req_Who;
-            lb_Emp.Text = query.Req_WhoName;
+            lb_Emp.Text = query.Req_WhoName + " (" + query.Req_NickName + ") #" + query.Req_TelExt;
             val_Emp.Text = query.Req_Who;
 
             //主管同意, 權限申請(需求類別=12時顯示)
@@ -214,7 +216,10 @@ public partial class AirMIS_ITHelp_Edit : SecurityIn
 
             //改善效益Lock
             tb_Help_Benefit.Enabled = _currStatus.Equals("110");
-
+            if (!_currAppType.Equals("3") && query.Help_Benefit.Equals(""))
+            {
+                ph_Benefit.Visible = false;
+            }
 
             string _viewPage = "{0}AirMIS/ITHelp_View.aspx?id={1}".FormatThis(fn_Params.WebUrl, Req_DataID);
 
@@ -346,6 +351,41 @@ public partial class AirMIS_ITHelp_Edit : SecurityIn
 
         }
     }
+
+    protected void lv_Attachment_ItemDataBound(object sender, ListViewItemEventArgs e)
+    {
+        try
+        {
+            if (e.Item.ItemType == ListViewItemType.DataItem)
+            {
+                ListViewDataItem dataItem = (ListViewDataItem)e.Item;
+
+                //取資料
+                string _traceID = lt_TraceID.Text;
+                string _attFile = DataBinder.Eval(dataItem.DataItem, "AttachFile").ToString();
+                string _attFileOrg = DataBinder.Eval(dataItem.DataItem, "AttachFile_Org").ToString();
+                string _CheckID = DataBinder.Eval(dataItem.DataItem, "Create_Who").ToString();
+
+                //Set Url
+                string url = "<a href=\"{0}{1}{2}/{3}\" target=\"_blank\">{4}</a>".FormatThis(
+                    fn_Params.RefUrl
+                    , UploadFolder
+                    , string.IsNullOrEmpty(_CheckID) ? "" : _traceID //舊版沒有資料夾分類(故以此判斷)
+                    , _attFile
+                    , _attFileOrg
+                    );
+
+                //Set object
+                Literal lt_FileUrl = (Literal)e.Item.FindControl("lt_FileUrl");
+                lt_FileUrl.Text = url;
+            }
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+    }
+
 
     #endregion
 
@@ -1938,7 +1978,7 @@ public partial class AirMIS_ITHelp_Edit : SecurityIn
         html.Replace("#TraceID#", _traceID);
         html.Replace("#CreateDate#", baseData.Create_Time.ToDateString("yyyy/MM/dd"));
         html.Replace("#TypeName#", GetName_ApplyType(baseData.Apply_Type.ToString()));
-        html.Replace("#ReqName#", baseData.Req_WhoName);
+        html.Replace("#ReqName#", baseData.Req_WhoName + " (" + baseData.Req_NickName + ") #" + baseData.Req_TelExt);
         html.Replace("#subject#", baseData.Help_Subject);
         html.Replace("#content#", baseData.Help_Content.Replace("\r", "<br/>"));
 

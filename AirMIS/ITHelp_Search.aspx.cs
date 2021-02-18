@@ -149,6 +149,12 @@ public partial class AirMIS_ITHelp_Search : SecurityIn
                 val_FinishWho.Text = _FinishWho;
             }
 
+            //[查詢條件] - 未結案
+            if (Req_unClose.Equals("Y"))
+            {
+                search.Add("unClose", Req_unClose);
+                PageParam.Add("uc=" + Server.UrlEncode(Req_unClose));
+            }
             #endregion
 
             //----- 原始資料:取得所有資料 -----
@@ -385,6 +391,12 @@ public partial class AirMIS_ITHelp_Search : SecurityIn
             search.Add("FinishWho", _FinishWho);
         }
 
+        //[查詢條件] - 未結案
+        if (Req_unClose.Equals("Y"))
+        {
+            search.Add("unClose", Req_unClose);
+        }
+
         #endregion
 
 
@@ -511,7 +523,7 @@ public partial class AirMIS_ITHelp_Search : SecurityIn
         StringBuilder url = new StringBuilder();
 
         //固定條件:Page
-        url.Append("{0}?page=1".FormatThis(thisPage));
+        url.Append("{0}?page=1&uc={1}".FormatThis(thisPage, Req_unClose));
 
         //[查詢條件] - DateA
         if (!string.IsNullOrWhiteSpace(_sDate))
@@ -612,14 +624,14 @@ public partial class AirMIS_ITHelp_Search : SecurityIn
     private string _Req_Keyword;
 
     /// <summary>
-    /// 取得傳遞參數 - sDate (預設一年內)
+    /// 取得傳遞參數 - sDate (預設180 days內)
     /// </summary>
     public string Req_sDate
     {
         get
         {
             String _data = Request.QueryString["sDate"];
-            string dt = DateTime.Now.AddDays(-365).ToString().ToDateString("yyyy/MM/dd");
+            string dt = DateTime.Now.AddDays(-180).ToString().ToDateString("yyyy/MM/dd");
             return (CustomExtension.String_資料長度Byte(_data, "1", "10", out ErrMsg)) ? _data.Trim() : dt;
         }
         set
@@ -732,6 +744,24 @@ public partial class AirMIS_ITHelp_Search : SecurityIn
         }
     }
     private string _Req_FinishWho;
+
+
+    /// <summary>
+    /// 取得傳遞參數 - unClose
+    /// </summary>
+    public string Req_unClose
+    {
+        get
+        {
+            String _data = Request.QueryString["uc"];
+            return (CustomExtension.String_資料長度Byte(_data, "1", "1", out ErrMsg)) ? _data.Trim() : "N";
+        }
+        set
+        {
+            this._Req_unClose = value;
+        }
+    }
+    private string _Req_unClose;
 
 
     /// <summary>

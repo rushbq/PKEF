@@ -1,4 +1,4 @@
-﻿<%@ Page Title="資訊需求" Language="C#" MasterPageFile="~/Site_S_UI.master" AutoEventWireup="true" CodeFile="ITHelp_Edit.aspx.cs" Inherits="AirMIS_ITHelp_Edit" %>
+﻿<%@ Page Title="資訊需求-編輯頁" Language="C#" MasterPageFile="~/Site_S_UI.master" AutoEventWireup="true" CodeFile="ITHelp_Edit.aspx.cs" Inherits="AirMIS_ITHelp_Edit" %>
 
 <%@ Import Namespace="PKLib_Method.Methods" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="CssContent" runat="Server">
@@ -46,11 +46,11 @@
                             <div class="ui green segment">
                                 <h5 class="ui header"><a class="anchor" id="baseData"></a>需求資料</h5>
                             </div>
-                            <div id="formBase" class="ui small form segment">
+                            <div id="formBase" class="ui form segment">
                                 <!-- 基本資料 Start -->
                                 <div class="fields">
                                     <!-- Left Block -->
-                                    <div class="nine wide field">
+                                    <div class="eight wide field">
                                         <div class="two fields">
                                             <div class="ten wide field">
                                                 <label>追蹤編號</label>
@@ -84,33 +84,17 @@
                                                 </asp:DropDownList>
                                             </div>
                                         </div>
+
                                         <div class="fields">
                                             <div class="sixteen wide required field">
                                                 <label class="red-text text-darken-1"><strong>主旨</strong></label>
                                                 <asp:TextBox ID="tb_ReqSubject" runat="server" MaxLength="50" autocomplete="off" placeholder="填寫主旨, 最多 40 字"></asp:TextBox>
                                             </div>
                                         </div>
-                                        <div class="fields">
-                                            <div class="sixteen wide required field">
-                                                <label class="red-text text-darken-1"><strong>詳細說明</strong></label>
-                                                <asp:TextBox ID="tb_ReqContent" runat="server" Rows="10" TextMode="MultiLine" MaxLength="5000" placeholder="詳細描述需求內容, 最多 4000 字"></asp:TextBox>
-                                            </div>
-                                        </div>
-                                        <!-- 權限主管同意 -->
-                                        <asp:PlaceHolder ID="ph_Agree" runat="server" Visible="false">
-                                            <div class="fields">
-                                                <div class="sixteen wide field">
-                                                    <label>權限申請同意狀態</label>
-                                                    <div class="ui grey label">
-                                                        <asp:Literal ID="lt_AuthAgree" runat="server">未同意</asp:Literal>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </asp:PlaceHolder>
                                     </div>
 
                                     <!-- Right Block -->
-                                    <div class="seven wide field">
+                                    <div class="eight wide field">
                                         <div class="two fields">
                                             <div class="field">
                                                 <label>處理狀態</label>
@@ -136,26 +120,52 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="fields">
-                                            <div class="sixteen wide field">
-                                                <label>附加檔案&nbsp;<span class="grey-text text-darken-1">(最多5筆, 總大小為50MB)</span></label>
+                                        <!-- 權限主管同意 -->
+                                        <asp:PlaceHolder ID="ph_Agree" runat="server" Visible="false">
+                                            <div class="fields">
+                                                <div class="sixteen wide field">
+                                                    <label>權限申請同意狀態</label>
+                                                    <div class="ui grey large label">
+                                                        <asp:Literal ID="lt_AuthAgree" runat="server">未同意</asp:Literal>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </asp:PlaceHolder>
+                                    </div>
+                                </div>
+
+                                <div class="fields">
+                                    <div class="sixteen wide required field">
+                                        <label class="red-text text-darken-1"><strong>詳細說明</strong></label>
+                                        <asp:TextBox ID="tb_ReqContent" runat="server" Rows="8" TextMode="MultiLine" MaxLength="5000" placeholder="詳細描述需求內容, 最多 4000 字"></asp:TextBox>
+                                    </div>
+                                </div>
+                                <asp:PlaceHolder ID="ph_Benefit" runat="server">
+                                    <div class="fields">
+                                        <div class="sixteen wide field">
+                                            <!-- 狀態為 處理中 時鎖定 -->
+                                            <label>改善效益&nbsp;<small class="grey-text text-darken-1">(開案後鎖定)</small></label>
+                                            <asp:TextBox ID="tb_Help_Benefit" runat="server" Rows="4" TextMode="MultiLine" MaxLength="1100" placeholder="申請類別=「專案」時, 請填寫改善效益, 最多 1000 字"></asp:TextBox>
+                                        </div>
+                                    </div>
+                                </asp:PlaceHolder>
+                                <!-- 基本資料 End -->
+                                <!-- 附件&轉寄 Start -->
+                                <div class="fields">
+                                    <div class="sixteen wide field">
+                                        <label><i class="copy outline icon"></i>上傳附件&nbsp;<span class="grey-text text-darken-1">(最多5筆, 總大小為50MB)</span></label>
+                                        <div class="two fields">
+                                            <div class="field">
                                                 <asp:FileUpload ID="fu_Attachment" runat="server" AllowMultiple="true" />
+                                            </div>
+                                            <div class="field">
                                                 <div class="ui small info message">
                                                     副檔名：<%=FileExtLimit.Replace("|", ", ") %>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="fields">
-                                            <div class="sixteen wide field">
-                                                <!-- 狀態為 處理中 時鎖定 -->
-                                                <label>改善效益&nbsp;<small class="grey-text text-darken-1">(開案後鎖定)</small></label>
-                                                <asp:TextBox ID="tb_Help_Benefit" runat="server" Rows="6" TextMode="MultiLine" MaxLength="5000" placeholder="申請類別=「專案」時, 請填寫改善效益, 最多 4000 字"></asp:TextBox>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
-                                <!-- 基本資料 End -->
-                                <!-- 附件&轉寄 Start -->
                                 <div class="fields">
                                     <div class="sixteen wide field">
                                         <div class="ui secondary pointing small menu">
@@ -171,12 +181,11 @@
                                             <asp:PlaceHolder ID="ph_fileEmpty" runat="server">
                                                 <div class="ui message">
                                                     <div class="content">
-                                                        <div class="header">上傳附件</div>
-                                                        <p>上傳圖片或檔案，讓說明更加完整。</p>
+                                                        <div class="header">請在上方點選要上傳的附件，讓需求說明更完整。</div>
                                                     </div>
                                                 </div>
                                             </asp:PlaceHolder>
-                                            <asp:ListView ID="lv_Attachment" runat="server" ItemPlaceholderID="ph_Items" GroupPlaceholderID="ph_Group" GroupItemCount="2" OnItemCommand="lv_Attachment_ItemCommand">
+                                            <asp:ListView ID="lv_Attachment" runat="server" ItemPlaceholderID="ph_Items" GroupPlaceholderID="ph_Group" GroupItemCount="2" OnItemCommand="lv_Attachment_ItemCommand" OnItemDataBound="lv_Attachment_ItemDataBound">
                                                 <LayoutTemplate>
                                                     <table class="ui celled table">
                                                         <tbody>
@@ -191,7 +200,8 @@
                                                 </GroupTemplate>
                                                 <ItemTemplate>
                                                     <td style="width: 40%">
-                                                        <a href="<%#fn_Params.RefUrl %><%#UploadFolder %><%=lt_TraceID.Text %>/<%#Eval("AttachFile") %>" target="_blank"><%#Eval("AttachFile_Org") %></a>
+                                                        <asp:Literal ID="lt_FileUrl" runat="server"></asp:Literal>
+                                                        <%--<a href="<%#fn_Params.RefUrl %><%#UploadFolder %><%=lt_TraceID.Text %>/<%#Eval("AttachFile") %>" target="_blank"><%#Eval("AttachFile_Org") %></a>--%>
                                                     </td>
                                                     <td style="width: 10%" class="center aligned">
                                                         <asp:LinkButton ID="lbtn_Close" runat="server" CssClass="ui mini orange basic icon button" ValidationGroup="List" CommandName="doClose" OnClientClick="return confirm('確定刪除?')"><i class="trash alternate icon"></i></asp:LinkButton>
@@ -208,7 +218,7 @@
                                                     <div class="ui message">
                                                         <div class="content">
                                                             <div class="header">附件未上傳</div>
-                                                            <p>上傳圖片或檔案，讓說明更加完整。</p>
+                                                            <p>上傳截圖或參考檔案，讓需求說明更完整，問題能更快速地解決。</p>
                                                         </div>
                                                     </div>
                                                 </EmptyDataTemplate>
@@ -245,7 +255,7 @@
                                                                     </div>
                                                                 </ItemTemplate>
                                                                 <EmptyDataTemplate>
-                                                                    <p>未設定通知人員</p>
+                                                                    <p class="grey-text">沒有人需要轉寄通知</p>
                                                                 </EmptyDataTemplate>
                                                             </asp:ListView>
                                                         </asp:PlaceHolder>
@@ -276,23 +286,23 @@
                                 <div class="ui blue segment">
                                     <h5 class="ui header"><a class="anchor" id="section1"></a>回覆資料</h5>
                                 </div>
-                                <div id="section1-form" class="ui small form segment">
-                                    <div class="fields">
-                                        <div class="five wide required field">
+                                <div id="section1-form" class="ui form segment">
+                                    <div class="four fields">
+                                        <div class="required field">
                                             <label>需求類別</label>
-                                            <asp:DropDownList ID="ddl_ReqClass" runat="server"></asp:DropDownList>
+                                            <asp:DropDownList ID="ddl_ReqClass" runat="server" CssClass="error"></asp:DropDownList>
                                         </div>
-                                        <div class="three wide field">
-                                            <label>工時&nbsp;<small>(與結案視窗的工時欄位共通)</small></label>
-                                            <asp:TextBox ID="tb_Finish_Hours" runat="server" type="number" step="0.5"></asp:TextBox>
+                                        <div class="field">
+                                            <label>工時&nbsp;<small>(與結案工時欄位共用)</small></label>
+                                            <asp:TextBox ID="tb_Finish_Hours" runat="server" type="number" step="0.5" min="0"></asp:TextBox>
                                         </div>
-                                        <div class="four wide field">
+                                        <div class="field">
                                             <label>結案日</label>
                                             <div class="ui red basic label">
                                                 <asp:Literal ID="lt_Finish_Time" runat="server">案件處理中</asp:Literal>
                                             </div>
                                         </div>
-                                        <div class="four wide field">
+                                        <div class="field">
                                             <label>結案人</label>
                                             <div class="ui red basic label">
                                                 <asp:Literal ID="lt_Finish_Who" runat="server">案件處理中</asp:Literal>
@@ -463,7 +473,7 @@
                                     </div>
                                 </asp:PlaceHolder>
                                 <asp:PlaceHolder ID="ph_section3_data" runat="server">
-                                    <div id="section3-form" class="ui small form segment">
+                                    <div id="section3-form" class="ui form segment">
                                         <div class="field">
                                             <label>滿意度&nbsp;(1 ~ 5分)</label>
                                             <asp:RadioButtonList ID="rbl_RateScore" runat="server" RepeatDirection="Horizontal">

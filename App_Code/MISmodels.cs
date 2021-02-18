@@ -46,7 +46,9 @@ namespace MISData.Models
         public string Req_ClassName { get; set; }
         public string Req_Who { get; set; }
         public string Req_WhoName { get; set; }
+        public string Req_NickName { get; set; }
         public string Req_Email { get; set; }
+        public string Req_TelExt { get; set; }
         public string Req_Dept { get; set; }
         public string Req_DeptName { get; set; }
         public string Help_Subject { get; set; }

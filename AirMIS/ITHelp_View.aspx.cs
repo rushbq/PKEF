@@ -101,7 +101,7 @@ public partial class AirMIS_ITHelp_View : SecurityIn
             //報修方式
             rbl_Help_Way.Text = GetName_HelpWay(query.Help_Way.ToString());
             //需求者
-            lb_Emp.Text = query.Req_WhoName;
+            lb_Emp.Text = query.Req_WhoName + " (" + query.Req_NickName + ") #" + query.Req_TelExt;
 
             //主管同意, 權限申請(需求類別=12時顯示)
             lt_AuthAgree.Text = query.IsAgree.Equals("N") ? "未同意"
@@ -117,7 +117,7 @@ public partial class AirMIS_ITHelp_View : SecurityIn
             #region >> 欄位填寫:回覆資料 <<
             //工時
             lt_Finish_Hours.Text = query.Finish_Hours.ToString();
-            tb_ReplyContent.Text = query.Reply_Content;
+            tb_ReplyContent.Text = query.Reply_Content.Replace("\r\n", "<br/>");
 
             //結案日
             string _fDate = query.Finish_Time.ToString();
@@ -256,6 +256,40 @@ public partial class AirMIS_ITHelp_View : SecurityIn
         //Release
         query = null;
         _data = null;
+    }
+
+    protected void lv_Attachment_ItemDataBound(object sender, ListViewItemEventArgs e)
+    {
+        try
+        {
+            if (e.Item.ItemType == ListViewItemType.DataItem)
+            {
+                ListViewDataItem dataItem = (ListViewDataItem)e.Item;
+
+                //取資料
+                string _traceID = lt_TraceID.Text;
+                string _attFile = DataBinder.Eval(dataItem.DataItem, "AttachFile").ToString();
+                string _attFileOrg = DataBinder.Eval(dataItem.DataItem, "AttachFile_Org").ToString();
+                string _CheckID = DataBinder.Eval(dataItem.DataItem, "Create_Who").ToString();
+
+                //Set Url
+                string url = "<a href=\"{0}{1}{2}/{3}\" target=\"_blank\">{4}</a>".FormatThis(
+                    fn_Params.RefUrl
+                    , UploadFolder
+                    , string.IsNullOrEmpty(_CheckID) ? "" : _traceID //舊版沒有資料夾分類(故以此判斷)
+                    , _attFile
+                    , _attFileOrg
+                    );
+
+                //Set object
+                Literal lt_FileUrl = (Literal)e.Item.FindControl("lt_FileUrl");
+                lt_FileUrl.Text = url;
+            }
+        }
+        catch (Exception)
+        {
+            throw;
+        }
     }
 
     #endregion

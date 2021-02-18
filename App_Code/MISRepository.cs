@@ -659,6 +659,12 @@ ORDER BY rn";
                                     sqlParamList_Cnt.Add(new SqlParameter("@FinishWho", item.Value));
 
                                     break;
+
+                                case "unClose":
+                                    //--未結案需求
+                                    sql.Append(" AND (Base.Help_Status <> 125)");
+
+                                    break;
                             }
                         }
 
@@ -712,15 +718,15 @@ ORDER BY rn";
                       , ISNULL((SELECT Account_Name + ' (' + Display_Name + ')' FROM PKSYS.dbo.User_Profile WHERE (Guid = Base.Agree_Who)), '') AS Agree_WhoName
   
                       /* 需求單位 */
-                      , Base.Req_Who, Base.Req_Dept, Prof.Email AS Req_Email
-                      , Prof.Display_Name AS Req_WhoName, Dept.DeptName AS Req_DeptName
+                      , Base.Req_Who, Base.Req_Dept, Prof.Email AS Req_Email, ISNULL(Prof.Tel_Ext, '') AS Req_TelExt
+                      , Prof.Display_Name AS Req_WhoName, ISNULL(Prof.NickName, '') AS Req_NickName, Dept.DeptName AS Req_DeptName
 
                       /* 驗收 */
                       , Base.IsRate, Base.RateScore, Base.RateContent
                       , ISNULL((SELECT Account_Name + ' (' + Display_Name + ')' FROM [PKSYS].dbo.User_Profile WHERE (Guid = Base.RateWho)), '') AS RateWhoName
 
                       /* 回覆資料 */
-                      , Base.Reply_Content, Base.onTopWho
+                      , ISNULL(Base.Reply_Content, '') Reply_Content, Base.onTopWho
                       , (CASE WHEN Base.onTopWho = @currUser THEN Base.onTop ELSE 'N' END) AS onTop
                       , Base.Finish_Hours, Base.Finish_Time, Base.Finish_Who
                       , ISNULL((SELECT Account_Name + ' (' + Display_Name + ')' FROM [PKSYS].dbo.User_Profile WHERE (Guid = Base.Finish_Who)), '') AS Finish_WhoName
@@ -833,6 +839,12 @@ ORDER BY rn";
                                     sqlParamList.Add(new SqlParameter("@FinishWho", item.Value));
 
                                     break;
+
+                                case "unClose":
+                                    //--未結案需求
+                                    sql.Append(" AND (Base.Help_Status <> 125)");
+
+                                    break;
                             }
                         }
                     }
@@ -884,7 +896,9 @@ ORDER BY rn";
                                 Req_ClassName = item.Field<string>("Req_ClassName"),
                                 Req_Who = item.Field<string>("Req_Who"),
                                 Req_WhoName = item.Field<string>("Req_WhoName"),
+                                Req_NickName = item.Field<string>("Req_NickName"),
                                 Req_Email = item.Field<string>("Req_Email"),
+                                Req_TelExt = item.Field<string>("Req_TelExt"),
                                 Req_Dept = item.Field<string>("Req_Dept"),
                                 Req_DeptName = item.Field<string>("Req_DeptName"),
                                 Help_Subject = item.Field<string>("Help_Subject"),
@@ -1031,7 +1045,7 @@ ORDER BY rn";
             using (SqlCommand cmd = new SqlCommand())
             {
                 //----- SQL 查詢語法 -----
-                sql.AppendLine(" SELECT DetailID, AttachID, AttachFile, AttachFile_Org");
+                sql.AppendLine(" SELECT DetailID, AttachID, AttachFile, AttachFile_Org, ISNULL(Create_Who, '') AS Create_Who");
                 sql.AppendLine(" FROM IT_Help_Attach WITH(NOLOCK)");
                 sql.AppendLine(" WHERE (AttachType = @type) AND (ParentID = @ParentID)");
 
@@ -1066,7 +1080,8 @@ ORDER BY rn";
                         {
                             AttachID = item.Field<int>("AttachID"),
                             AttachFile = item.Field<string>("AttachFile"),
-                            AttachFile_Org = item.Field<string>("AttachFile_Org")
+                            AttachFile_Org = item.Field<string>("AttachFile_Org"),
+                            Create_Who = item.Field<string>("Create_Who")
                         };
 
                         //將項目加入至集合
@@ -1155,7 +1170,7 @@ ORDER BY rn";
                     FROM IT_Help_DT Base
                      INNER JOIN IT_Help_ParamClass Cls ON Base.Class_ID = Cls.Class_ID
                     WHERE (Base.ParentID = @ParentID)
-                    ORDER BY Base.Create_Time DESC";
+                    ORDER BY Base.Proc_Time DESC";
 
 
                 //----- SQL 執行 -----
@@ -1617,7 +1632,7 @@ ORDER BY rn";
                 //----- SQL 查詢語法 -----
                 string sql = @"
                     UPDATE IT_Help
-                    SET RateScore = @RateScore, RateContent = @RateContent, RateWho = @WhoGuid
+                    SET IsRate = 'Y', RateScore = @RateScore, RateContent = @RateContent, RateWho = @WhoGuid
                     , Update_Who = @WhoGuid, Update_Time = GETDATE()
                     WHERE (DataID = @DataID)";
 

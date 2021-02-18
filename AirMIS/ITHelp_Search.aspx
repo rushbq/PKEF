@@ -1,4 +1,4 @@
-﻿<%@ Page Title="資訊需求" Language="C#" MasterPageFile="~/Site_S_UI.master" AutoEventWireup="true" CodeFile="ITHelp_Search.aspx.cs" Inherits="AirMIS_ITHelp_Search" %>
+﻿<%@ Page Title="資訊需求-查詢頁" Language="C#" MasterPageFile="~/Site_S_UI.master" AutoEventWireup="true" CodeFile="ITHelp_Search.aspx.cs" Inherits="AirMIS_ITHelp_Search" %>
 
 <%@ Import Namespace="PKLib_Method.Methods" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="CssContent" runat="Server">
@@ -154,10 +154,9 @@
                         <td>
                             <div style="margin-bottom: 8px;">
                                 <asp:Literal ID="lt_onTop" runat="server"></asp:Literal>
-                                <span class="ui red basic label"><%#Eval("TraceID") %></span>
-
+                                <span class="ui red basic small label"><%#Eval("TraceID") %></span>
                             </div>
-                            <strong class="grey-text text-darken-3" style="font-size: 1.1em;"><%#Eval("Help_Subject") %></strong>
+                            <strong class="grey-text text-darken-2" style="font-size: 1.2em;"><%#Eval("Help_Subject") %></strong>
                         </td>
                         <td class="center aligned collapsing">
                             <asp:Literal ID="lt_Status" runat="server"></asp:Literal>
@@ -166,7 +165,7 @@
                             <%#Eval("ProcInfo").ToString().Replace("_","<BR/>") %>
                         </td>
                         <td class="center aligned collapsing">
-                            <div class="ui basic fluid label"><%#Eval("Req_WhoName") %></div>
+                            <div class="ui basic fluid large label"><%#Eval("Req_WhoName") %></div>
                         </td>
                         <td class="left aligned collapsing">
                             <div style="margin-bottom: 1px;">

@@ -1060,21 +1060,21 @@ namespace SH_BBC.Controllers
 
                                 case "2":
                                     //天貓
-                                    myProdID = val[20];
-                                    myProdSpec = val[21];
-                                    myProdName = val[19];
-                                    myBuyCnt = string.IsNullOrEmpty(val[22]) ? 0 : Convert.ToInt16(val[22]);
-                                    myBuyPrice = string.IsNullOrEmpty(val[4]) ? 0 : Convert.ToDouble(val[4]);
-                                    myTotalPrice = string.IsNullOrEmpty(val[4]) ? 0 : Convert.ToDouble(val[4]);
+                                    myProdID = val[19];
+                                    myProdSpec = val[20];
+                                    myProdName = val[18];
+                                    myBuyCnt = string.IsNullOrEmpty(val[21]) ? 0 : Convert.ToInt16(val[21]);
+                                    myBuyPrice = string.IsNullOrEmpty(val[6]) ? 0 : Convert.ToDouble(val[6]);
+                                    myTotalPrice = string.IsNullOrEmpty(val[6]) ? 0 : Convert.ToDouble(val[6]);
                                     //myFreight = Convert.ToDouble(val[10]);
-                                    myShipmentNo = val[13];
-                                    myShipWho = val[5];
-                                    myShipAddr = val[10];
-                                    myShipTel = "{0}{1}".FormatThis(val[11], string.IsNullOrEmpty(val[12]) ? "" : ";" + val[12]);
-                                    myNickName = val[3];
-                                    mySellRemark = val[16]; //賣家備註
-                                    myBuyRemark = val[17]; //買家備註
-                                    myInvMessage = val[18];  //發票類型(僅供參考)
+                                    myShipmentNo = val[12];
+                                    myShipWho = val[1];
+                                    myShipAddr = val[11];
+                                    myShipTel = val[2];
+                                    myNickName = val[5];
+                                    mySellRemark = val[15]; //賣家備註
+                                    myBuyRemark = val[16]; //買家備註
+                                    myInvMessage = val[17];  //發票(僅供參考)
 
                                     curr_Remark = myOrderID + "-" + myShipWho + "-" + myShipmentNo;
                                     //[處理合併儲存格] - 目前欄位非空值, 填入暫存值

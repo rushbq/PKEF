@@ -8,12 +8,13 @@
         <div class="ui attached segment grey-bg lighten-5" style="min-height: 550px;">
             <div class="ui segments">
                 <div class="ui grey segment">
-                    <h5 class="ui header">快速連結
+                    <h5 class="ui header"><i class="user md icon"></i>資訊需求
                     </h5>
                 </div>
                 <div class="ui small form attached segment">
                     <a href="<%=fn_Params.WebUrl %>AirMIS/ITHelp_Edit.aspx" class="ui large blue icon button" target="_blank"><i class="pencil icon"></i>填寫資訊需求</a>
                     <a href="<%=fn_Params.WebUrl %>AirMIS/ITHelp_Search.aspx?who=<%=fn_Params.UserAccount %>" class="ui large green icon button" target="_blank"><i class="tasks icon"></i>追蹤我的需求</a>
+                    <a href="<%=fn_Params.WebUrl %>AirMIS/ITHelp_Search.aspx?uc=Y" class="ui large icon button" target="_blank"><i class="futbol loading icon"></i>未結案需求</a>
                 </div>
             </div>
             <div class="ui segments">
