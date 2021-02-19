@@ -129,6 +129,11 @@
                         <asp:HiddenField ID="hf_TraceID" runat="server" />
                     </div>
                 </asp:PlaceHolder>
+                <asp:PlaceHolder ID="ph_ErrorBtns" runat="server" Visible="false">
+                    <div>
+                        <asp:LinkButton ID="lbtn_doReNew" runat="server" CssClass="ui orange button" OnClick="lbtn_ReNew_Click" OnClientClick="return confirm('是否確定?\n')"><i class="recycle icon"></i>重新上傳</asp:LinkButton>
+                    </div>
+                </asp:PlaceHolder>
             </div>
             <!-- 基本資料 End -->
         </div>

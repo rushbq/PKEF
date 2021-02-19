@@ -179,6 +179,7 @@ public partial class myErpPriceData_ImportStep2 : SecurityIn
             lt_ShowMsg.Text = ex.Message.ToString();
             ph_ErrMessage.Visible = true;
             ph_WorkBtns.Visible = false;
+            ph_ErrorBtns.Visible = true;
         }
 
 

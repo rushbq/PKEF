@@ -195,6 +195,9 @@
                         <div class="table-Nav">
                             <ul class="table-of-contents">
                                 <li><a href="#base">基本資料</a></li>
+                                <li><a href="#bankTW">ERP銀行資料</a></li>
+                                <li><a href="#bankCN">中國銀行資料</a></li>
+                                <li><a href="#bankWorld">外匯銀行資料</a></li>
                                 <li><a href="#dataSet">新增通訊人</a></li>
                                 <li><a href="#dataList">通訊錄</a></li>
                                 <li></li>

@@ -64,6 +64,7 @@
                             <asp:ListItem Value="">請選擇</asp:ListItem>
                         </asp:DropDownList>
                         <asp:TextBox ID="val_OrderType" runat="server" Style="display: none;"></asp:TextBox>
+                        <asp:TextBox ID="val_Way" runat="server" Style="display: none;"></asp:TextBox>
                     </div>
                 </div>
                 <div class="two fields">
@@ -148,7 +149,8 @@
                 }
 
                 //填入單別至隱藏欄位(後端取用及檢查)
-                $("#MainContent_val_OrderType").val(_typeID);
+                $("#MainContent_val_OrderType").val(_typeID); 
+                $("#MainContent_val_Way").val(_way);
 
                 //單號欄位
                 var fld_OrderNo = $("#MainContent_tb_OrderNo");

@@ -24,7 +24,7 @@ public partial class mySupInfo_Edit : SecurityIn
                 //** 檢查必要參數 **
                 if (string.IsNullOrEmpty(Req_ds))
                 {
-                    Response.Redirect(Application["WebUrl"] + "Default.aspx");
+                    Response.Redirect(Application["WebUrl"] + "Main.aspx");
                     return;
                 }
 
@@ -207,9 +207,9 @@ public partial class mySupInfo_Edit : SecurityIn
     #endregion
 
 
-    #region -- 資料編輯 Start --
+    #region -- 資料編輯:通訊錄 Start --
     /// <summary>
-    /// 資料存檔
+    /// 通訊錄資料存檔
     /// </summary>
     protected void btn_Save_Click(object sender, EventArgs e)
     {
@@ -309,7 +309,14 @@ public partial class mySupInfo_Edit : SecurityIn
 
     }
 
+    #endregion -- 資料編輯:通訊錄 End --
 
+
+    #region -- 資料編輯:基本資料 Start --
+
+    /// <summary>
+    /// 基本資料存檔
+    /// </summary>
     protected void btn_BaseSave_Click(object sender, EventArgs e)
     {
         try
@@ -402,7 +409,8 @@ public partial class mySupInfo_Edit : SecurityIn
 
     }
 
-    #endregion -- 資料編輯 End --
+
+    #endregion -- 資料編輯:基本資料 End --
 
 
     #region -- 參數設定 --

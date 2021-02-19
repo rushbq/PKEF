@@ -76,6 +76,8 @@ public partial class myErpPriceData_ImportStep1 : SecurityIn
         string _cust = val_Cust.Text;
         string _orderType = val_OrderType.Text;
         string _validDate = tb_validDate.Text;
+        string _way = val_Way.Text;
+        string _orderNo = tb_OrderNo.Text;
 
         //必填檢查
         if (string.IsNullOrWhiteSpace(_cust) || string.IsNullOrWhiteSpace(_orderType)
@@ -86,6 +88,13 @@ public partial class myErpPriceData_ImportStep1 : SecurityIn
             errTxt += "ERP單別\\n";
             errTxt += "生效日\\n";
         }
+
+        //依編碼方式檢查單號
+        if (_way.Equals("4") && string.IsNullOrWhiteSpace(_orderNo))
+        {
+            errTxt += "單號空白\\n";
+        }
+
         //alert
         if (!string.IsNullOrEmpty(errTxt))
         {

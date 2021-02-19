@@ -453,11 +453,12 @@ namespace ERP_PriceData.Controllers
                 //資料迴圈
                 foreach (var val in queryVals)
                 {
-                    _ProdID = val[0];
-                    _BuyPrice = Convert.ToDouble(val[1]);
-
-                    if (!string.IsNullOrWhiteSpace(_ProdID))
+                    //排除空白
+                    if (!string.IsNullOrWhiteSpace(val[0]))
                     {
+                        _ProdID = val[0];
+                        _BuyPrice = Convert.ToDouble(val[1]);
+
                         //加入項目
                         var data = new ImportDataDT
                         {
@@ -468,7 +469,6 @@ namespace ERP_PriceData.Controllers
                         //將項目加入至集合
                         dataList.Add(data);
                     }
-
                 }
 
                 //回傳集合
@@ -477,7 +477,7 @@ namespace ERP_PriceData.Controllers
             catch (Exception ex)
             {
 
-                throw new Exception("請檢查Excel格式是否正確!!格式可參考Excel範本." + ex.Message.ToString());
+                throw new Exception("請檢查Excel格式!!格式可參考範本.(數字欄必須為數字,不可空白或文字)...詳細說明：" + ex.Message.ToString());
             }
         }
 
@@ -1093,12 +1093,9 @@ namespace ERP_PriceData.Controllers
                     sql.AppendLine("  RTRIM(ErpProd.MB001) = ErpOrderPrice_ImportData_DT.ERP_ModelNo COLLATE Chinese_Taiwan_Stroke_BIN");
                     sql.AppendLine("  AND (Parent_ID = @ParentID)");
 
-                    ////--@Step3新增品項時使用@
-                    //if (!string.IsNullOrWhiteSpace(_detailID))
-                    //{
-                    //    sql.Append("  AND (Data_ID = @Data_ID)");
-                    //    cmd.Parameters.AddWithValue("Data_ID", _detailID);
-                    //}
+                    //檢查庫別
+                    sql.AppendLine(" UPDATE ErpOrderPrice_ImportData_DT SET IsPass = 'N', doWhat = ProdID + ',庫別空白' WHERE (Parent_ID = @ParentID) AND (StockType = '')");
+
 
                     //----- SQL 執行 -----
                     cmd.CommandText = sql.ToString();
