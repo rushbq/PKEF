@@ -223,7 +223,7 @@ public partial class AirMIS_ITHelp_Edit : SecurityIn
 
             string _viewPage = "{0}AirMIS/ITHelp_View.aspx?id={1}".FormatThis(fn_Params.WebUrl, Req_DataID);
 
-            //不可編輯的狀態
+            //不可編輯的狀態(不為 待處理 的狀態)
             if (!_currStatus.Equals("110") && !_ReplyAuth)
             {
                 Response.Redirect(_viewPage);

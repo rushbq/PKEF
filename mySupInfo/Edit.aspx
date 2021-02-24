@@ -38,7 +38,7 @@
                                 <h5>基本資料</h5>
                             </div>
                             <div class="card-content grey lighten-5">
-                                <table class="bordered">
+                                <table>
                                     <tr>
                                         <th style="width: 15%">代號</th>
                                         <td class="flow-text red-text text-darken-2" style="width: 35%"><b>
@@ -71,7 +71,206 @@
                             </div>
                         </div>
 
-                        <!-- // 資料設定 // -->
+                        <!-- // 資料設定:台灣匯款帳戶 // -->
+                        <div id="bankTW" class="card grey scrollspy">
+                            <div class="card-content white-text">
+                                <h5>台灣匯款帳戶(ERP)</h5>
+                            </div>
+                            <div class="card-content grey lighten-5">
+                                <table>
+                                    <tr>
+                                        <th style="width: 15%">收款人名稱</th>
+                                        <td style="width: 40%">
+                                            <p class="green-text text-darken-2">
+                                                <asp:Literal ID="lt_tw_AccName" runat="server"></asp:Literal>
+                                            </p>
+                                        </td>
+                                        <th style="width: 15%">收款人帳號</th>
+                                        <td style="width: 30%">
+                                            <p>
+                                                <asp:Literal ID="lt_tw_Account" runat="server"></asp:Literal>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th>銀行名稱</th>
+                                        <td>
+                                            <p class="blue-text text-darken-2">
+                                                <asp:Literal ID="lt_tw_BankName" runat="server"></asp:Literal>
+                                            </p>
+                                        </td>
+                                        <th>銀行代號</th>
+                                        <td>
+                                            <p>
+                                                <asp:Literal ID="lt_tw_BankID" runat="server"></asp:Literal>
+                                            </p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
+
+                        <!-- // 資料設定:中國匯款帳戶 // -->
+                        <div id="bankCN" class="card grey scrollspy">
+                            <div class="card-content white-text">
+                                <h5>中國匯款帳戶</h5>
+                            </div>
+                            <div class="card-content grey lighten-5">
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <asp:TextBox ID="tb_cn_AccName" runat="server" MaxLength="76" length="76"></asp:TextBox>
+                                        <label for="MainContent_tb_cn_AccName">
+                                            收款人名稱 *&nbsp;
+                                            <asp:RequiredFieldValidator ID="rfvCN1" runat="server" ErrorMessage="必填欄位請填寫" ControlToValidate="tb_cn_AccName" CssClass="red-text" Display="Dynamic" ValidationGroup="bankCN"></asp:RequiredFieldValidator>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col s6">
+                                        <asp:TextBox ID="tb_cn_Account" runat="server" MaxLength="32" length="32"></asp:TextBox>
+                                        <label for="MainContent_tb_cn_Account">
+                                            收款人帳號 *&nbsp;
+                                            <asp:RequiredFieldValidator ID="rfvCN2" runat="server" ErrorMessage="必填欄位請填寫" ControlToValidate="tb_cn_Account" CssClass="red-text" Display="Dynamic" ValidationGroup="bankCN"></asp:RequiredFieldValidator>
+                                        </label>
+                                    </div>
+                                    <div class="input-field col s6">
+                                        <asp:TextBox ID="tb_cn_Email" runat="server" MaxLength="40" length="40"></asp:TextBox>
+                                        <label for="MainContent_tb_cn_Email">
+                                            收款人Email
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <asp:TextBox ID="tb_cn_BankName" runat="server" MaxLength="70" length="70"></asp:TextBox>
+                                        <label for="MainContent_tb_cn_BankName">
+                                            開戶行名稱 *&nbsp;
+                                            <asp:RequiredFieldValidator ID="rfvCN3" runat="server" ErrorMessage="必填欄位請填寫" ControlToValidate="tb_cn_BankName" CssClass="red-text" Display="Dynamic" ValidationGroup="bankCN"></asp:RequiredFieldValidator>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col s3">
+                                        <asp:TextBox ID="tb_cn_State" runat="server" MaxLength="10" length="10"></asp:TextBox>
+                                        <label for="MainContent_tb_cn_State">
+                                            省份
+                                        </label>
+                                    </div>
+                                    <div class="input-field col s3">
+                                        <asp:TextBox ID="tb_cn_City" runat="server" MaxLength="10" length="10"></asp:TextBox>
+                                        <label for="MainContent_tb_cn_City">
+                                            縣市
+                                        </label>
+                                    </div>
+                                    <div class="input-field col s3">
+                                        <asp:TextBox ID="tb_cn_BankID" runat="server" MaxLength="12" length="12"></asp:TextBox>
+                                        <label for="MainContent_tb_cn_BankID">
+                                            CNAPS行號
+                                        </label>
+                                    </div>
+                                    <div class="input-field col s3">
+                                        <asp:TextBox ID="tb_cn_SaleID" runat="server" MaxLength="16" length="16"></asp:TextBox>
+                                        <label for="MainContent_tb_cn_SaleID">
+                                            客戶業務編號
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col s12 right-align">
+                                        <a class="btn waves-effect waves-light blue trigger-BankCNSave">存檔</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- // 資料設定:境外匯款帳戶 // -->
+                        <div id="bankWorld" class="card grey scrollspy">
+                            <div class="card-content white-text">
+                                <h5>境外匯款帳戶</h5>
+                            </div>
+                            <div class="card-content grey lighten-5">
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <asp:TextBox ID="tb_ww_AccName" runat="server" MaxLength="120" length="120"></asp:TextBox>
+                                        <label for="MainContent_tb_ww_AccName">
+                                            收款人名稱 *&nbsp;
+                                            <asp:RequiredFieldValidator ID="rfvWW1" runat="server" ErrorMessage="必填欄位請填寫" ControlToValidate="tb_ww_AccName" CssClass="red-text" Display="Dynamic" ValidationGroup="bankWorld"></asp:RequiredFieldValidator>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col s8">
+                                        <asp:TextBox ID="tb_ww_Account" runat="server" MaxLength="50" length="50"></asp:TextBox>
+                                        <label for="MainContent_tb_ww_Account">
+                                            收款人帳號 *&nbsp;
+                                            <asp:RequiredFieldValidator ID="rfvWW2" runat="server" ErrorMessage="必填欄位請填寫" ControlToValidate="tb_ww_Account" CssClass="red-text" Display="Dynamic" ValidationGroup="bankWorld"></asp:RequiredFieldValidator>
+                                        </label>
+                                    </div>
+                                    <div class="input-field col s4">
+                                        <asp:TextBox ID="tb_ww_Tel" runat="server" MaxLength="20" length="20"></asp:TextBox>
+                                        <label for="MainContent_tb_ww_Tel">
+                                            收款人電話
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <asp:TextBox ID="tb_ww_Addr" runat="server" MaxLength="100" length="100"></asp:TextBox>
+                                        <label for="MainContent_tb_ww_Addr">
+                                            收款人地址 *&nbsp;
+                                            <asp:RequiredFieldValidator ID="rfvWW3" runat="server" ErrorMessage="必填欄位請填寫" ControlToValidate="tb_ww_Addr" CssClass="red-text" Display="Dynamic" ValidationGroup="bankWorld"></asp:RequiredFieldValidator>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col s9">
+                                        <asp:TextBox ID="tb_ww_BankName" runat="server" MaxLength="100" length="100"></asp:TextBox>
+                                        <label for="MainContent_tb_ww_BankName">
+                                            開戶行名稱 *&nbsp;
+                                            <asp:RequiredFieldValidator ID="rfvWW4" runat="server" ErrorMessage="必填欄位請填寫" ControlToValidate="tb_ww_BankName" CssClass="red-text" Display="Dynamic" ValidationGroup="bankWorld"></asp:RequiredFieldValidator>
+                                        </label>
+                                    </div>
+                                    <div class="input-field col s3">
+                                        <asp:TextBox ID="tb_ww_BankBranch" runat="server" MaxLength="50" length="50"></asp:TextBox>
+                                        <label for="MainContent_tb_ww_BankBranch">
+                                            分行名稱
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <asp:TextBox ID="tb_ww_BankAddr" runat="server" MaxLength="100" length="100"></asp:TextBox>
+                                        <label for="MainContent_tb_ww_BankAddr">
+                                            銀行地址
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col s6">
+                                        <asp:TextBox ID="tb_ww_Country" runat="server" MaxLength="20" length="20"></asp:TextBox>
+                                        <label for="MainContent_tb_ww_Country">
+                                            國家
+                                        </label>
+                                    </div>
+                                    <div class="input-field col s6">
+                                        <asp:TextBox ID="tb_ww_Code" runat="server" MaxLength="20" length="20"></asp:TextBox>
+                                        <label for="MainContent_tb_ww_Code">
+                                            代碼(SWIFT)
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col s12 right-align">
+                                        <a class="btn waves-effect waves-light blue trigger-BankWorldSave">存檔</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- // 資料設定:通訊人 // -->
                         <div id="dataSet" class="card grey scrollspy">
                             <div class="card-content white-text">
                                 <h5>新增通訊人</h5>
@@ -150,7 +349,7 @@
                                                     <tr>
                                                         <th>姓名</th>
                                                         <th>Email</th>
-                                                        <th class="center-align">PDF發送</th>
+                                                        <th class="center-align">PDF發送(採購單)</th>
                                                         <th></th>
                                                     </tr>
                                                 </thead>
@@ -195,9 +394,9 @@
                         <div class="table-Nav">
                             <ul class="table-of-contents">
                                 <li><a href="#base">基本資料</a></li>
-                                <li><a href="#bankTW">ERP銀行資料</a></li>
-                                <li><a href="#bankCN">中國銀行資料</a></li>
-                                <li><a href="#bankWorld">外匯銀行資料</a></li>
+                                <li><a href="#bankTW">台灣匯款帳戶</a></li>
+                                <li><a href="#bankCN">中國匯款帳戶</a></li>
+                                <li><a href="#bankWorld">境外匯款帳戶</a></li>
                                 <li><a href="#dataSet">新增通訊人</a></li>
                                 <li><a href="#dataList">通訊錄</a></li>
                                 <li></li>
@@ -211,10 +410,16 @@
                         <asp:HiddenField ID="hf_CorpUID" runat="server" />
                         <asp:HiddenField ID="hf_SupID" runat="server" />
                         <asp:HiddenField ID="hf_DtID" runat="server" />
-                        <asp:Button ID="btn_Save" runat="server" Text="Save" OnClick="btn_Save_Click" ValidationGroup="Add" />
                         <asp:HiddenField ID="hf_InfoID" runat="server" />
                         <asp:Button ID="btn_BaseSave" runat="server" Text="Save" OnClick="btn_BaseSave_Click" ValidationGroup="AddBase" />
-                        <asp:ValidationSummary ID="ValidationSummary1" runat="server" ShowMessageBox="true" ShowSummary="false" HeaderText="資料填寫不完整，請重新確認!" ValidationGroup="Add" />
+                        <asp:Button ID="btn_Save" runat="server" Text="Save" OnClick="btn_Save_Click" ValidationGroup="Add" />
+                        <asp:ValidationSummary ID="ValidationSummary1" runat="server" ShowMessageBox="false" ShowSummary="false" HeaderText="基本資料:請填寫必填欄位!" ValidationGroup="Add" />
+
+                        <asp:Button ID="btn_SaveBankCN" runat="server" Text="Save" OnClick="btn_SaveBankCN_Click" ValidationGroup="bankCN" />
+                        <asp:ValidationSummary ID="ValidationSummary2" runat="server" ShowMessageBox="false" ShowSummary="false" HeaderText="中國匯款帳戶:請填寫必填欄位!" ValidationGroup="bankCN" />
+
+                        <asp:Button ID="btn_SaveBankWorld" runat="server" Text="Save" OnClick="btn_SaveBankWorld_Click" ValidationGroup="bankWorld" />
+                        <asp:ValidationSummary ID="ValidationSummary3" runat="server" ShowMessageBox="false" ShowSummary="false" HeaderText="境外匯款帳戶:請填寫必填欄位!" ValidationGroup="bankWorld" />
                     </div>
                 </div>
 
@@ -262,16 +467,28 @@
             });
 
 
-            //[通訊人][按鈕] - 觸發儲存
+            //[按鈕觸發]:通訊人
             $(".trigger-Save").click(function () {
                 $("#MainContent_btn_Save").trigger("click");
             });
 
 
-            //[基本資料][按鈕] - 觸發儲存
+            //[按鈕觸發]:基本資料
             $(".trigger-BaseSave").click(function () {
                 $("#MainContent_btn_BaseSave").trigger("click");
             });
+
+
+            //[按鈕觸發]:中國匯款帳戶
+            $(".trigger-BankCNSave").click(function () {
+                $("#MainContent_btn_SaveBankCN").trigger("click");
+            });
+
+            //[按鈕觸發]:境外匯款帳戶
+            $(".trigger-BankWorldSave").click(function () {
+                $("#MainContent_btn_SaveBankWorld").trigger("click");
+            });
+
         });
     </script>
     <link href="<%=Application["CDN_Url"] %>plugin/jqueryUI-1.12.1/jquery-ui.min.css" rel="stylesheet" />
