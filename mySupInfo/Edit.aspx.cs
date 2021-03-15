@@ -1,15 +1,12 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Web;
-using System.Web.UI;
 using System.Web.UI.WebControls;
-using PKLib_Method.Methods;
 using PKLib_Data.Assets;
 using PKLib_Data.Controllers;
 using PKLib_Data.Models;
+using PKLib_Method.Methods;
 
 public partial class mySupInfo_Edit : SecurityIn
 {
@@ -134,6 +131,7 @@ public partial class mySupInfo_Edit : SecurityIn
             tb_cn_SaleID.Text = item.cn_SaleID;
             tb_cn_State.Text = item.cn_State;
             tb_cn_City.Text = item.cn_City;
+            tb_cn_BankType.Text = item.cn_BankType;
             tb_ww_Account.Text = item.ww_Account;
             tb_ww_AccName.Text = item.ww_AccName;
             tb_ww_Tel.Text = item.ww_Tel;
@@ -481,6 +479,7 @@ public partial class mySupInfo_Edit : SecurityIn
         string _cn_SaleID = tb_cn_SaleID.Text;
         string _cn_State = tb_cn_State.Text;
         string _cn_City = tb_cn_City.Text;
+        string _cn_BankType = tb_cn_BankType.Text;
         string _ww_Account = tb_ww_Account.Text;
         string _ww_AccName = tb_ww_AccName.Text;
         string _ww_Tel = tb_ww_Tel.Text;
@@ -506,6 +505,7 @@ public partial class mySupInfo_Edit : SecurityIn
             cn_SaleID = _cn_SaleID,
             cn_State = _cn_State,
             cn_City = _cn_City,
+            cn_BankType = _cn_BankType,
             ww_Account = _ww_Account,
             ww_AccName = _ww_AccName,
             ww_Tel = _ww_Tel,
@@ -547,6 +547,7 @@ public partial class mySupInfo_Edit : SecurityIn
         string _cn_SaleID = tb_cn_SaleID.Text;
         string _cn_State = tb_cn_State.Text;
         string _cn_City = tb_cn_City.Text;
+        string _cn_BankType = tb_cn_BankType.Text;
         string _ww_Account = tb_ww_Account.Text;
         string _ww_AccName = tb_ww_AccName.Text;
         string _ww_Tel = tb_ww_Tel.Text;
@@ -571,6 +572,7 @@ public partial class mySupInfo_Edit : SecurityIn
             cn_SaleID = _cn_SaleID,
             cn_State = _cn_State,
             cn_City = _cn_City,
+            cn_BankType = _cn_BankType,
             ww_Account = _ww_Account,
             ww_AccName = _ww_AccName,
             ww_Tel = _ww_Tel,

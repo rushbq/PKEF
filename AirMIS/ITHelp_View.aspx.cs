@@ -118,6 +118,7 @@ public partial class AirMIS_ITHelp_View : SecurityIn
             //工時
             lt_Finish_Hours.Text = query.Finish_Hours.ToString();
             tb_ReplyContent.Text = query.Reply_Content.Replace("\r\n", "<br/>");
+            lt_Wish_Date.Text = query.Wish_Time.ToDateString("yyyy/MM/dd");
 
             //結案日
             string _fDate = query.Finish_Time.ToString();

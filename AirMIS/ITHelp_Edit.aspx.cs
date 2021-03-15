@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net.Mail;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -177,6 +178,7 @@ public partial class AirMIS_ITHelp_Edit : SecurityIn
             //工時
             tb_Finish_Hours.Text = query.Finish_Hours.ToString();
             tb_ReplyContent.Text = query.Reply_Content;
+            tb_Wish_Date.Text = query.Wish_Time.ToDateString("yyyy/MM/dd");
 
             //結案日
             string _fDate = query.Finish_Time.ToString();
@@ -216,10 +218,10 @@ public partial class AirMIS_ITHelp_Edit : SecurityIn
 
             //改善效益Lock
             tb_Help_Benefit.Enabled = _currStatus.Equals("110");
-            if (!_currAppType.Equals("3") && query.Help_Benefit.Equals(""))
-            {
-                ph_Benefit.Visible = false;
-            }
+            //if (!_currAppType.Equals("3") && query.Help_Benefit.Equals(""))
+            //{
+            //    ph_Benefit.Visible = false;
+            //}
 
             string _viewPage = "{0}AirMIS/ITHelp_View.aspx?id={1}".FormatThis(fn_Params.WebUrl, Req_DataID);
 
@@ -971,6 +973,7 @@ public partial class AirMIS_ITHelp_Edit : SecurityIn
         string _id = hf_DataID.Value;
         string _reqCls = ddl_ReqClass.SelectedValue;
         string _hour = tb_Finish_Hours.Text;
+        string _wishdate = tb_Wish_Date.Text;
         string _replyCont = tb_ReplyContent.Text;
 
         #region ** 欄位判斷 **
@@ -1002,6 +1005,7 @@ public partial class AirMIS_ITHelp_Edit : SecurityIn
                 DataID = new Guid(_id),
                 Req_Class = Convert.ToInt32(_reqCls),
                 Finish_Hours = string.IsNullOrWhiteSpace(_hour) ? 0 : Convert.ToDouble(_hour),
+                Wish_Time = _wishdate,
                 Reply_Content = _replyCont.Left(500),
             };
 
@@ -1377,6 +1381,7 @@ public partial class AirMIS_ITHelp_Edit : SecurityIn
                 CustomExtension.AlertMsg("驗收意見失敗", "");
                 return;
             }
+
         }
         catch (Exception)
         {
@@ -1390,8 +1395,8 @@ public partial class AirMIS_ITHelp_Edit : SecurityIn
         #endregion
 
 
-        //導向本頁
-        Response.Redirect(thisPage + "#section3");
+        //導向List
+        CustomExtension.AlertMsg("填寫完畢。\\n頁面將轉回列表頁..", Page_SearchUrl);
 
     }
 
@@ -1417,6 +1422,7 @@ public partial class AirMIS_ITHelp_Edit : SecurityIn
         string _id = hf_DataID.Value;
         string _reqCls = ddl_ReqClass.SelectedValue;
         string _hour = tb_Finish_Hours.Text;
+        string _wishdate = tb_Wish_Date.Text;
         string _replyCont = tb_ReplyContent.Text;
         string _FinishTime = val_FinishTime.Text;
 
@@ -1452,6 +1458,7 @@ public partial class AirMIS_ITHelp_Edit : SecurityIn
                 DataID = new Guid(_id),
                 Req_Class = Convert.ToInt32(_reqCls),
                 Reply_Content = _replyCont.Left(500),
+                Wish_Time = _wishdate,
                 Finish_Hours = string.IsNullOrWhiteSpace(_hour) ? 0 : Convert.ToDouble(_hour),
                 Finish_Time = _FinishTime.ToDateString("yyyy/MM/dd HH:mm"),
             };
@@ -1852,6 +1859,15 @@ public partial class AirMIS_ITHelp_Edit : SecurityIn
                     mailList.Add(item.Email);
                 }
                 dataA = null;
+
+                //一律通知主管20210304
+                var dataAup = fn_CustomUI.emailReceiver_Supervisor(reqDeptID);
+                foreach (var item in dataAup)
+                {
+                    mailList.Add(item);
+                }
+                dataAup = null;
+
                 break;
 
             case "B":
@@ -1868,6 +1884,15 @@ public partial class AirMIS_ITHelp_Edit : SecurityIn
             case "C":
                 //自訂通知:通知需求者
                 mailList.Add(reqEmail);
+
+                //一律通知主管20210304
+                var dataCup = fn_CustomUI.emailReceiver_Supervisor(reqDeptID);
+                foreach (var item in dataCup)
+                {
+                    mailList.Add(item);
+                }
+                dataCup = null;
+
                 break;
 
             case "D":
@@ -1885,6 +1910,14 @@ public partial class AirMIS_ITHelp_Edit : SecurityIn
                     mailList.Add(item.CC_Email);
                 }
                 dataD1 = null;
+                //一律通知主管20210304
+                var dataDup = fn_CustomUI.emailReceiver_Supervisor(reqDeptID);
+                foreach (var item in dataDup)
+                {
+                    mailList.Add(item);
+                }
+                dataDup = null;
+
 
                 //需求者
                 mailList.Add(reqEmail);
@@ -2067,9 +2100,16 @@ public partial class AirMIS_ITHelp_Edit : SecurityIn
                 Msg.From = new MailAddress(fn_Params.SysMail_Sender, "寶工鋼鐵人");
 
                 //收件人
-                foreach (string email in mailList)
+                var query = from string x in mailList
+                            group x by x.ToString() into g
+                            select new
+                            {
+                                Text = g.Key
+                            };
+
+                foreach (var email in query)
                 {
-                    Msg.To.Add(new MailAddress(email));
+                    Msg.To.Add(new MailAddress(email.Text));
                 }
 
                 //主旨

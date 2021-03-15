@@ -230,6 +230,12 @@
                                             </div>
                                         </div>
                                         <div class="four wide field">
+                                            <label>預計完成日</label>
+                                            <div class="ui blue basic label">
+                                                <asp:Literal ID="lt_Wish_Date" runat="server">案件處理中</asp:Literal>
+                                            </div>
+                                        </div>
+                                        <div class="four wide field">
                                             <label>結案日</label>
                                             <div class="ui red basic label">
                                                 <asp:Literal ID="lt_Finish_Time" runat="server">案件處理中</asp:Literal>

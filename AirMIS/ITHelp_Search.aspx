@@ -31,16 +31,24 @@
         <div class="ui orange attached segment">
             <div class="ui small form">
                 <div class="fields">
+                    <div class="two wide field">
+                        <label>日期區間</label>
+                        <asp:DropDownList ID="filter_dateType" runat="server" CssClass="fluid">
+                            <asp:ListItem Value="A">登記日</asp:ListItem>
+                            <asp:ListItem Value="B">結案日</asp:ListItem>
+                        </asp:DropDownList>
+                    </div>
                     <div class="five wide field">
-                        <label>登記日期</label>
                         <div class="two fields">
                             <div class="field">
+                                <label>&nbsp;</label>
                                 <div class="ui left icon input datepicker">
                                     <asp:TextBox ID="filter_sDate" runat="server" autocomplete="off"></asp:TextBox>
                                     <i class="calendar alternate outline icon"></i>
                                 </div>
                             </div>
                             <div class="field">
+                                <label>&nbsp;</label>
                                 <div class="ui left icon input datepicker">
                                     <asp:TextBox ID="filter_eDate" runat="server" autocomplete="off"></asp:TextBox>
                                     <i class="calendar alternate outline icon"></i>
@@ -48,12 +56,12 @@
                             </div>
                         </div>
                     </div>
-                    <div class="four wide field">
+                    <div class="three wide field">
                         <label>需求類別</label>
                         <asp:DropDownList ID="filter_ReqClass" runat="server" CssClass="fluid">
                         </asp:DropDownList>
                     </div>
-                    <div class="three wide field">
+                    <div class="two wide field">
                         <label>處理狀態</label>
                         <asp:DropDownList ID="filter_ReqStatus" runat="server" CssClass="fluid">
                         </asp:DropDownList>
@@ -74,7 +82,7 @@
                             <asp:TextBox ID="val_Dept" runat="server" Style="display: none"></asp:TextBox>
                         </div>
                     </div>
-                    <div class="three wide field">
+                    <div class="four wide field">
                         <div class="ui fluid search ac-Employee" data-label="lb_Emp" data-val="val_Emp">
                             <div class="ui left labeled input">
                                 <asp:Panel ID="lb_Emp" runat="server" CssClass="ui label">需求者</asp:Panel>
@@ -83,7 +91,7 @@
                             <asp:TextBox ID="val_Emp" runat="server" Style="display: none"></asp:TextBox>
                         </div>
                     </div>
-                    <div class="three wide field">
+                    <div class="five wide field">
                         <div class="ui fluid search ac-Employee" data-label="lb_FinishWho" data-val="val_FinishWho">
                             <div class="ui left labeled input">
                                 <asp:Panel ID="lb_FinishWho" runat="server" CssClass="ui label">結案人</asp:Panel>
@@ -92,7 +100,7 @@
                             <asp:TextBox ID="val_FinishWho" runat="server" Style="display: none"></asp:TextBox>
                         </div>
                     </div>
-                    <div class="seven wide field" style="text-align: right;">
+                    <div class="four wide field" style="text-align: right;">
                         <a href="<%=thisPage %>" class="ui small button"><i class="refresh icon"></i>重置</a>
                         <button type="button" id="doSearch" class="ui blue small button"><i class="search icon"></i>查詢</button>
                         <asp:Button ID="btn_Search" runat="server" Text="Button" OnClick="btn_Search_Click" Style="display: none" />
@@ -126,6 +134,7 @@
                                     <th class="grey-bg lighten-3">需求主旨</th>
                                     <th class="grey-bg lighten-3 center aligned">狀態</th>
                                     <th class="grey-bg lighten-3 center aligned collapsing">最新進度</th>
+                                    <th class="grey-bg lighten-3 center aligned collapsing">預計完成</th>
                                     <th class="grey-bg lighten-3 center aligned">需求者</th>
                                     <th class="grey-bg lighten-3 center aligned">時間</th>
                                     <th class="grey-bg lighten-3"></th>
@@ -163,6 +172,9 @@
                         </td>
                         <td class="center aligned collapsing">
                             <%#Eval("ProcInfo").ToString().Replace("_","<BR/>") %>
+                        </td>
+                        <td class="center aligned collapsing">
+                            <%#Eval("Wish_Time").ToString().ToDateString("yyyy/MM/dd") %>
                         </td>
                         <td class="center aligned collapsing">
                             <div class="ui basic fluid large label"><%#Eval("Req_WhoName") %></div>

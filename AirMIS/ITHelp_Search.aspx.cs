@@ -77,6 +77,7 @@ public partial class AirMIS_ITHelp_Search : SecurityIn
         {
             #region >> 條件篩選 <<
             //Params
+            string _DateType = Req_DateType;
             string _sDate = Req_sDate;
             string _eDate = Req_eDate;
             string _Cls1 = Req_Class; //需求類別
@@ -87,7 +88,14 @@ public partial class AirMIS_ITHelp_Search : SecurityIn
             string _FinishWho = Req_FinishWho;
 
 
-            //[查詢條件] - 登記日期(Start-End)
+            //[查詢條件] - 日期選項(放在日期參數前)
+            if (!string.IsNullOrWhiteSpace(_DateType))
+            {
+                search.Add("DateType", _DateType);
+                PageParam.Add("DateType=" + Server.UrlEncode(_DateType));
+                filter_dateType.Text = _DateType;
+            }
+            //[查詢條件] - 日期(Start-End)
             if (!string.IsNullOrWhiteSpace(_sDate))
             {
                 search.Add("sDate", _sDate);
@@ -339,6 +347,7 @@ public partial class AirMIS_ITHelp_Search : SecurityIn
 
         #region >> 條件篩選 <<
         //Params
+        string _DateType = Req_DateType;
         string _sDate = Req_sDate;
         string _eDate = Req_eDate;
         string _Cls1 = Req_Class; //需求類別
@@ -347,6 +356,12 @@ public partial class AirMIS_ITHelp_Search : SecurityIn
         string _Dept = Req_Dept;
         string _Who = Req_Who;
         string _FinishWho = Req_FinishWho;
+
+        //[查詢條件] - 日期選項(放在日期參數前)
+        if (!string.IsNullOrWhiteSpace(_DateType))
+        {
+            search.Add("DateType", _DateType);
+        }
 
         //[查詢條件] - 登記日期(Start-End)
         if (!string.IsNullOrWhiteSpace(_sDate))
@@ -423,7 +438,9 @@ public partial class AirMIS_ITHelp_Search : SecurityIn
         _col.Add("Help_Content", "說明");
         _col.Add("Req_WhoName", "需求者");
         _col.Add("Finish_Hours", "工時");
-        //_col.Add("Finish_Time", "結案日");
+        _col.Add("RateScore", "滿意度(1-5)");
+        _col.Add("Wish_Time", "預計完成");
+        _col.Add("Finish_Time", "結案日");
         _col.Add("Finish_WhoName", "結案人");
         _col.Add("TraceID", "追蹤編號");
 
@@ -510,6 +527,7 @@ public partial class AirMIS_ITHelp_Search : SecurityIn
     public string filterUrl()
     {
         //Params
+        string _DateType = filter_dateType.SelectedValue;
         string _sDate = this.filter_sDate.Text;
         string _eDate = this.filter_eDate.Text;
         string _Keyword = this.filter_Keyword.Text;
@@ -525,7 +543,13 @@ public partial class AirMIS_ITHelp_Search : SecurityIn
         //固定條件:Page
         url.Append("{0}?page=1&uc={1}".FormatThis(thisPage, Req_unClose));
 
-        //[查詢條件] - DateA
+        //[查詢條件] - 日期選項(放在日期參數前)
+        if (!string.IsNullOrWhiteSpace(_DateType))
+        {
+            url.Append("&DateType=" + Server.UrlEncode(_DateType));
+        }
+
+        //[查詢條件] - Date between
         if (!string.IsNullOrWhiteSpace(_sDate))
         {
             url.Append("&sDate=" + Server.UrlEncode(_sDate));
@@ -631,7 +655,7 @@ public partial class AirMIS_ITHelp_Search : SecurityIn
         get
         {
             String _data = Request.QueryString["sDate"];
-            string dt = DateTime.Now.AddDays(-180).ToString().ToDateString("yyyy/MM/dd");
+            string dt = DateTime.Now.AddDays(-365).ToString().ToDateString("yyyy/MM/dd");
             return (CustomExtension.String_資料長度Byte(_data, "1", "10", out ErrMsg)) ? _data.Trim() : dt;
         }
         set
@@ -762,6 +786,23 @@ public partial class AirMIS_ITHelp_Search : SecurityIn
         }
     }
     private string _Req_unClose;
+
+    /// <summary>
+    /// 取得傳遞參數 - DateType
+    /// </summary>
+    private string _Req_DateType;
+    public string Req_DateType
+    {
+        get
+        {
+            String data = Request.QueryString["DateType"];
+            return string.IsNullOrEmpty(data) ? "A" : data.ToString();
+        }
+        set
+        {
+            this._Req_DateType = value;
+        }
+    }
 
 
     /// <summary>

@@ -184,6 +184,7 @@ public partial class InfoSales_Search : SecurityIn
                 SBSql.Append("   OR (Prof.Display_Name LIKE '%' + @Keyword + '%') ");
                 SBSql.Append("   OR (Prof.ERP_LoginID LIKE '%' + @Keyword + '%') ");
                 SBSql.Append("   OR (Prof.ERP_UserID LIKE '%' + @Keyword + '%') ");
+                SBSql.Append("   OR (Prof.NickName LIKE '%' + @Keyword + '%') ");
                 SBSql.Append(" ) ");
 
                 cmdTotalCnt.Parameters.AddWithValue("Keyword", Keyword);

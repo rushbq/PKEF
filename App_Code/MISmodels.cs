@@ -76,6 +76,7 @@ namespace MISData.Models
         public string Agree_WhoName { get; set; }
         public string Agree_Time { get; set; }
         public string IsAgree { get; set; }
+        public string Wish_Time { get; set; }
     }
 
 

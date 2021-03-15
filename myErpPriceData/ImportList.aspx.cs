@@ -82,6 +82,7 @@ public partial class myErpPriceData_ImportList : SecurityIn
 
             //固定參數
             search.Add("DBS", Req_DBS);
+            PageParam.Add("dbs=" + Server.UrlEncode(Req_DBS));
 
             //[查詢條件] - Keyword
             if (!string.IsNullOrWhiteSpace(Req_Keyword))
@@ -142,14 +143,14 @@ public partial class myErpPriceData_ImportList : SecurityIn
 
                 //分頁設定
                 string getPager = CustomExtension.Pagination(TotalRow, RecordsPerPage, pageIndex, 5
-                    , thisPage, PageParam, false, true);
+                    , FuncPath(), PageParam, false, true);
 
                 Literal lt_Pager = (Literal)this.lvDataList.FindControl("lt_Pager");
                 lt_Pager.Text = getPager;
 
                 //重新整理頁面Url
-                string reSetPage = "{0}&page={1}{2}".FormatThis(
-                    thisPage
+                string reSetPage = "{0}?page={1}{2}".FormatThis(
+                    FuncPath()
                     , pageIndex
                     , (PageParam.Count == 0 ? "" : "&") + string.Join("&", PageParam.ToArray()));
 

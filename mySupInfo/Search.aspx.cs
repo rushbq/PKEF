@@ -66,7 +66,9 @@ public partial class mySupInfo_Search : SecurityIn
 
 
                 //取得公司別
-                this.lt_CorpName.Text = GetCorpName(Req_ds);
+                string _corpName = GetCorpName(Req_ds);
+                this.lt_CorpName.Text = _corpName;
+                Page.Title += " | " + _corpName;
 
 
                 //Get Data

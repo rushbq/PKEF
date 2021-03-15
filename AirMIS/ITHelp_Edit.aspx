@@ -287,14 +287,21 @@
                                     <h5 class="ui header"><a class="anchor" id="section1"></a>回覆資料</h5>
                                 </div>
                                 <div id="section1-form" class="ui form segment">
-                                    <div class="four fields">
+                                    <div class="five fields">
                                         <div class="required field">
                                             <label>需求類別</label>
-                                            <asp:DropDownList ID="ddl_ReqClass" runat="server" CssClass="error"></asp:DropDownList>
+                                            <asp:DropDownList ID="ddl_ReqClass" runat="server" CssClass="error fluid"></asp:DropDownList>
                                         </div>
                                         <div class="field">
-                                            <label>工時&nbsp;<small>(與結案工時欄位共用)</small></label>
+                                            <label>總工時&nbsp;<small>(與結案工時共用)</small></label>
                                             <asp:TextBox ID="tb_Finish_Hours" runat="server" type="number" step="0.5" min="0"></asp:TextBox>
+                                        </div>
+                                        <div class="field">
+                                            <label>預計完成日</label>
+                                            <div class="ui left icon input datepicker">
+                                                <asp:TextBox ID="tb_Wish_Date" runat="server" autocomplete="off"></asp:TextBox>
+                                                <i class="calendar alternate outline icon"></i>
+                                            </div>
                                         </div>
                                         <div class="field">
                                             <label>結案日</label>

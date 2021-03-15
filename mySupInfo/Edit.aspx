@@ -121,7 +121,7 @@
                                     <div class="input-field col s12">
                                         <asp:TextBox ID="tb_cn_AccName" runat="server" MaxLength="76" length="76"></asp:TextBox>
                                         <label for="MainContent_tb_cn_AccName">
-                                            收款人名稱 *&nbsp;
+                                            收款人名称 *&nbsp;
                                             <asp:RequiredFieldValidator ID="rfvCN1" runat="server" ErrorMessage="必填欄位請填寫" ControlToValidate="tb_cn_AccName" CssClass="red-text" Display="Dynamic" ValidationGroup="bankCN"></asp:RequiredFieldValidator>
                                         </label>
                                     </div>
@@ -130,7 +130,7 @@
                                     <div class="input-field col s6">
                                         <asp:TextBox ID="tb_cn_Account" runat="server" MaxLength="32" length="32"></asp:TextBox>
                                         <label for="MainContent_tb_cn_Account">
-                                            收款人帳號 *&nbsp;
+                                            收款人账号 *&nbsp;
                                             <asp:RequiredFieldValidator ID="rfvCN2" runat="server" ErrorMessage="必填欄位請填寫" ControlToValidate="tb_cn_Account" CssClass="red-text" Display="Dynamic" ValidationGroup="bankCN"></asp:RequiredFieldValidator>
                                         </label>
                                     </div>
@@ -142,11 +142,17 @@
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="input-field col s12">
+                                    <div class="input-field col s6">
                                         <asp:TextBox ID="tb_cn_BankName" runat="server" MaxLength="70" length="70"></asp:TextBox>
                                         <label for="MainContent_tb_cn_BankName">
-                                            開戶行名稱 *&nbsp;
+                                            开户行名称 *&nbsp;
                                             <asp:RequiredFieldValidator ID="rfvCN3" runat="server" ErrorMessage="必填欄位請填寫" ControlToValidate="tb_cn_BankName" CssClass="red-text" Display="Dynamic" ValidationGroup="bankCN"></asp:RequiredFieldValidator>
+                                        </label>
+                                    </div>
+                                    <div class="input-field col s6">
+                                        <asp:TextBox ID="tb_cn_BankType" runat="server" MaxLength="40" length="40"></asp:TextBox>
+                                        <label for="MainContent_tb_cn_BankType">
+                                            收款人开户行
                                         </label>
                                     </div>
                                 </div>

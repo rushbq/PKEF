@@ -5,14 +5,15 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
-using ExtensionUI;
+using System.Text.RegularExpressions;
 using Invoice.Models;
 using PKLib_Method.Methods;
 
 /*
  * [使用功能]
- * 1. SZ BBC發票相關
+ * 1. BBC發票相關
  * 2. 手動開票-批次回寫ERP發票號碼(SH/SZ)
+ * 3. 轉出匯款資料
  */
 namespace Invoice.Controllers
 {
@@ -34,6 +35,105 @@ namespace Invoice.Controllers
         public string ErrMsg;
 
         #region -----// Read //-----
+
+        #region >> 匯款資料轉出 <<
+
+        /// <summary>
+        /// 取得付款單資料
+        /// </summary>
+        /// <param name="startDate">開始日(格式:yyyyMMdd)</param>
+        /// <param name="endDate">結束日(格式:yyyyMMdd)</param>
+        /// <param name="ErrMsg"></param>
+        /// <returns></returns>
+        public DataTable Get_PaymentData(string startDate, string endDate, Dictionary<string, string> search, out string ErrMsg)
+        {
+            //----- 資料查詢 -----
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                //----- SQL 語法 -----
+                string sql = @"
+                    SELECT RTRIM(Base.TC001) AS PayFid, RTRIM(Base.TC002) AS PaySid
+                    , Base.TC003 AS PayDate, Base.TC014 AS PayPrice, Base.TC007 AS Remark
+                    , RTRIM(Sup.MA001) AS SupID, RTRIM(Sup.MA002) AS SupName
+                    , Info.cn_AccName, Info.cn_BankType, Info.cn_BankName, Info.cn_BankID, Info.cn_Account
+                    , ROW_NUMBER() OVER(ORDER BY Base.TC001, Base.TC002) AS SerialNo
+                    FROM [SHPK2].dbo.ACPTC Base
+                     INNER JOIN [SHPK2].dbo.PURMA Sup ON Base.TC004 = Sup.MA001
+                     LEFT JOIN [PKSYS].dbo.Supplier_ExtendedInfo Info ON Info.Corp_UID = 3 AND Base.TC004 = Info.ERP_ID COLLATE Chinese_Taiwan_Stroke_BIN
+                    WHERE (Base.TC008 = 'Y')
+                     AND (Base.TC003 >= @sDate) AND (Base.TC003 <= @eDate)";
+
+                #region >> filter <<
+                if (search != null)
+                {
+                    //過濾空值
+                    var thisSearch = search.Where(fld => !string.IsNullOrWhiteSpace(fld.Value));
+
+                    foreach (var item in thisSearch)
+                    {
+                        switch (item.Key)
+                        {
+                            case "OrderIDs":
+                                //將以逗號分隔的字串轉為Array
+                                string[] aryData = Regex.Split(item.Value, @"\,{1}");
+                                ArrayList _listVals = new ArrayList(aryData);
+
+                                //GetSQLParam:SQL WHERE IN的方法
+                                sql += " AND ((RTRIM(Base.TC001)+RTRIM(Base.TC002)) IN ({0}))".FormatThis(
+                                    CustomExtension.GetSQLParam(_listVals, "params"));
+                                for (int row = 0; row < _listVals.Count; row++)
+                                {
+                                    cmd.Parameters.AddWithValue("params" + row, _listVals[row]);
+                                }
+
+                                break;
+                        }
+                    }
+                }
+                #endregion
+
+                //----- SQL 執行 -----
+                cmd.CommandText = sql;
+                cmd.Parameters.AddWithValue("sDate", startDate);
+                cmd.Parameters.AddWithValue("eDate", endDate);
+
+                //----- 資料取得 -----
+                return dbConn.LookupDT(cmd, dbConn.DBS.PKSYS, out ErrMsg);
+            }
+
+        }
+
+        /// <summary>
+        /// 取得付款單匯款資料(已勾選)
+        /// </summary>
+        /// <param name="traceID"></param>
+        /// <param name="ErrMsg"></param>
+        /// <returns></returns>
+        public DataTable Get_PaymentData_DT(string traceID, out string ErrMsg)
+        {
+            //----- 資料查詢 -----
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                //----- SQL 語法 -----
+                string sql = @"
+                SELECT SeqNo, TraceID, PayERPID, cn_Account, cn_AccName, cn_BankName, cn_BankID, cn_BankType
+                 , PayWho, PayAcc1, PayAcc2, PayPrice
+                 , '' AS setPayDate, '' AS Priority, '' AS toUse
+                FROM [PKEF].dbo.SH_Payment_Export
+                WHERE (TraceID = @TraceID)";
+
+
+                //----- SQL 執行 -----
+                cmd.CommandText = sql;
+                cmd.Parameters.AddWithValue("TraceID", traceID);
+
+                //----- 資料取得 -----
+                return dbConn.LookupDT(cmd, dbConn.DBS.PKSYS, out ErrMsg);
+            }
+
+        }
+
+        #endregion
 
 
         #region >> 手動回填ERP <<
@@ -910,6 +1010,69 @@ namespace Invoice.Controllers
 
         #region  -----// Create //-----
 
+        #region >> 轉入匯款資料 <<
+
+        /// <summary>
+        /// 建立暫存匯款資料
+        /// </summary>
+        /// <param name="_traiceID"></param>
+        /// <param name="_payWho"></param>
+        /// <param name="_payAcc1"></param>
+        /// <param name="_payAcc2"></param>
+        /// <param name="erpIDs"></param>
+        /// <param name="ErrMsg"></param>
+        /// <returns></returns>
+        public bool Create_PaymentData(string _traiceID, string _payWho, string _payAcc1, string _payAcc2, string erpIDs
+            , out string ErrMsg)
+        {
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                string sql = @"
+                DELETE FROM [PKEF].dbo.SH_Payment_Export WHERE (TraceID = @TraceID)
+                INSERT INTO [PKEF].dbo.SH_Payment_Export (
+                SeqNo, TraceID, PayERPID
+                , cn_Account, cn_AccName, cn_BankName, cn_BankID, cn_BankType
+                , PayWho, PayAcc1, PayAcc2, PayPrice
+                , Create_Who, Create_Time
+                )
+                SELECT
+                ROW_NUMBER() OVER(ORDER BY Base.TC001, Base.TC002) AS SerialNo
+                , @TraceID
+                , RTRIM(Base.TC001) + RTRIM(Base.TC002)
+                , Info.cn_Account, Info.cn_AccName, Info.cn_BankName, Info.cn_BankID, Info.cn_BankType
+                , @PayWho, @PayAcc1, @PayAcc2, Base.TC014
+                , @Creater, GETDATE()
+                FROM [SHPK2].dbo.ACPTC Base
+                 INNER JOIN [SHPK2].dbo.PURMA Sup ON Base.TC004 = Sup.MA001
+                 LEFT JOIN [PKSYS].dbo.Supplier_ExtendedInfo Info ON Info.Corp_UID = 3 AND Base.TC004 = Info.ERP_ID COLLATE Chinese_Taiwan_Stroke_BIN
+                WHERE (Base.TC008 = 'Y')";
+
+                //將以逗號分隔的字串轉為Array
+                string[] aryData = Regex.Split(erpIDs, @"\,{1}");
+                ArrayList _listVals = new ArrayList(aryData);
+
+                //GetSQLParam:SQL WHERE IN的方法
+                sql += " AND (RTRIM(Base.TC001)+RTRIM(Base.TC002)) IN ({0})".FormatThis(CustomExtension.GetSQLParam(_listVals, "params"));
+                for (int row = 0; row < _listVals.Count; row++)
+                {
+                    cmd.Parameters.AddWithValue("params" + row, _listVals[row]);
+                }
+
+                //----- SQL 執行 -----
+                cmd.CommandText = sql.ToString();
+                cmd.CommandTimeout = 120;   //單位:秒
+                cmd.Parameters.AddWithValue("TraceID", _traiceID);
+                cmd.Parameters.AddWithValue("PayWho", _payWho);
+                cmd.Parameters.AddWithValue("PayAcc1", _payAcc1);
+                cmd.Parameters.AddWithValue("PayAcc2", _payAcc2);
+                cmd.Parameters.AddWithValue("Creater", fn_Params.UserGuid);
+
+                return dbConn.ExecuteSql(cmd, dbConn.DBS.PKSYS, out ErrMsg);
+            }
+
+        }
+        #endregion
+
 
         #region >> 手動回填ERP <<
 
@@ -1298,7 +1461,7 @@ namespace Invoice.Controllers
 
         #region >> SH BBC <<
 
-      
+
         /// <summary>
         /// 更新發票資料 - 發票維護(列表編輯)
         /// SHBBC
@@ -1367,6 +1530,33 @@ namespace Invoice.Controllers
 
 
         #region -----// Delete //-----
+
+        #region >> 轉出匯款資料 <<
+        /// <summary>
+        /// 刪除
+        /// </summary>
+        /// <param name="dataID"></param>
+        /// <returns></returns>
+        public bool Delete_PaymentData(string dataID)
+        {
+            //----- 宣告 -----
+            StringBuilder sql = new StringBuilder();
+
+            //----- 資料查詢 -----
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                //----- SQL 語法 -----
+                sql.AppendLine(" DELETE FROM SH_Payment_Export WHERE (TraceID = @TraceID)");
+
+                //----- SQL 執行 -----
+                cmd.CommandText = sql.ToString();
+                cmd.Parameters.AddWithValue("TraceID", dataID);
+
+                return dbConn.ExecuteSql(cmd, out ErrMsg);
+            }
+        }
+        #endregion
+
 
         #region >> 手動回填ERP <<
 

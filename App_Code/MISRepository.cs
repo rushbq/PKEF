@@ -728,7 +728,7 @@ ORDER BY rn";
                       /* 回覆資料 */
                       , ISNULL(Base.Reply_Content, '') Reply_Content, Base.onTopWho
                       , (CASE WHEN Base.onTopWho = @currUser THEN Base.onTop ELSE 'N' END) AS onTop
-                      , Base.Finish_Hours, Base.Finish_Time, Base.Finish_Who
+                      , Base.Finish_Hours, Base.Finish_Time, Base.Finish_Who, Base.Wish_Time
                       , ISNULL((SELECT Account_Name + ' (' + Display_Name + ')' FROM [PKSYS].dbo.User_Profile WHERE (Guid = Base.Finish_Who)), '') AS Finish_WhoName
                       /* 最新進度 */
                       , ISNULL(
@@ -758,6 +758,7 @@ ORDER BY rn";
                     {
                         //過濾空值
                         var thisSearch = search.Where(fld => !string.IsNullOrWhiteSpace(fld.Value));
+                        string filterDateType = "Base.Create_Time";
 
                         //查詢內容
                         foreach (var item in thisSearch)
@@ -783,20 +784,36 @@ ORDER BY rn";
 
                                     break;
 
-                                case "sDate":
-                                    //--登記日期(開始)
-                                    sql.Append(" AND (Base.Create_Time >= @sDate)");
 
-                                    sqlParamList.Add(new SqlParameter("@sDate", item.Value));
+                                case "DateType":
+                                    switch (item.Value)
+                                    {
+                                        case "A":
+                                            filterDateType = "Base.Create_Time";
+                                            break;
+
+                                        case "B":
+                                            filterDateType = "Base.Finish_Time";
+                                            break;
+
+                                        default:
+                                            filterDateType = "Base.Create_Time";
+                                            break;
+                                    }
+
+                                    break;
+
+                                case "sDate":
+                                    sql.Append(" AND ({0} >= @sDate)".FormatThis(filterDateType));
+                                    sqlParamList.Add(new SqlParameter("@sDate", item.Value + " 00:00:00"));
 
                                     break;
                                 case "eDate":
-                                    //--登記日期(結束)
-                                    sql.Append(" AND (Base.Create_Time <= @eDate)");
-
-                                    sqlParamList.Add(new SqlParameter("@eDate", item.Value));
+                                    sql.Append(" AND ({0} <= @eDate)".FormatThis(filterDateType));
+                                    sqlParamList.Add(new SqlParameter("@eDate", item.Value + " 23:59:59"));
 
                                     break;
+
 
                                 case "ReqClass":
                                     //--問題類別
@@ -918,6 +935,7 @@ ORDER BY rn";
                                 Finish_Hours = item.Field<double?>("Finish_Hours"),
                                 Finish_Time = item.Field<DateTime?>("Finish_Time").ToString().ToDateString("yyyy/MM/dd HH:mm:ss"),
                                 Finish_WhoName = item.Field<string>("Finish_WhoName"),
+                                Wish_Time = item.Field<DateTime?>("Wish_Time").ToString().ToDateString("yyyy/MM/dd"),
 
                                 Create_Time = item.Field<string>("Create_Time").ToString().ToDateString("yyyy/MM/dd HH:mm:ss"),
                                 Update_Time = item.Field<string>("Update_Time").ToString().ToDateString("yyyy/MM/dd HH:mm:ss"),
@@ -1600,6 +1618,7 @@ ORDER BY rn";
                 string sql = @"
                     UPDATE IT_Help
                     SET Req_Class = @Req_Class, Finish_Hours = @Finish_Hours, Reply_Content = @Reply_Content
+                    , Wish_Time = @Wish_Time
                     , Update_Who = @WhoGuid, Update_Time = GETDATE()
                     WHERE (DataID = @DataID)";
 
@@ -1608,6 +1627,7 @@ ORDER BY rn";
                 cmd.Parameters.AddWithValue("DataID", instance.DataID);
                 cmd.Parameters.AddWithValue("Req_Class", instance.Req_Class);
                 cmd.Parameters.AddWithValue("Finish_Hours", instance.Finish_Hours.Equals(0) ? (object)DBNull.Value : instance.Finish_Hours);
+                cmd.Parameters.AddWithValue("Wish_Time", string.IsNullOrWhiteSpace(instance.Wish_Time) ? (object)DBNull.Value : instance.Wish_Time);
                 cmd.Parameters.AddWithValue("Reply_Content", instance.Reply_Content);
                 cmd.Parameters.AddWithValue("WhoGuid", fn_Params.UserGuid);
 
@@ -1689,7 +1709,7 @@ ORDER BY rn";
                 //----- SQL 查詢語法 -----
                 string sql = @"
                     UPDATE IT_Help
-                    SET Req_Class = @Req_Class, Reply_Content = @Reply_Content
+                    SET Req_Class = @Req_Class, Reply_Content = @Reply_Content, Wish_Time = @Wish_Time
                      , Finish_Time = @Finish_Time, Finish_Hours = @Finish_Hours, Finish_Who = @Who
                      , Help_Status = @Help_Status, onTop = 'N'
                     WHERE (DataID = @DataID)";
@@ -1700,6 +1720,7 @@ ORDER BY rn";
                 cmd.Parameters.AddWithValue("DataID", instance.DataID);
                 cmd.Parameters.AddWithValue("Req_Class", instance.Req_Class);
                 cmd.Parameters.AddWithValue("Reply_Content", instance.Reply_Content);
+                cmd.Parameters.AddWithValue("Wish_Time", string.IsNullOrWhiteSpace(instance.Wish_Time) ? (object)DBNull.Value : instance.Wish_Time);
                 cmd.Parameters.AddWithValue("Finish_Time", instance.Finish_Time);
                 cmd.Parameters.AddWithValue("Finish_Hours", instance.Finish_Hours);
                 cmd.Parameters.AddWithValue("Help_Status", 125);

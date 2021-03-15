@@ -230,14 +230,15 @@ public partial class Sales_Edit : SecurityIn
                 SBSql.AppendLine("  , OrdAmount_NTD, OrdAmount_USD, OrdAmount_RMB");
                 SBSql.AppendLine("  , ChAmount_NTD, ChAmount_USD, ChAmount_RMB");
                 SBSql.AppendLine("  , StartTime, EndTime");
-                SBSql.AppendLine(" FROM Target_Dept ");
-                SBSql.AppendLine(" WHERE (DeptID = @DeptID) AND (SetYear = @SetYear) AND (SetMonth = @SetMonth) ");
+                SBSql.AppendLine(" FROM Target_Dept");
+                SBSql.AppendLine(" WHERE (DeptID = @DeptID) AND (SetYear = @SetYear) AND (SetMonth = @SetMonth) AND (TargetType = @TargetType)");
                 SBSql.AppendLine("  AND (ShipFrom IN (SELECT TOP 1 AREA FROM PKSYS.dbo.User_Dept WHERE (DeptID = Target_Dept.DeptID)))");
                 cmd.CommandText = SBSql.ToString();
                 cmd.Parameters.Clear();
                 cmd.Parameters.AddWithValue("DeptID", this.ddl_Dept.SelectedValue);
                 cmd.Parameters.AddWithValue("SetYear", this.ddl_Year.SelectedValue);
                 cmd.Parameters.AddWithValue("SetMonth", this.ddl_Mon.SelectedValue);
+                cmd.Parameters.AddWithValue("TargetType", Param_Type);
                 using (DataTable DT = dbConn.LookupDT(cmd, dbConn.DBS.EFLocal, out ErrMsg))
                 {
                     if (DT.Rows.Count == 0)
