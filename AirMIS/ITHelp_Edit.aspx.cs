@@ -1231,12 +1231,8 @@ public partial class AirMIS_ITHelp_Edit : SecurityIn
                     , FileExt);
 
 
-                //判斷副檔名, 未符合規格的檔案不上傳
-                if (CustomExtension.CheckStrWord(FileExt, FileExtLimit, "|", 1))
-                {
-                    //設定暫存-檔案
-                    ITempList.Add(new IOTempParam(myFullFile, OrgFileName, hpf));
-                }
+                //設定暫存-檔案
+                ITempList.Add(new IOTempParam(myFullFile, OrgFileName, hpf));
             }
         }
 

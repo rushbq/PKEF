@@ -1153,7 +1153,7 @@ namespace ERP_PriceData.Controllers
                 sql.AppendLine(" , Update_Who = @Update_Who, Update_Time = GETDATE()");
 
                 //匯入完成
-                if (instance.Status.Equals(13))
+                if (instance.Status.Equals(20))
                 {
                     sql.Append(", Import_Time = GETDATE()");
                 }

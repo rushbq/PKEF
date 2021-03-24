@@ -2548,7 +2548,7 @@ namespace ExtensionMethods
                 {
                     StringBuilder SBSql = new StringBuilder();
                     SBSql.AppendLine(" SELECT SWID AS id, (SW_Name_zh_TW + ' (' + StockType + ')') AS label");
-                    SBSql.AppendLine(" FROM ShippingWarehouse WITH (NOLOCK)");
+                    SBSql.AppendLine(" FROM ShippingWarehouse WITH (NOLOCK) WHERE (Display = 'Y')");
                     SBSql.AppendLine(" ORDER BY Sort");
                     cmd.CommandText = SBSql.ToString();
 

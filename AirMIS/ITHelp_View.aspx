@@ -250,7 +250,9 @@
                                     </div>
                                     <div class="fields">
                                         <div class="sixteen wide field">
-                                            <asp:Literal ID="tb_ReplyContent" runat="server"></asp:Literal>
+                                            <div class="ui raised segment">
+                                                <asp:Literal ID="tb_ReplyContent" runat="server"></asp:Literal>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

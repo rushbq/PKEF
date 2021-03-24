@@ -113,7 +113,7 @@ public partial class AirMIS_ITHelp_Search : SecurityIn
             if (!string.IsNullOrWhiteSpace(_Keyword))
             {
                 search.Add("Keyword", _Keyword);
-                PageParam.Add("Keyword=" + Server.UrlEncode(_Keyword));
+                PageParam.Add("k=" + Server.UrlEncode(_Keyword));
                 filter_Keyword.Text = _Keyword;
             }
 
