@@ -45,6 +45,10 @@ namespace Invoice.Controllers
         /// <param name="endDate">結束日(格式:yyyyMMdd)</param>
         /// <param name="ErrMsg"></param>
         /// <returns></returns>
+        /// <remarks>
+        /// TC008=N,未確認單據
+        /// 會計科目:1100020.001 银行存款-中行
+        /// </remarks>
         public DataTable Get_PaymentData(string startDate, string endDate, Dictionary<string, string> search, out string ErrMsg)
         {
             //----- 資料查詢 -----
@@ -52,6 +56,12 @@ namespace Invoice.Controllers
             {
                 //----- SQL 語法 -----
                 string sql = @"
+                    ;WITH TblPrice AS (
+	                    SELECT -SUM(TD014*TD004) AS Price, RTRIM(TD001) PayFid, RTRIM(TD002) PaySid
+	                    FROM [SHPK2].dbo.ACPTD 
+	                    WHERE (TD008 IN ('1100020.001'))
+	                    GROUP BY TD001, TD002
+                    )
                     SELECT RTRIM(Base.TC001) AS PayFid, RTRIM(Base.TC002) AS PaySid
                     , Base.TC003 AS PayDate, Base.TC014 AS PayPrice, Base.TC007 AS Remark
                     , RTRIM(Sup.MA001) AS SupID, RTRIM(Sup.MA002) AS SupName
@@ -59,8 +69,9 @@ namespace Invoice.Controllers
                     , ROW_NUMBER() OVER(ORDER BY Base.TC001, Base.TC002) AS SerialNo
                     FROM [SHPK2].dbo.ACPTC Base
                      INNER JOIN [SHPK2].dbo.PURMA Sup ON Base.TC004 = Sup.MA001
+                     INNER JOIN TblPrice ON Base.TC001 = TblPrice.PayFid AND Base.TC002 = TblPrice.PaySid
                      LEFT JOIN [PKSYS].dbo.Supplier_ExtendedInfo Info ON Info.Corp_UID = 3 AND Base.TC004 = Info.ERP_ID COLLATE Chinese_Taiwan_Stroke_BIN
-                    WHERE (Base.TC008 = 'Y')
+                    WHERE (Base.TC008 = 'N')
                      AND (Base.TC003 >= @sDate) AND (Base.TC003 <= @eDate)";
 
                 #region >> filter <<
@@ -1044,8 +1055,9 @@ namespace Invoice.Controllers
                 , @Creater, GETDATE()
                 FROM [SHPK2].dbo.ACPTC Base
                  INNER JOIN [SHPK2].dbo.PURMA Sup ON Base.TC004 = Sup.MA001
+                 INNER JOIN [SHPK2].dbo.ACPTD DT ON Base.TC001 = DT.TD001 AND Base.TC002 = DT.TD002
                  LEFT JOIN [PKSYS].dbo.Supplier_ExtendedInfo Info ON Info.Corp_UID = 3 AND Base.TC004 = Info.ERP_ID COLLATE Chinese_Taiwan_Stroke_BIN
-                WHERE (Base.TC008 = 'Y')";
+                WHERE (Base.TC008 = 'N') AND (TD008 IN ('1100020.001'))";
 
                 //將以逗號分隔的字串轉為Array
                 string[] aryData = Regex.Split(erpIDs, @"\,{1}");

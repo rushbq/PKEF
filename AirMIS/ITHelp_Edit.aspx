@@ -784,7 +784,7 @@
                         }
                     }
 
-                    //將陣列組成以','分隔的字串，並填入欄位
+                    //將陣列組成以','分隔的字串，並填入欄位(轉寄人員)
                     $("#MainContent_tb_InfoWho").val(valAry.join(","));
 
                 }
@@ -1063,37 +1063,6 @@
             $.fn.zTree.init($("#userList"), setting, zNodes);
         }
 
-        // 所有節點的收合(true = 展開, false = 折疊)
-        //function expandAll(objbool) {
-        //    var treeObj = $.fn.zTree.getZTreeObj("userList");
-        //    treeObj.expandAll(objbool);
-        //}
-
-        /* 取值(zTree名稱, 要放值的欄位名) */
-        //function getCbValue(eleName, valName) {
-        //    var treeObj = $.fn.zTree.getZTreeObj(eleName);
-        //    var nodes = treeObj.getCheckedNodes(true);
-        //    var ids = "";
-        //    for (var i = 0; i < nodes.length; i++) {
-        //        //只取開頭為'v_'的值
-        //        var myval = nodes[i].id;
-
-        //        if (myval.substring(0, 2) == "v_") {
-        //            //字串組合, 加入分隔符號("||")
-        //            if (ids != "") {
-        //                ids += "||"
-        //            }
-
-        //            //取得id值
-        //            ids += myval.replace("v_", "");
-        //        }
-        //    }
-
-
-        //    //輸出組合完畢的字串值
-        //    document.getElementById(valName).value = ids;
-        //    return true;
-        //}
 
         //Load
         $(document).ready(function () {

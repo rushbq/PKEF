@@ -1019,22 +1019,22 @@ namespace SZBBC_Toy.Controllers
 
                                 case "3":
                                     //京東VC
-                                    myProdID = val[3];
-                                    myBuyCnt = string.IsNullOrEmpty(val[12]) ? 0 : Convert.ToInt16(val[12]);
+                                    myProdID = val[4];
+                                    myBuyCnt = string.IsNullOrEmpty(val[13]) ? 0 : Convert.ToInt16(val[13]);
 
-                                    myShipWho = val[9];
-                                    myShipAddr = val[8];
-                                    myShipTel = val[10];
+                                    myShipWho = val[10];
+                                    myShipAddr = val[9];
+                                    myShipTel = val[11];
                                     myRemarkTitle = myOrderID + "-" + myShipWho; //訂單號+客戶名
 
                                     /* 出貨單列印補充欄位190402 */
-                                    myBuyPrice = string.IsNullOrEmpty(val[11]) ? 0 : Convert.ToDouble(val[11]);
+                                    myBuyPrice = string.IsNullOrEmpty(val[12]) ? 0 : Convert.ToDouble(val[12]);
                                     myTotalPrice = myBuyCnt * myBuyPrice;
-                                    myBuy_ProdName = val[4]; //平台產品名稱
-                                    myBuy_Place = val[6]; //分配機構
-                                    myBuy_Warehouse = val[7]; //倉庫
-                                    myBuy_Sales = val[20]; //採購員
-                                    myBuy_Time = val[21]; //訂購時間
+                                    myBuy_ProdName = val[5]; //平台產品名稱
+                                    myBuy_Place = val[7]; //分配機構
+                                    myBuy_Warehouse = val[8]; //倉庫
+                                    myBuy_Sales = val[21]; //採購員
+                                    myBuy_Time = val[22]; //訂購時間
 
                                     break;
 

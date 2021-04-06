@@ -578,6 +578,7 @@ ORDER BY rn";
                     {
                         //過濾空值
                         var thisSearch = search.Where(fld => !string.IsNullOrWhiteSpace(fld.Value));
+                        string filterDateType = "Base.Create_Time";
 
                         //查詢內容
                         foreach (var item in thisSearch)
@@ -603,18 +604,32 @@ ORDER BY rn";
 
                                     break;
 
-                                case "sDate":
-                                    //--登記日期(開始)
-                                    sql.Append(" AND (Base.Create_Time >= @sDate)");
+                                case "DateType":
+                                    switch (item.Value)
+                                    {
+                                        case "A":
+                                            filterDateType = "Base.Create_Time";
+                                            break;
 
-                                    sqlParamList_Cnt.Add(new SqlParameter("@sDate", item.Value));
+                                        case "B":
+                                            filterDateType = "Base.Finish_Time";
+                                            break;
+
+                                        default:
+                                            filterDateType = "Base.Create_Time";
+                                            break;
+                                    }
+
+                                    break;
+
+                                case "sDate":
+                                    sql.Append(" AND ({0} >= @sDate)".FormatThis(filterDateType));
+                                    sqlParamList_Cnt.Add(new SqlParameter("@sDate", item.Value + " 00:00:00"));
 
                                     break;
                                 case "eDate":
-                                    //--登記日期(結束)
-                                    sql.Append(" AND (Base.Create_Time <= @eDate)");
-
-                                    sqlParamList_Cnt.Add(new SqlParameter("@eDate", item.Value));
+                                    sql.Append(" AND ({0} <= @eDate)".FormatThis(filterDateType));
+                                    sqlParamList_Cnt.Add(new SqlParameter("@eDate", item.Value + " 23:59:59"));
 
                                     break;
 

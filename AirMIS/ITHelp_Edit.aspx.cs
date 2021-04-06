@@ -1823,7 +1823,7 @@ public partial class AirMIS_ITHelp_Edit : SecurityIn
         }
 
         //*** 開始發送通知信 ***
-        if (!Send_Email(mailList, mailSubject, mailBoday, _sendType, out ErrMsg))
+        if (!Send_Email(mailList, mailSubject, mailBoday, out ErrMsg))
         {
             return false;
         }
@@ -2075,17 +2075,9 @@ public partial class AirMIS_ITHelp_Edit : SecurityIn
     /// </summary>
     /// <param name="mailList">MailList</param>
     /// <param name="subject">主旨</param>
-    /// <param name="sendType">寄件模式</param>
     /// <param name="ErrMsg"></param>
     /// <returns></returns>
-    /// <remarks>
-    /// [sendType]
-    /// A:新需求, 發給行企全體(MK_Help_Receiver.MailType=1), 告知派案
-    /// B:轉寄通知, 發給勾選人員, 只通知(MK_Help_CC)
-    /// C:派案完成, 通知勾選的處理人員(MK_Help_Assigned)
-    /// D:結案, 通知所有人(MK_Help_Receiver.MailType=2)/(MK_Help_CC)
-    /// </remarks>
-    private bool Send_Email(ArrayList mailList, string subject, StringBuilder mailBody, string sendType, out string ErrMsg)
+    private bool Send_Email(ArrayList mailList, string subject, StringBuilder mailBody, out string ErrMsg)
     {
         try
         {

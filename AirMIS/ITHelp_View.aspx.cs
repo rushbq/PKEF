@@ -137,6 +137,7 @@ public partial class AirMIS_ITHelp_View : SecurityIn
             rbl_RateScore.SelectedValue = query.RateScore.ToString();
             tb_RateContent.Text = query.RateContent;
             lt_RateWho.Text = query.RateWhoName;
+            ph_IsDoneWrite.Visible = !string.IsNullOrWhiteSpace(query.RateWhoName);
 
             #endregion
 
@@ -470,8 +471,9 @@ public partial class AirMIS_ITHelp_View : SecurityIn
 
 
         //導向本頁
-        Response.Redirect(thisPage + "#section3");
-
+        //Response.Redirect(thisPage + "#section3");
+        CustomExtension.AlertMsg("填寫完畢,即將返回列表頁.", Page_SearchUrl);
+        return;
     }
 
     #endregion
