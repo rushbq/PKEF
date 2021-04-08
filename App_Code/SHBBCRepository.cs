@@ -1097,7 +1097,7 @@ namespace SH_BBC.Controllers
                                     break;
 
                                 case "3":
-                                    //京東VC
+                                    //京東VC (欄位修改時,還需調整 Import_VC.aspx -> do_FixExcel )
                                     myProdID = val[4];
                                     myBuyCnt = string.IsNullOrEmpty(val[14]) ? 0 : Convert.ToInt16(val[14]);
 

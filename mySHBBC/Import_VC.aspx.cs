@@ -68,7 +68,7 @@ public partial class mySHBBC_Import_VC : SecurityIn
         //Check
         if (string.IsNullOrWhiteSpace(getFileName))
         {
-            lt_Msg.Text = ErrMsg;
+            lt_Msg.Text = "抓不到檔案.." + ErrMsg;
             ph_Message.Visible = true;
             return;
         }
@@ -81,7 +81,7 @@ public partial class mySHBBC_Import_VC : SecurityIn
             //查無資料, 刪除原始檔
             _ftp.FTP_DelFile(UploadFolder(), getFileName);
 
-            lt_Msg.Text = ErrMsg;
+            lt_Msg.Text = "拆分資料失敗.." + ErrMsg;
             ph_Message.Visible = true;
             return;
         }
@@ -318,7 +318,7 @@ public partial class mySHBBC_Import_VC : SecurityIn
             var groups = queryXls
                 .GroupBy(gp => new
                 {
-                    id = gp[6].Cast<string>()
+                    id = gp[7].Cast<string>()
                 })
                 .Select(fld => new
                 {
@@ -356,7 +356,7 @@ public partial class mySHBBC_Import_VC : SecurityIn
                     {
                         //取得各客戶資料,命名表頭欄位(*** 重要:若Excel欄位有增減,要調整此處 ***) 
                         var newDT = queryXls
-                                .Where(c => c[6].Cast<string>().Equals(place))
+                                .Where(c => c[7].Cast<string>().Equals(place))
                                 .Select(fld => new
                                 {
                                     fld1 = fld[0],
@@ -382,9 +382,7 @@ public partial class mySHBBC_Import_VC : SecurityIn
                                     fld21 = fld[20],
                                     fld22 = fld[21],
                                     fld23 = fld[22],
-                                    fld24 = fld[23],
-                                    fld25 = fld[24],
-                                    fld26 = fld[25]
+                                    fld24 = fld[23]
                                 });
 
                         //轉成DataTable

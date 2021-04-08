@@ -1,11 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 using MISData.Models;
 using PKLib_Method.Methods;
 
@@ -515,7 +513,6 @@ ORDER BY rn";
         /// [資訊需求] 取得不分頁的清單
         /// </summary>
         /// <param name="search"></param>
-        /// <param name="dbs"></param>
         /// <param name="ErrMsg"></param>
         /// <returns></returns>
         public IQueryable<ItHelpData> GetOne_IThelp(Dictionary<string, string> search, out string ErrMsg)
@@ -528,13 +525,12 @@ ORDER BY rn";
         /// [資訊需求] 取得已設定的清單
         /// </summary>
         /// <param name="search">search集合</param>
-        /// <param name="dbs">TW/SH</param>
         /// <param name="startRow">StartRow(從0開始)</param>
         /// <param name="endRow">RecordsPerPage</param>
         /// <param name="doPaging">是否分頁</param>
         /// <param name="DataCnt">傳址參數(資料總筆數)</param>
         /// <param name="ErrMsg"></param>
-        /// <returns>DataTable</returns>
+        /// <returns></returns>
         public IQueryable<ItHelpData> Get_IThelpList(Dictionary<string, string> search
             , int startRow, int endRow, bool doPaging
             , out int DataCnt, out string ErrMsg)
