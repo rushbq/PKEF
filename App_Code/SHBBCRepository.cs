@@ -206,6 +206,7 @@ namespace SH_BBC.Controllers
                             OrderID = item.Field<string>("OrderID"),
                             ProdID = item.Field<string>("ProdID"),
                             BuyCnt = item.Field<int>("BuyCnt"),
+                            inMOQ = item.Field<int>("inMOQ"),
                             BuyPrice = item.Field<double>("BuyPrice"),
                             TotalPrice = item.Field<double>("TotalPrice"),
                             Freight = item.Field<double>("Freight"),
@@ -4569,7 +4570,7 @@ namespace SH_BBC.Controllers
             {
                 if (DT == null)
                 {
-                    ErrMsg = "無法取得ERP報價資料.(Check_Step3)." + ErrMsg;
+                    ErrMsg = "無法取得ERP報價資料(NULL)(Check_Step3)." + ErrMsg;
                     return false;
                 }
                 if (DT.Rows.Count == 0)
@@ -4588,7 +4589,8 @@ namespace SH_BBC.Controllers
                         BuyCnt = DT.Rows[row]["BuyQty"] == DBNull.Value ? 1 : Convert.ToInt16(DT.Rows[row]["BuyQty"]),   //key
                         ERP_Price = DT.Rows[row]["SpQtyPrice"] == null ? 0 : Convert.ToDouble(DT.Rows[row]["SpQtyPrice"]),
                         Currency = DT.Rows[row]["Currency"].ToString(),
-                        StockNum = DT.Rows[row]["StockNum"] == null ? 0 : Convert.ToInt16(DT.Rows[row]["StockNum"])
+                        StockNum = DT.Rows[row]["StockNum"] == null ? 0 : Convert.ToInt16(DT.Rows[row]["StockNum"]),
+                        inMOQ = Convert.ToInt32(DT.Rows[row]["inMOQ"])
                     };
 
 
@@ -4898,7 +4900,7 @@ namespace SH_BBC.Controllers
                 foreach (var item in query)
                 {
                     sql.AppendLine(" UPDATE SHBBC_ImportData_DT");
-                    sql.AppendLine(" SET ERP_Price = @ERP_Price_{0}, Currency = @Currency_{0}, ERP_NewPrice = @ERP_Price_{0}".FormatThis(row));
+                    sql.AppendLine(" SET ERP_Price = @ERP_Price_{0}, Currency = @Currency_{0}, ERP_NewPrice = @ERP_Price_{0}, inMOQ = @inMOQ_{0}".FormatThis(row));
                     sql.AppendLine(" WHERE (Parent_ID = @DataID) AND (IsGift = 'N')");
                     sql.AppendLine("  AND (ERP_ModelNo = @ModelNo_{0}) AND (BuyCnt = @BuyCnt_{0});".FormatThis(row));
 
@@ -4907,6 +4909,7 @@ namespace SH_BBC.Controllers
                     cmd.Parameters.AddWithValue("Currency_" + row, item.Currency);
                     cmd.Parameters.AddWithValue("ModelNo_" + row, item.ERP_ModelNo);
                     cmd.Parameters.AddWithValue("BuyCnt_" + row, item.BuyCnt);
+                    cmd.Parameters.AddWithValue("inMOQ_" + row, item.inMOQ);
 
                     row++;
                 }

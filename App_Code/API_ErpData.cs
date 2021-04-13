@@ -26,7 +26,7 @@ public class API_ERPData : System.Web.Services.WebService
 
 
     /// <summary>
-    /// 取得資料 - Step3
+    /// 取得資料 - Step3(x)
     /// </summary>
     /// <param name="custID"></param>
     /// <param name="DBS"></param>
@@ -63,6 +63,7 @@ public class API_ERPData : System.Web.Services.WebService
         dtResult.Columns.Add("SpQtyPrice", typeof(double));
         dtResult.Columns.Add("BuyQty", typeof(int));
         dtResult.Columns.Add("StockNum", typeof(int));
+        dtResult.Columns.Add("inMOQ", typeof(int));
 
         var result = from dataRows1 in myDTPrice.AsEnumerable()
                      join dataRows2 in myDTStock.AsEnumerable()
@@ -76,7 +77,8 @@ public class API_ERPData : System.Web.Services.WebService
                 dataRows1.Field<int>("SpQty"),
                 dataRows1.Field<double>("SpQtyPrice"),
                 dataRows1.Field<int>("BuyQty"),
-                r == null ? 0 : r.Field<int>("StockNum")
+                dataRows1.Field<int>("inMOQ"),
+                r == null ? 0 : r.Field<int>("StockNum")                
              }, false);
 
         result.CopyToDataTable();
@@ -174,6 +176,7 @@ public class API_ERPData : System.Web.Services.WebService
         dtResult.Columns.Add("SpQty", typeof(int));
         dtResult.Columns.Add("SpQtyPrice", typeof(double));
         dtResult.Columns.Add("BuyQty", typeof(int));
+        dtResult.Columns.Add("inMOQ", typeof(int));
         dtResult.Columns.Add("StockNum", typeof(int));
 
         var result = from dataRows1 in myDTPrice.AsEnumerable()
@@ -189,6 +192,7 @@ public class API_ERPData : System.Web.Services.WebService
                 dataRows1.Field<int>("SpQty"),
                 dataRows1.Field<double>("SpQtyPrice"),
                 dataRows1.Field<int?>("BuyQty"),
+                dataRows1.Field<int>("inMOQ"),
                 r == null ? 0 : r.Field<int>("StockNum")
              }, false);
 

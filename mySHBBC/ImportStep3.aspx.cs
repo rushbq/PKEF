@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
 using PKLib_Method.Methods;
 using SH_BBC.Controllers;
 using SH_BBC.Models;
@@ -172,6 +174,22 @@ public partial class mySHBBC_ImportStep3 : SecurityIn
         query = null;
     }
 
+    protected void lvDataList_Y_ItemDataBound(object sender, System.Web.UI.WebControls.ListViewItemEventArgs e)
+    {
+        if (e.Item.ItemType == ListViewItemType.DataItem)
+        {
+            ListViewDataItem dataItem = (ListViewDataItem)e.Item;
+
+            //取得資料
+            int _buyCnt = Convert.ToInt32(DataBinder.Eval(dataItem.DataItem, "BuyCnt"));
+            int _MOQ = Convert.ToInt32(DataBinder.Eval(dataItem.DataItem, "inMOQ"));
+
+            //取得控制項
+            PlaceHolder ph_check = (PlaceHolder)e.Item.FindControl("ph_check");
+            ph_check.Visible = _buyCnt < _MOQ;
+
+        }
+    }
     #endregion
 
 

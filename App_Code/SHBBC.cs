@@ -85,6 +85,7 @@ namespace SH_BBC.Models
         public string ShipAddr { get; set; }
         public string ShipTel { get; set; }
         public int StockNum { get; set; }
+        public int inMOQ { get; set; }
         public string IsGift { get; set; }
         public string RemarkTitle { get; set; }
         public string RemarkID { get; set; }

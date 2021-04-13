@@ -61,7 +61,7 @@
                     <div class="col s12">
                         <label class="green-text text-darken-1 flow-text"><i class="material-icons">playlist_add_check</i> 即將匯入</label>
                         <div>
-                            <asp:ListView ID="lvDataList_Y" runat="server" ItemPlaceholderID="ph_Items">
+                            <asp:ListView ID="lvDataList_Y" runat="server" ItemPlaceholderID="ph_Items" OnItemDataBound="lvDataList_Y_ItemDataBound">
                                 <LayoutTemplate>
                                     <table id="listTable" class="myTable stripe" cellspacing="0" width="100%" style="width: 100%;">
                                         <thead>
@@ -69,6 +69,8 @@
                                                 <th>單號</th>
                                                 <th>商品編號</th>
                                                 <th>購買量</th>
+                                                <th>內銷MOQ</th>
+                                                <th></th>
                                                 <th>購買金額</th>
                                                 <th>總金額</th>
                                                 <th>運費</th>
@@ -90,6 +92,12 @@
                                         <td><%#Eval("OrderID") %></td>
                                         <td><%#Eval("ProdID") %></td>
                                         <td style="text-align: center;"><%#Eval("BuyCnt") %></td>
+                                        <td style="text-align: center;"><%#Eval("inMOQ") %></td>
+                                        <td>
+                                            <asp:PlaceHolder ID="ph_check" runat="server" Visible="false">
+                                                <label class="red-text text-darken-2 flow-text" title="購買量不足"><i class="material-icons">error</i></label>
+                                            </asp:PlaceHolder>
+                                        </td>
                                         <td style="text-align: right;"><%#Eval("BuyPrice") %></td>
                                         <td style="text-align: right;"><%#Eval("TotalPrice") %></td>
                                         <td style="text-align: right;"><%#Eval("Freight") %></td>
