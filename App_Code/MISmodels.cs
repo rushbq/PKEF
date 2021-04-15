@@ -62,6 +62,8 @@ namespace MISData.Models
         public string onTop { get; set; }
         public string onTopWho { get; set; }
         public string IsRate { get; set; }
+        public Int16 RateQ1 { get; set; }
+        public Int16 RateQ2 { get; set; }
         public Int16 RateScore { get; set; }
         public string RateContent { get; set; }
         public string RateWhoName { get; set; }

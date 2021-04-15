@@ -733,7 +733,7 @@ ORDER BY rn";
                       , Prof.Display_Name AS Req_WhoName, ISNULL(Prof.NickName, '') AS Req_NickName, Dept.DeptName AS Req_DeptName
 
                       /* 驗收 */
-                      , Base.IsRate, Base.RateScore, Base.RateContent
+                      , Base.IsRate, Base.RateQ1, Base.RateQ2, Base.RateScore, Base.RateContent
                       , ISNULL((SELECT Account_Name + ' (' + Display_Name + ')' FROM [PKSYS].dbo.User_Profile WHERE (Guid = Base.RateWho)), '') AS RateWhoName
 
                       /* 回覆資料 */
@@ -940,6 +940,8 @@ ORDER BY rn";
                                 onTop = item.Field<string>("onTop"),
                                 onTopWho = item.Field<string>("onTopWho"),
                                 IsRate = item.Field<string>("IsRate"),
+                                RateQ1 = item.Field<Int16>("RateQ1"),
+                                RateQ2 = item.Field<Int16>("RateQ2"),
                                 RateScore = item.Field<Int16>("RateScore"),
                                 RateContent = item.Field<string>("RateContent"),
                                 RateWhoName = item.Field<string>("RateWhoName"),
@@ -1663,13 +1665,15 @@ ORDER BY rn";
                 //----- SQL 查詢語法 -----
                 string sql = @"
                     UPDATE IT_Help
-                    SET IsRate = 'Y', RateScore = @RateScore, RateContent = @RateContent, RateWho = @WhoGuid
+                    SET IsRate = 'Y', RateQ1 = @RateQ1, RateQ2 = @RateQ2, RateScore = @RateScore, RateContent = @RateContent, RateWho = @WhoGuid
                     , Update_Who = @WhoGuid, Update_Time = GETDATE()
                     WHERE (DataID = @DataID)";
 
                 //----- SQL 執行 -----
                 cmd.CommandText = sql;
                 cmd.Parameters.AddWithValue("DataID", instance.DataID);
+                cmd.Parameters.AddWithValue("RateQ1", instance.RateQ1);
+                cmd.Parameters.AddWithValue("RateQ2", instance.RateQ2);
                 cmd.Parameters.AddWithValue("RateScore", instance.RateScore);
                 cmd.Parameters.AddWithValue("RateContent", instance.RateContent);
                 cmd.Parameters.AddWithValue("WhoGuid", fn_Params.UserGuid);

@@ -481,8 +481,28 @@
                                 </asp:PlaceHolder>
                                 <asp:PlaceHolder ID="ph_section3_data" runat="server">
                                     <div id="section3-form" class="ui form segment">
+                                        <div class="required field">
+                                            <label>請問案件的處理速度?</label>
+                                            <asp:RadioButtonList ID="rbl_RateQ1" runat="server" RepeatDirection="Horizontal">
+                                                <asp:ListItem Value="1">&nbsp;A：非常快速&nbsp;&nbsp;</asp:ListItem>
+                                                <asp:ListItem Value="2" Selected="True">&nbsp;B：正常速度&nbsp;&nbsp;</asp:ListItem>
+                                                <asp:ListItem Value="3">&nbsp;C：速度緩慢&nbsp;&nbsp;</asp:ListItem>
+                                            </asp:RadioButtonList>
+                                        </div>
+                                        <div class="required field">
+                                            <label>是否符合您提出的需求?</label>
+                                            <asp:RadioButtonList ID="rbl_RateQ2" runat="server" RepeatDirection="Horizontal">
+                                                <asp:ListItem Value="1" Selected="True">&nbsp;A：是，完全符合&nbsp;&nbsp;</asp:ListItem>
+                                                <asp:ListItem Value="2">&nbsp;B：是，部分符合，但能接受&nbsp;&nbsp;</asp:ListItem>
+                                                <asp:ListItem Value="3">&nbsp;C：否&nbsp;&nbsp;</asp:ListItem>
+                                            </asp:RadioButtonList>
+                                        </div>
                                         <div class="field">
-                                            <label>滿意度&nbsp;(1 ~ 5分)</label>
+                                            <label>補充說明</label>
+                                            <asp:TextBox ID="tb_RateContent" runat="server" Rows="3" TextMode="MultiLine" MaxLength="500" placeholder="填寫意見，最多 400 字"></asp:TextBox>
+                                        </div>
+                                        <div class="required field">
+                                            <label>整體滿意度&nbsp;(1 ~ 5分)</label>
                                             <asp:RadioButtonList ID="rbl_RateScore" runat="server" RepeatDirection="Horizontal">
                                                 <asp:ListItem Value="1">&nbsp;1：不滿意&nbsp;&nbsp;</asp:ListItem>
                                                 <asp:ListItem Value="2">&nbsp;2：勉強&nbsp;&nbsp;</asp:ListItem>
@@ -490,10 +510,6 @@
                                                 <asp:ListItem Value="4">&nbsp;4：不錯&nbsp;&nbsp;</asp:ListItem>
                                                 <asp:ListItem Value="5" Selected="True">&nbsp;5：超級棒</asp:ListItem>
                                             </asp:RadioButtonList>
-                                        </div>
-                                        <div class="required field">
-                                            <label>驗收意見</label>
-                                            <asp:TextBox ID="tb_RateContent" runat="server" Rows="3" TextMode="MultiLine" MaxLength="500" placeholder="填寫意見，最多 400 字"></asp:TextBox>
                                         </div>
                                         <div class="field">
                                             <label>填寫人&nbsp;<small class="grey-text text-darken-2">(存檔人)</small></label>

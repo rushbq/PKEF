@@ -26,7 +26,7 @@ public class API_ERPData : System.Web.Services.WebService
 
 
     /// <summary>
-    /// 取得資料 - Step3(x)
+    /// 取得資料 - Step3(內業BBC)
     /// </summary>
     /// <param name="custID"></param>
     /// <param name="DBS"></param>
@@ -63,7 +63,6 @@ public class API_ERPData : System.Web.Services.WebService
         dtResult.Columns.Add("SpQtyPrice", typeof(double));
         dtResult.Columns.Add("BuyQty", typeof(int));
         dtResult.Columns.Add("StockNum", typeof(int));
-        dtResult.Columns.Add("inMOQ", typeof(int));
 
         var result = from dataRows1 in myDTPrice.AsEnumerable()
                      join dataRows2 in myDTStock.AsEnumerable()
@@ -77,7 +76,6 @@ public class API_ERPData : System.Web.Services.WebService
                 dataRows1.Field<int>("SpQty"),
                 dataRows1.Field<double>("SpQtyPrice"),
                 dataRows1.Field<int>("BuyQty"),
-                dataRows1.Field<int>("inMOQ"),
                 r == null ? 0 : r.Field<int>("StockNum")                
              }, false);
 
@@ -539,6 +537,7 @@ public class API_ERPData : System.Web.Services.WebService
 
     /// <summary>
     /// 從ERP取得庫存可用量, 使用StoreProcedure
+    /// myPrc_GetStock
     /// </summary>
     /// <param name="aryStockType">庫別</param>
     /// <param name="aryModelNo">品號</param>

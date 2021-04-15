@@ -179,6 +179,7 @@
             var dataReturn;
 
             //-- Ajax處理 Start --
+            //Call API_ErpData
             myAjaxReq = $.ajax({
                 url: '<%=Application["WebUrl"]%>Ajax_Data/API_ERPData.asmx/GetStockNum',
                 method: "POST",
@@ -277,6 +278,7 @@
                 }
 
                 //-- Ajax處理 Start --
+                //Call API_ErpData
                 myAjaxReq = $.ajax({
                     url: '<%=Application["WebUrl"]%>Ajax_Data/API_ERPData.asmx/GetData',
                     method: "POST",

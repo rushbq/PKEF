@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Net.Mail;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -199,6 +198,8 @@ public partial class AirMIS_ITHelp_Edit : SecurityIn
 
             #region >> 欄位填寫:驗收資料 <<
 
+            rbl_RateQ1.SelectedValue = query.RateQ1.ToString();
+            rbl_RateQ2.SelectedValue = query.RateQ2.ToString();
             rbl_RateScore.SelectedValue = query.RateScore.ToString();
             tb_RateContent.Text = query.RateContent;
             lt_RateWho.Text = query.RateWhoName;
@@ -1334,15 +1335,17 @@ public partial class AirMIS_ITHelp_Edit : SecurityIn
         string errTxt = "";
 
         //取得欄位資料
-        string _id = hf_DataID.Value;
+        string _id = Req_DataID;
+        string _RateQ1 = rbl_RateQ1.SelectedValue;
+        string _RateQ2 = rbl_RateQ2.SelectedValue;
         string _RateScore = rbl_RateScore.SelectedValue;
         string _RateContent = tb_RateContent.Text;
 
         #region ** 欄位判斷 **
 
-        if (string.IsNullOrWhiteSpace(_RateContent))
+        if (string.IsNullOrWhiteSpace(_RateQ1) || string.IsNullOrWhiteSpace(_RateQ2) || string.IsNullOrWhiteSpace(_RateScore))
         {
-            errTxt += "請填寫「驗收意見」\\n";
+            errTxt += "驗收選項填寫不完整\\n";
         }
 
         #endregion
@@ -1364,6 +1367,8 @@ public partial class AirMIS_ITHelp_Edit : SecurityIn
             var data = new ItHelpData
             {
                 DataID = new Guid(_id),
+                RateQ1 = Convert.ToInt16(_RateQ1),
+                RateQ2 = Convert.ToInt16(_RateQ2),
                 RateScore = Convert.ToInt16(_RateScore),
                 RateContent = _RateContent.Left(400),
             };
@@ -1377,7 +1382,6 @@ public partial class AirMIS_ITHelp_Edit : SecurityIn
                 CustomExtension.AlertMsg("驗收意見失敗", "");
                 return;
             }
-
         }
         catch (Exception)
         {
@@ -1391,9 +1395,10 @@ public partial class AirMIS_ITHelp_Edit : SecurityIn
         #endregion
 
 
-        //導向List
-        CustomExtension.AlertMsg("填寫完畢。\\n頁面將轉回列表頁..", Page_SearchUrl);
-
+        //導向本頁
+        //Response.Redirect(thisPage + "#section3");
+        CustomExtension.AlertMsg("填寫完畢,即將返回列表頁.", Page_SearchUrl);
+        return;
     }
 
     #endregion

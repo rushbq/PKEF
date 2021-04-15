@@ -133,7 +133,8 @@ public partial class AirMIS_ITHelp_View : SecurityIn
 
 
             #region >> 欄位填寫:驗收資料 <<
-
+            rbl_RateQ1.SelectedValue = query.RateQ1.ToString();
+            rbl_RateQ2.SelectedValue = query.RateQ2.ToString();
             rbl_RateScore.SelectedValue = query.RateScore.ToString();
             tb_RateContent.Text = query.RateContent;
             lt_RateWho.Text = query.RateWhoName;
@@ -415,14 +416,16 @@ public partial class AirMIS_ITHelp_View : SecurityIn
 
         //取得欄位資料
         string _id = Req_DataID;
+        string _RateQ1 = rbl_RateQ1.SelectedValue;
+        string _RateQ2 = rbl_RateQ2.SelectedValue;
         string _RateScore = rbl_RateScore.SelectedValue;
         string _RateContent = tb_RateContent.Text;
 
         #region ** 欄位判斷 **
 
-        if (string.IsNullOrWhiteSpace(_RateContent))
+        if (string.IsNullOrWhiteSpace(_RateQ1) || string.IsNullOrWhiteSpace(_RateQ2) || string.IsNullOrWhiteSpace(_RateScore))
         {
-            errTxt += "請填寫「驗收意見」\\n";
+            errTxt += "驗收選項填寫不完整\\n";
         }
 
         #endregion
@@ -444,6 +447,8 @@ public partial class AirMIS_ITHelp_View : SecurityIn
             var data = new ItHelpData
             {
                 DataID = new Guid(_id),
+                RateQ1 = Convert.ToInt16(_RateQ1),
+                RateQ2 = Convert.ToInt16(_RateQ2),
                 RateScore = Convert.ToInt16(_RateScore),
                 RateContent = _RateContent.Left(400),
             };
