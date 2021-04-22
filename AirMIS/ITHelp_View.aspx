@@ -43,6 +43,19 @@
                         </asp:PlaceHolder>
                         <!-- [Section] 需求資料 Start -->
                         <div class="ui segments">
+                            <asp:PlaceHolder ID="ph_AgreeArea" runat="server" Visible="false">
+                                <div class="ui placeholder segment">
+                                    <div class="ui icon header">
+                                        <i class="gavel icon"></i>
+                                        本案需要主管核准，請問是否同意?
+                                    </div>
+                                    <div class="inline">
+                                        <asp:LinkButton ID="lbtn_No" runat="server" CssClass="ui grey button" OnClick="lbtn_No_Click"><i class="ban icon"></i>不同意</asp:LinkButton>
+                                        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <asp:LinkButton ID="lbtn_Yes" runat="server" CssClass="ui blue button" OnClick="lbtn_Yes_Click"><i class="check icon"></i>同意</asp:LinkButton>
+                                    </div>
+                                </div>
+                            </asp:PlaceHolder>
                             <div class="ui green segment">
                                 <h5 class="ui header"><a class="anchor" id="baseData"></a>需求資料</h5>
                             </div>
@@ -100,11 +113,11 @@
                                                 <label>需求者</label>
                                                 <asp:Label ID="lb_Emp" runat="server" CssClass="ui large label"></asp:Label>
                                             </div>
-                                            <!-- 權限主管同意 -->
+                                            <!-- 主管同意 -->
                                             <asp:PlaceHolder ID="ph_Agree" runat="server" Visible="false">
                                                 <div class="field">
-                                                    <label>權限申請同意狀態</label>
-                                                    <div class="ui grey large label">
+                                                    <label>主管同意狀態</label>
+                                                    <div class="ui grey label">
                                                         <asp:Literal ID="lt_AuthAgree" runat="server">未同意</asp:Literal>
                                                     </div>
                                                 </div>
@@ -224,7 +237,7 @@
                                 <div id="section1-form" class="ui small form segment">
                                     <div class="fields">
                                         <div class="three wide field">
-                                            <label>工時</label>
+                                            <label>工時 (小時)</label>
                                             <div class="ui basic orange large label">
                                                 <asp:Literal ID="lt_Finish_Hours" runat="server">案件處理中</asp:Literal>
                                             </div>

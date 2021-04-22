@@ -79,6 +79,8 @@ namespace MISData.Models
         public string Agree_Time { get; set; }
         public string IsAgree { get; set; }
         public string Wish_Time { get; set; }
+        public Int32 IsDeptManager { get; set; }
+        
     }
 
 

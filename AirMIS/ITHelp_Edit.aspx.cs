@@ -159,6 +159,7 @@ public partial class AirMIS_ITHelp_Edit : SecurityIn
                     , query.Agree_Time.ToString().ToDateString("yyyy/MM/dd HH:mm")
                 );
             ph_Agree.Visible = _currReqCls.Equals("12");
+            lbtn_doApprove.Visible = query.IsAgree.Equals("E");
 
             #endregion
 
@@ -744,9 +745,11 @@ public partial class AirMIS_ITHelp_Edit : SecurityIn
         //----- 設定:資料欄位 -----
         //申請類別判斷, 權限申請=12
         string _Req_Class = "8"; //預設其他(8)
+        string _isAgree = "E";
         if (rbl_ApplyType.SelectedValue.Equals("2"))
         {
             _Req_Class = "12";
+            _isAgree = "N";
         }
 
         var data = new ItHelpData
@@ -757,6 +760,7 @@ public partial class AirMIS_ITHelp_Edit : SecurityIn
             Help_Way = Convert.ToInt16(rbl_Help_Way.SelectedValue),
             Req_Class = Convert.ToInt16(_Req_Class),
             Req_Who = val_Emp.Text,
+            IsAgree = _isAgree,
             Help_Subject = tb_ReqSubject.Text.Left(50),
             Help_Content = tb_ReqContent.Text.Left(5000),
             Help_Benefit = tb_Help_Benefit.Text.Left(5000)
@@ -1624,6 +1628,87 @@ public partial class AirMIS_ITHelp_Edit : SecurityIn
         //導向本頁
         Response.Redirect(thisPage + "#section1");
     }
+
+
+    /// <summary>
+    /// 主管核准
+    /// </summary>
+    protected void lbtn_doApprove_Click(object sender, EventArgs e)
+    {
+        string errTxt = "";
+
+        //[檢查] 有權限者才能編輯
+        if (!_ReplyAuth)
+        {
+            CustomExtension.AlertMsg("無法執行。\\n頁面將轉回列表頁..", Page_SearchUrl);
+            return;
+        }
+
+        //取得欄位資料
+        string _id = hf_DataID.Value;
+
+        #region ** 欄位判斷 **
+        if (string.IsNullOrWhiteSpace(_id))
+        {
+            errTxt += "「資料編號空白」\\n";
+        }
+
+        #endregion
+
+        //顯示不符規則的警告
+        if (!string.IsNullOrEmpty(errTxt))
+        {
+            CustomExtension.AlertMsg(errTxt, "");
+            return;
+        }
+
+
+        #region ** 資料處理 **
+        //----- 宣告:資料參數 -----
+        MISRepository _data = new MISRepository();
+
+        try
+        {
+            //----- 方法:修改資料 -----
+            if (!_data.Update_ITHelpSetApprove(_id, out ErrMsg))
+            {
+                this.ph_ErrMessage.Visible = true;
+                this.lt_ShowMsg.Text = "<b>狀態修改失敗,設定「主管同意」</b><p>{0}</p><p>{1}</p>".FormatThis("被你用壞掉啦~~ 快求救!!!", ErrMsg);
+
+                CustomExtension.AlertMsg("狀態修改失敗", "");
+                return;
+            }
+
+
+            #region ### 通知信發送 ###
+
+            /* [寄通知信]:核准申請 */
+            if (!doSendInformMail("E", _id, out ErrMsg))
+            {
+                CustomExtension.AlertMsg("核准申請通知信發送失敗.", "");
+                return;
+            }
+
+            #endregion
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+        finally
+        {
+            _data = null;
+        }
+
+        #endregion
+
+
+        //導向本頁
+        CustomExtension.AlertMsg("已通知主管", thisPage + "#section1");
+        return;
+    }
+
     #endregion
 
 
@@ -1780,8 +1865,8 @@ public partial class AirMIS_ITHelp_Edit : SecurityIn
                 break;
 
             case "E":
-                //權限申請
-                mailSubject = "[資訊需求][權限核准]";
+                //需求核准
+                mailSubject = "[資訊需求][需求核准]";
                 break;
 
             default:
@@ -1926,7 +2011,7 @@ public partial class AirMIS_ITHelp_Edit : SecurityIn
                 break;
 
             case "E":
-                //權限申請通知信:部門主管Email
+                //主管核准通知信:部門主管Email
                 var dataE = fn_CustomUI.emailReceiver_Supervisor(reqDeptID);
                 foreach (var item in dataE)
                 {
@@ -1992,8 +2077,8 @@ public partial class AirMIS_ITHelp_Edit : SecurityIn
                 break;
 
             case "E":
-                msg = "目前有登記一筆權限申請，需要您的同意，請點下方按鈕前往處理。";
-                pageUrl = "{0}Recording/Req_Process.aspx?dataID={1}".FormatThis(fn_Params.WebUrl, guid);
+                msg = "本件需求需要主管核准，請點下方按鈕「前往查看更多」進行處理。";
+                pageUrl = viewUrl;
                 break;
 
             default:

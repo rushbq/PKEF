@@ -726,7 +726,7 @@ ORDER BY rn";
 
                       /* 權限申請 */
                       , Base.IsAgree, Base.Agree_Time
-                      , ISNULL((SELECT Account_Name + ' (' + Display_Name + ')' FROM PKSYS.dbo.User_Profile WHERE (Guid = Base.Agree_Who)), '') AS Agree_WhoName
+                      , ISNULL((SELECT Display_Name FROM PKSYS.dbo.User_Profile WHERE (Guid = Base.Agree_Who)), '') AS Agree_WhoName
   
                       /* 需求單位 */
                       , Base.Req_Who, Base.Req_Dept, Prof.Email AS Req_Email, ISNULL(Prof.Tel_Ext, '') AS Req_TelExt
@@ -753,6 +753,7 @@ ORDER BY rn";
                       , ISNULL((SELECT Account_Name + ' (' + Display_Name + ')' FROM [PKSYS].dbo.User_Profile WHERE (Guid = Base.Create_Who)), '') AS Create_Name
                       , ISNULL((SELECT Account_Name + ' (' + Display_Name + ')' FROM [PKSYS].dbo.User_Profile WHERE (Guid = Base.Update_Who)), '') AS Update_Name
                       , ROW_NUMBER() OVER (ORDER BY (CASE WHEN Base.onTopWho = @currUser THEN Base.onTop ELSE 'N' END) DESC, HelpStatus.Sort ASC, Base.Create_Time DESC) AS RowIdx
+                      , (SELECT COUNT(*) FROM [PKSYS].dbo.User_Dept_Supervisor WHERE DeptID = Base.Req_Dept AND Account_Name = @currUserAcct) AS IsDeptManager
                     FROM IT_Help Base
                       INNER JOIN IT_Help_ParamClass ReqClass ON Base.Req_Class = ReqClass.Class_ID
                       INNER JOIN IT_Help_ParamClass HelpStatus ON Base.Help_Status = HelpStatus.Class_ID
@@ -899,6 +900,7 @@ ORDER BY rn";
 
                     //----- SQL 固定參數 -----
                     sqlParamList.Add(new SqlParameter("@currUser", fn_Params.UserGuid)); //用來判斷onTop參數
+                    sqlParamList.Add(new SqlParameter("@currUserAcct", fn_Params.UserAccount)); //用來判斷主管簽核用
 
                     //----- SQL 參數陣列 -----
                     cmd.Parameters.AddRange(sqlParamList.ToArray());
@@ -956,7 +958,8 @@ ORDER BY rn";
                                 Update_Name = item.Field<string>("Update_Name"),
                                 Agree_Time = item.Field<DateTime?>("Agree_Time").ToString().ToDateString("yyyy/MM/dd HH:mm:ss"),
                                 Agree_WhoName = item.Field<string>("Agree_WhoName"),
-                                IsAgree = item.Field<string>("IsAgree")
+                                IsAgree = item.Field<string>("IsAgree"),
+                                IsDeptManager = item.Field<Int32>("IsDeptManager")
                             };
 
 
@@ -1366,12 +1369,12 @@ ORDER BY rn";
 
                     INSERT INTO IT_Help(
                      DataID, TraceID, Apply_Type
-                     , Req_Class, Req_Who, Req_Dept
+                     , Req_Class, Req_Who, Req_Dept, IsAgree
                      , Help_Subject, Help_Content, Help_Benefit, Help_Status, Help_Way
                      , Create_Who, Create_Time
                     ) VALUES (
                      @NewGuid, @NewTraceID, @Apply_Type
-                     , @Req_Class, @Req_Who, @DeptID
+                     , @Req_Class, @Req_Who, @DeptID, @IsAgree
                      , @Help_Subject, @Help_Content, @Help_Benefit, @Help_Status, @Help_Way
                      , @WhoGuid, GETDATE()
                     )";
@@ -1383,6 +1386,7 @@ ORDER BY rn";
                 cmd.Parameters.AddWithValue("Apply_Type", instance.Apply_Type);
                 cmd.Parameters.AddWithValue("Req_Class", instance.Req_Class);
                 cmd.Parameters.AddWithValue("Req_Who", instance.Req_Who);
+                cmd.Parameters.AddWithValue("IsAgree", instance.IsAgree);
                 cmd.Parameters.AddWithValue("Help_Subject", instance.Help_Subject);
                 cmd.Parameters.AddWithValue("Help_Content", instance.Help_Content);
                 cmd.Parameters.AddWithValue("Help_Benefit", instance.Help_Benefit);
@@ -1790,6 +1794,60 @@ ORDER BY rn";
                 return dbConn.ExecuteSql(cmd, out ErrMsg);
             }
         }
+
+
+        /// <summary>
+        /// [管理工作需求] 設定核准狀態
+        /// </summary>
+        /// <param name="_id"></param>
+        /// <param name="ErrMsg"></param>
+        /// <returns></returns>
+        public bool Update_ITHelpSetApprove(string _id, out string ErrMsg)
+        {
+            //----- 資料查詢 -----
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                //----- SQL 查詢語法 -----
+                string sql = @"UPDATE IT_Help SET IsAgree = 'N' WHERE (DataID = @DataID)";
+
+                //----- SQL 執行 -----
+                cmd.CommandText = sql;
+                cmd.Parameters.AddWithValue("DataID", _id);
+
+                //Execute
+                return dbConn.ExecuteSql(cmd, out ErrMsg);
+            }
+
+        }
+
+
+        /// <summary>
+        /// [管理工作需求] 是否同意
+        /// </summary>
+        /// <param name="_id"></param>
+        /// <param name="_job">Y/N</param>
+        /// <param name="ErrMsg"></param>
+        /// <returns></returns>
+        public bool Update_ITHelpDoApprove(string _id, string _job, out string ErrMsg)
+        {
+            //----- 資料查詢 -----
+            using (SqlCommand cmd = new SqlCommand())
+            {
+                //----- SQL 查詢語法 -----
+                string sql = @"UPDATE IT_Help SET IsAgree = @IsAgree, Agree_Who = @Who, Agree_Time = GETDATE() WHERE (DataID = @DataID)";
+
+                //----- SQL 執行 -----
+                cmd.CommandText = sql;
+                cmd.Parameters.AddWithValue("DataID", _id);
+                cmd.Parameters.AddWithValue("IsAgree", _job);
+                cmd.Parameters.AddWithValue("Who", fn_Params.UserGuid);
+
+                //Execute
+                return dbConn.ExecuteSql(cmd, out ErrMsg);
+            }
+
+        }
+
 
         #endregion *** 資訊需求 E ***
 
