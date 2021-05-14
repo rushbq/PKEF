@@ -68,7 +68,7 @@
                     </div>
                     <div class="four wide field">
                         <label>關鍵字</label>
-                        <asp:TextBox ID="filter_Keyword" runat="server" MaxLength="20" autocomplete="off" placeholder="追蹤編號, 主旨"></asp:TextBox>
+                        <asp:TextBox ID="filter_Keyword" runat="server" MaxLength="10" autocomplete="off" placeholder="追蹤編號, 主旨"></asp:TextBox>
                     </div>
                 </div>
 
@@ -82,7 +82,7 @@
                             <asp:TextBox ID="val_Dept" runat="server" Style="display: none"></asp:TextBox>
                         </div>
                     </div>
-                    <div class="four wide field">
+                    <div class="three wide field">
                         <div class="ui fluid search ac-Employee" data-label="lb_Emp" data-val="val_Emp">
                             <div class="ui left labeled input">
                                 <asp:Panel ID="lb_Emp" runat="server" CssClass="ui label">需求者</asp:Panel>
@@ -91,7 +91,7 @@
                             <asp:TextBox ID="val_Emp" runat="server" Style="display: none"></asp:TextBox>
                         </div>
                     </div>
-                    <div class="five wide field">
+                    <div class="four wide field">
                         <div class="ui fluid search ac-Employee" data-label="lb_FinishWho" data-val="val_FinishWho">
                             <div class="ui left labeled input">
                                 <asp:Panel ID="lb_FinishWho" runat="server" CssClass="ui label">結案人</asp:Panel>
@@ -99,6 +99,12 @@
                             </div>
                             <asp:TextBox ID="val_FinishWho" runat="server" Style="display: none"></asp:TextBox>
                         </div>
+                    </div>
+                    <div class="two wide field">
+                        <asp:DropDownList ID="filter_Rate" runat="server" CssClass="fluid">
+                            <asp:ListItem Value="">驗收查詢</asp:ListItem>
+                            <asp:ListItem Value="1">已結案未驗收</asp:ListItem>
+                        </asp:DropDownList>
                     </div>
                     <div class="four wide field" style="text-align: right;">
                         <a href="<%=thisPage %>" class="ui small button"><i class="refresh icon"></i>重置</a>
@@ -164,6 +170,9 @@
                             <div style="margin-bottom: 8px;">
                                 <asp:Literal ID="lt_onTop" runat="server"></asp:Literal>
                                 <span class="ui red basic small label"><%#Eval("TraceID") %></span>
+                                <asp:PlaceHolder ID="ph_unRateDay" runat="server">
+                                    <span class="ui pink small label" title="未驗收逾期天數"><%#Eval("dfDay") %>&nbsp;天</span>
+                                </asp:PlaceHolder>
                             </div>
                             <strong class="grey-text text-darken-2" style="font-size: 1.2em;"><%#Eval("Help_Subject") %></strong>
                         </td>

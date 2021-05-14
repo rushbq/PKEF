@@ -676,6 +676,12 @@ ORDER BY rn";
                                     sql.Append(" AND (Base.Help_Status <> 125)");
 
                                     break;
+
+                                case "unRate":
+                                    //--已結案未驗收
+                                    sql.Append(" AND (Base.IsRate = 'N') AND (Base.Finish_Hours > 0) AND (Base.Finish_Time IS NOT NULL)");
+
+                                    break;
                             }
                         }
 
@@ -724,7 +730,7 @@ ORDER BY rn";
                       , Base.Help_Status, Base.Req_Class
                       , HelpStatus.Class_Name AS Help_StatusName, ReqClass.Class_Name AS Req_ClassName
 
-                      /* 權限申請 */
+                      /* 主管核准 */
                       , Base.IsAgree, Base.Agree_Time
                       , ISNULL((SELECT Display_Name FROM PKSYS.dbo.User_Profile WHERE (Guid = Base.Agree_Who)), '') AS Agree_WhoName
   
@@ -754,6 +760,7 @@ ORDER BY rn";
                       , ISNULL((SELECT Account_Name + ' (' + Display_Name + ')' FROM [PKSYS].dbo.User_Profile WHERE (Guid = Base.Update_Who)), '') AS Update_Name
                       , ROW_NUMBER() OVER (ORDER BY (CASE WHEN Base.onTopWho = @currUser THEN Base.onTop ELSE 'N' END) DESC, HelpStatus.Sort ASC, Base.Create_Time DESC) AS RowIdx
                       , (SELECT COUNT(*) FROM [PKSYS].dbo.User_Dept_Supervisor WHERE DeptID = Base.Req_Dept AND Account_Name = @currUserAcct) AS IsDeptManager
+                      , (CASE WHEN (Base.Finish_Time IS NOT NULL AND Base.IsRate = 'N') THEN DATEDIFF(dd, Base.Finish_Time, GETDATE()) ELSE -1 END) AS dfDay
                     FROM IT_Help Base
                       INNER JOIN IT_Help_ParamClass ReqClass ON Base.Req_Class = ReqClass.Class_ID
                       INNER JOIN IT_Help_ParamClass HelpStatus ON Base.Help_Status = HelpStatus.Class_ID
@@ -874,6 +881,12 @@ ORDER BY rn";
                                     sql.Append(" AND (Base.Help_Status <> 125)");
 
                                     break;
+
+                                case "unRate":
+                                    //--已結案未驗收
+                                    sql.Append(" AND (Base.IsRate = 'N') AND (Base.Finish_Hours > 0) AND (Base.Finish_Time IS NOT NULL)");
+
+                                    break;
                             }
                         }
                     }
@@ -959,7 +972,8 @@ ORDER BY rn";
                                 Agree_Time = item.Field<DateTime?>("Agree_Time").ToString().ToDateString("yyyy/MM/dd HH:mm:ss"),
                                 Agree_WhoName = item.Field<string>("Agree_WhoName"),
                                 IsAgree = item.Field<string>("IsAgree"),
-                                IsDeptManager = item.Field<Int32>("IsDeptManager")
+                                IsDeptManager = item.Field<Int32>("IsDeptManager"),
+                                dfDay = item.Field<Int32>("dfDay")
                             };
 
 
@@ -1324,6 +1338,12 @@ ORDER BY rn";
                     //測試中
                     css = "ui orange label";
                     icon = "<i class=\"bug icon\"></i>";
+                    break;
+
+                case "123":
+                    //指定結案
+                    css = "ui orange basic label";
+                    icon = "<i class=\"coffee icon\"></i>";
                     break;
 
                 case "125":
@@ -1756,7 +1776,7 @@ ORDER BY rn";
         /// [資訊需求] 更新資料-處理狀態
         /// </summary>
         /// <param name="dataID"></param>
-        /// <param name="customID">A:待處理,B:處理中,C:測試中,D:已結案</param>
+        /// <param name="customID">A:待處理,B:處理中,C:測試中,D:已結案;E:指定結案</param>
         /// <returns></returns>
         public bool Update_ITHelpStatus(string dataID, string customID)
         {
@@ -1774,6 +1794,10 @@ ORDER BY rn";
 
                 case "D":
                     _clsID = 125;
+                    break;
+
+                case "E":
+                    _clsID = 123;
                     break;
             }
 

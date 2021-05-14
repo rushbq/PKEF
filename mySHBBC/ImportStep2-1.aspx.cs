@@ -268,7 +268,7 @@ public partial class mySHBBC_PromoConfig_Edit : SecurityIn
         if (!_data.Check_Step3(Req_DataID, out ErrMsg))
         {
             //[Log]
-            string Msg = "Check.3:價格。\\nERP價格檢查失敗, 狀態碼及價格未更新(Step2-1)";
+            string Msg = "Check.3:價格。\\nERP價格檢查失敗,\\n請檢查客戶商品計價, 狀態碼及價格未更新(Step2-1)";
             _data.Create_Log(baseData, Msg + ErrMsg, out ErrMsg);
 
             CustomExtension.AlertMsg(Msg, thisPage);

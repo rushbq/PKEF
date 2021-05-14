@@ -4590,7 +4590,7 @@ namespace SH_BBC.Controllers
                         ERP_Price = DT.Rows[row]["SpQtyPrice"] == null ? 0 : Convert.ToDouble(DT.Rows[row]["SpQtyPrice"]),
                         Currency = DT.Rows[row]["Currency"].ToString(),
                         StockNum = DT.Rows[row]["StockNum"] == null ? 0 : Convert.ToInt16(DT.Rows[row]["StockNum"]),
-                        inMOQ = Convert.ToInt32(DT.Rows[row]["inMOQ"])
+                        inMOQ = DT.Rows[row]["inMOQ"] == null ? 0 : Convert.ToInt32(DT.Rows[row]["inMOQ"])
                     };
 
 
@@ -4909,7 +4909,7 @@ namespace SH_BBC.Controllers
                     cmd.Parameters.AddWithValue("Currency_" + row, item.Currency);
                     cmd.Parameters.AddWithValue("ModelNo_" + row, item.ERP_ModelNo);
                     cmd.Parameters.AddWithValue("BuyCnt_" + row, item.BuyCnt);
-                    cmd.Parameters.AddWithValue("inMOQ_" + row, item.inMOQ);
+                    cmd.Parameters.AddWithValue("inMOQ_" + row, item.inMOQ == null ? 0 : item.inMOQ);
 
                     row++;
                 }

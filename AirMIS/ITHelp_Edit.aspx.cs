@@ -1709,6 +1709,75 @@ public partial class AirMIS_ITHelp_Edit : SecurityIn
         return;
     }
 
+
+    /// <summary>
+    /// 指定結案
+    /// </summary>
+    protected void lbtn_doClose_Click(object sender, EventArgs e)
+    {
+        string errTxt = "";
+
+        //[檢查] 有權限者才能編輯
+        if (!_ReplyAuth)
+        {
+            CustomExtension.AlertMsg("無法執行。\\n頁面將轉回列表頁..", Page_SearchUrl);
+            return;
+        }
+
+        //取得欄位資料
+        string _id = hf_DataID.Value;
+
+        #region ** 欄位判斷 **
+        if (string.IsNullOrWhiteSpace(_id))
+        {
+            errTxt += "「資料編號空白」\\n";
+        }
+
+        #endregion
+
+        //顯示不符規則的警告
+        if (!string.IsNullOrEmpty(errTxt))
+        {
+            CustomExtension.AlertMsg(errTxt, "");
+            return;
+        }
+
+
+        #region ** 資料處理 **
+        //----- 宣告:資料參數 -----
+        MISRepository _data = new MISRepository();
+
+        try
+        {
+            //----- 方法:修改資料 -----
+            if (!_data.Update_ITHelpStatus(_id, "E"))
+            {
+                this.ph_ErrMessage.Visible = true;
+                this.lt_ShowMsg.Text = "<b>狀態修改失敗,設定「指定結案」</b><p>{0}</p><p>{1}</p>".FormatThis("被你用壞掉啦~~ 快求救!!!", ErrMsg);
+
+                CustomExtension.AlertMsg("狀態修改失敗", "");
+                return;
+            }
+
+        }
+        catch (Exception)
+        {
+
+            throw;
+        }
+        finally
+        {
+            _data = null;
+        }
+
+        #endregion
+
+
+        //導向本頁
+        CustomExtension.AlertMsg("設定成功", thisPage + "#section1");
+        return;
+    }
+
     #endregion
 
 
@@ -2272,7 +2341,8 @@ public partial class AirMIS_ITHelp_Edit : SecurityIn
     {
         get
         {
-            return "{0}AirMIS/ITHelp_Edit.aspx?id={1}".FormatThis(fn_Params.WebUrl, Req_DataID);
+            string _ts = CustomExtension.GetTS();
+            return "{0}AirMIS/ITHelp_Edit.aspx?id={1}&t={2}".FormatThis(fn_Params.WebUrl, Req_DataID, _ts);
         }
         set
         {

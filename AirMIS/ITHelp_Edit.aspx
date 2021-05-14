@@ -295,7 +295,7 @@
                                         <div class="field">
                                             <label>總工時&nbsp;<small>(與結案工時共用)</small></label>
                                             <div class="ui right labeled input">
-                                                <asp:TextBox ID="tb_Finish_Hours" runat="server" type="number" step="0.5" min="0"></asp:TextBox>
+                                                <asp:TextBox ID="tb_Finish_Hours" runat="server" type="number" step="0.25" min="0"></asp:TextBox>
                                                 <label class="ui label">小時</label>
                                             </div>
                                         </div>
@@ -325,29 +325,38 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="ui right aligned segment">
-                                    <!-- 管理者按鈕 -->
-                                    <button id="doSaveS1" type="button" class="ui green small button"><i class="save icon"></i>回覆存檔</button>
-                                    <asp:Button ID="btn_doSaveReply" runat="server" Text="Save" OnClick="btn_doSaveReply_Click" Style="display: none;" />
+                                <!-- 管理者按鈕 -->
+                                <div class="ui segment grid">
+                                    <div class="row">
+                                        <div class="six wide column">
+                                            <button id="doSaveS1" type="button" class="ui green small button"><i class="save icon"></i>回覆存檔</button>
+                                            <asp:Button ID="btn_doSaveReply" runat="server" Text="Save" OnClick="btn_doSaveReply_Click" Style="display: none;" />
+                                            <!-- 加入追蹤 -->
+                                            <asp:LinkButton ID="lbtn_doTrace" runat="server" CssClass="ui grey small button" ToolTip="加入後會在列表頁置頂(只有本人)" OnClick="lbtn_doTrace_Click"><i class="heart icon"></i>加入追蹤</asp:LinkButton>
 
-                                    <!-- 加入追蹤 -->
-                                    <asp:LinkButton ID="lbtn_doTrace" runat="server" CssClass="ui grey small button" ToolTip="加入後會在列表頁置頂(只有本人)" OnClick="lbtn_doTrace_Click"><i class="heart icon"></i>加入追蹤</asp:LinkButton>
+                                        </div>
+                                        <div class="ten wide column right aligned">
+                                            <!-- 主管核准 -->
+                                            <asp:LinkButton ID="lbtn_doApprove" runat="server" CssClass="ui orange small button" ToolTip="通知需求部門主管核准" OnClick="lbtn_doApprove_Click" OnClientClick="return confirm('是否通知主管核准?')"><i class="gavel icon"></i>主管核准</asp:LinkButton>
 
-                                    <!-- 主管核准 -->
-                                    <asp:LinkButton ID="lbtn_doApprove" runat="server" CssClass="ui orange small button" ToolTip="通知需求部門主管核准" OnClick="lbtn_doApprove_Click" OnClientClick="return confirm('是否通知主管核准?')"><i class="gavel icon"></i>主管核准</asp:LinkButton>
+                                            <!-- 發通知信 -->
+                                            <button id="showInform" type="button" class="ui blue small button" title="開窗後選擇類型"><i class="envelope icon"></i>發通知信</button>
+                                            <asp:TextBox ID="val_InformType" runat="server" Style="display: none" ToolTip="通知類型"></asp:TextBox>
+                                            <asp:TextBox ID="val_MailCont" runat="server" TextMode="MultiLine" Style="display: none" ToolTip="通知內文"></asp:TextBox>
+                                            <asp:Button ID="btn_Inform" runat="server" Text="Button" OnClick="btn_Inform_Click" Style="display: none;" />
+                                            
+                                            <!-- 指結 -->
+                                            <asp:LinkButton ID="lbtn_doClose" runat="server" CssClass="ui grey small button" ToolTip="變更狀態為「指定結案」" OnClick="lbtn_doClose_Click" OnClientClick="return confirm('是否設為指定結案?')"><i class="coffee icon"></i>指定結案</asp:LinkButton>
 
-                                    <!-- 發通知信 -->
-                                    <button id="showInform" type="button" class="ui blue small button" title="開窗後選擇類型"><i class="envelope icon"></i>發通知信</button>
-                                    <asp:TextBox ID="val_InformType" runat="server" Style="display: none" ToolTip="通知類型"></asp:TextBox>
-                                    <asp:TextBox ID="val_MailCont" runat="server" TextMode="MultiLine" Style="display: none" ToolTip="通知內文"></asp:TextBox>
-                                    <asp:Button ID="btn_Inform" runat="server" Text="Button" OnClick="btn_Inform_Click" Style="display: none;" />
+                                            <!-- 結案 -->
+                                            <asp:PlaceHolder ID="ph_finish" runat="server">
+                                                <button id="showFinish" type="button" class="ui red small button"><i class="archive icon"></i>結案</button>
+                                                <asp:TextBox ID="val_FinishTime" runat="server" Style="display: none"></asp:TextBox>
+                                                <asp:Button ID="btn_Finish" runat="server" Text="Button" OnClick="btn_Finish_Click" Style="display: none;" />
+                                            </asp:PlaceHolder>
 
-                                    <!-- 結案 -->
-                                    <asp:PlaceHolder ID="ph_finish" runat="server">
-                                        <button id="showFinish" type="button" class="ui red small button"><i class="archive icon"></i>結案</button>
-                                        <asp:TextBox ID="val_FinishTime" runat="server" Style="display: none"></asp:TextBox>
-                                        <asp:Button ID="btn_Finish" runat="server" Text="Button" OnClick="btn_Finish_Click" Style="display: none;" />
-                                    </asp:PlaceHolder>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </asp:PlaceHolder>
@@ -619,7 +628,7 @@
                                 <select id="dia-InformType" class="fluid">
                                     <option value="">- 請選擇 -</option>
                                     <option value="A">A:提供資料</option>
-                                    <option value="B">B:測試通知 (狀態會變成「測試中」)</option>
+                                    <option value="B">B:測試通知 (狀態變更:測試中)</option>
                                     <option value="C">C:驗收通知</option>
                                 </select>
                             </div>
@@ -627,9 +636,9 @@
                                 <label>快速片語</label>
                                 <select id="dia-InformTxt" class="fluid">
                                     <option value="">- 請選擇 -</option>
-                                    <option value="請點下方連結，回來填寫改善效益">請點下方連結，回來填寫改善效益</option>
-                                    <option value="需求已經可以測試，點下方連結可看詳細說明">需求已經可以測試，點下方連結可看詳細說明</option>
-                                    <option value="需求已結案，請點下方連結，填寫驗收意見">需求已結案，請點下方連結，填寫驗收意見</option>
+                                    <option value="請點按鈕「查看更多」，提供更多資料">請點按鈕「查看更多」，提供更多資料</option>
+                                    <option value="請進行測試，三日內未回覆，將自動設為「指定結案」">請進行測試，三日內未回覆，將自動設為「指定結案」</option>
+                                    <option value="需求已結案，請點按鈕「查看更多」，填寫驗收意見">需求已結案，請點按鈕「查看更多」，填寫驗收意見</option>
                                 </select>
                             </div>
                         </div>

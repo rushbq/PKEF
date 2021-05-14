@@ -64,6 +64,8 @@
     </script>
     <script type="text/javascript">
         $(document).ready(function () {
+            setDate('1', 'CountByClass');
+
             //填入預設日期(當年開始~今日)
             var thisDate = new Date();
             var defStartDate = thisDate.getFullYear() + '/01/01';
@@ -77,7 +79,6 @@
 
             //載入圖表 - 案件數(類別)
             SearchbyClass(defStartDate, defEndDate);
-
             /*
               [進入頁面後,載入預設資料] End
             */
@@ -258,19 +259,19 @@
                     }
             });
             /* Pie圖 - by部門(SZ) */
-            $.ajax({
-                type: 'POST',
-                dataType: 'json',
-                contentType: 'application/json',
-                url: 'GetData.aspx/GetCountbyDept',
-                data: '{AreaCode:"SZ", StartDate:"' + StartDate + '", EndDate:"' + EndDate + '"}',
-                success:
-                    function (response) {
-                        var myTitle = StartDate + ' ~ ' + EndDate;
-                        //繪製圖表
-                        drawChart_Pie(response.d, myTitle, 800, 500, 'Chart_Pie_byDept_SZ', '部門', '案件數');
-                    }
-            });
+            //$.ajax({
+            //    type: 'POST',
+            //    dataType: 'json',
+            //    contentType: 'application/json',
+            //    url: 'GetData.aspx/GetCountbyDept',
+            //    data: '{AreaCode:"SZ", StartDate:"' + StartDate + '", EndDate:"' + EndDate + '"}',
+            //    success:
+            //        function (response) {
+            //            var myTitle = StartDate + ' ~ ' + EndDate;
+            //            //繪製圖表
+            //            drawChart_Pie(response.d, myTitle, 800, 500, 'Chart_Pie_byDept_SZ', '部門', '案件數');
+            //        }
+            //});
         }
 
         //-- 載入圖表 - 時數(類別) --
@@ -286,7 +287,7 @@
                     function (response) {
                         var myTitle = StartDate + ' ~' + EndDate;
                         //繪製圖表
-                        drawChart_Bar(response.d, myTitle, 'BarChart_byHourClass', '類別', '時數(h)', '案件數');
+                        drawChart_Bar(response.d, myTitle, 'BarChart_byHourClass', '類別', '時數(h)', '案件數', '平均(h)');
                     }
             });
         }
@@ -304,39 +305,24 @@
                     function (response) {
                         var myTitle = StartDate + ' ~' + EndDate;
                         //繪製圖表
-                        drawChart_Bar(response.d, myTitle, 'BarChart_byHourWho_TW', '人員', '時數(h)', '案件數');
-                    }
-            });
-
-            /* Bar Chart (SZ) */
-            $.ajax({
-                type: 'POST',
-                dataType: 'json',
-                contentType: 'application/json',
-                url: 'GetData.aspx/GetHourByWho',
-                data: '{AreaCode:"SZ", StartDate:"' + StartDate + '", EndDate:"' + EndDate + '"}',
-                success:
-                    function (response) {
-                        var myTitle = StartDate + ' ~' + EndDate;
-                        //繪製圖表
-                        drawChart_Bar(response.d, myTitle, 'BarChart_byHourWho_SZ', '人員', '時數(h)', '案件數');
+                        drawChart_Bar(response.d, myTitle, 'BarChart_byHourWho_TW', '人員', '時數(h)', '案件數', '平均(h)');
                     }
             });
 
             /* Bar Chart (SH) */
-            $.ajax({
-                type: 'POST',
-                dataType: 'json',
-                contentType: 'application/json',
-                url: 'GetData.aspx/GetHourByWho',
-                data: '{AreaCode:"SH", StartDate:"' + StartDate + '", EndDate:"' + EndDate + '"}',
-                success:
-                    function (response) {
-                        var myTitle = StartDate + ' ~' + EndDate;
-                        //繪製圖表
-                        drawChart_Bar(response.d, myTitle, 'BarChart_byHourWho_SH', '人員', '時數(h)', '案件數');
-                    }
-            });
+            //$.ajax({
+            //    type: 'POST',
+            //    dataType: 'json',
+            //    contentType: 'application/json',
+            //    url: 'GetData.aspx/GetHourByWho',
+            //    data: '{AreaCode:"SH", StartDate:"' + StartDate + '", EndDate:"' + EndDate + '"}',
+            //    success:
+            //        function (response) {
+            //            var myTitle = StartDate + ' ~' + EndDate;
+            //            //繪製圖表
+            //            drawChart_Bar(response.d, myTitle, 'BarChart_byHourWho_SH', '人員', '時數(h)', '案件數', '平均(h)');
+            //        }
+            //});
         }
 
         //-- 載入圖表 - 滿意度 --
@@ -352,7 +338,8 @@
                     function (response) {
                         var myTitle = StartDate + ' ~' + EndDate;
                         //繪製圖表
-                        drawChart_Pie(response.d, myTitle, 800, 500, 'PieChart_RateStar', '星級', '數量');
+                        drawChart_Star_Bar(response.d, myTitle, 'PieChart_RateStar', '人員', '一星', '二星', '三星', '四星', '五星');
+                        //drawChart_Pie(response.d, myTitle, 800, 500, 'PieChart_RateStar', '星級', '數量');
                     }
             });
         }
@@ -420,22 +407,25 @@
 
           ref:https://developers.google.com/chart/interactive/docs/gallery/barchart
         */
-        function drawChart_Bar(dataValues, titleName, chartID, colName, valName, valName1) {
+        function drawChart_Bar(dataValues, titleName, chartID, colName, valName, valName1, valName2) {
             var data = new google.visualization.DataTable();
             //新增欄
             data.addColumn('string', colName);
             data.addColumn('number', valName);  //時數
             data.addColumn('number', valName1); //案件數
+            data.addColumn('number', valName2); //平均
 
             //新增列值
             var total1 = 0;
             var total2 = 0;
+            var total3 = 0;
             for (var i = 0; i < dataValues.length; i++) {
-                data.addRow([dataValues[i].ColumnName, dataValues[i].Value, dataValues[i].Value1]);
+                data.addRow([dataValues[i].ColumnName, dataValues[i].Value, dataValues[i].Value1, dataValues[i].Value2]);
 
                 //加總
                 total1 = total1 + dataValues[i].Value;
                 total2 = total2 + dataValues[i].Value1;
+                total3 = total3 + dataValues[i].Value2;
             }
 
             //計算高度
@@ -477,12 +467,96 @@
                draw(data, options);
            
             if (total1 > 0) {
+                var avg = Math.round((total1 / total2) * 100) / 100;
                 //新增合計列
-                data.addRow(['Total', total1, total2]);
+                data.addRow(['Total', total1, total2, avg]);
             }
             var table = new google.visualization.Table(document.getElementById('table_' + chartID));
             table.draw(data, { 'width': '400px' });
          
+        }
+
+
+        /*
+          [Bar Chart] 滿意度 by人
+        */
+        function drawChart_Star_Bar(dataValues, titleName, chartID, colName, valName, valName1, valName2, valName3, valName4) {
+            var data = new google.visualization.DataTable();
+            //新增欄
+            data.addColumn('string', colName);
+            data.addColumn('number', valName);  //1
+            data.addColumn('number', valName1); //2
+            data.addColumn('number', valName2); //3
+            data.addColumn('number', valName3); //4
+            data.addColumn('number', valName4); //5
+
+            //新增列值
+            //var total1 = 0;
+            //var total2 = 0;
+            //var total3 = 0;
+            //var total4 = 0;
+            //var total5 = 0;
+            for (var i = 0; i < dataValues.length; i++) {
+                data.addRow([dataValues[i].ColumnName, dataValues[i].Value
+                    , dataValues[i].Value1
+                    , dataValues[i].Value2
+                    , dataValues[i].Value3
+                    , dataValues[i].Value4
+                    ]);
+
+                //加總
+                //total1 = total1 + dataValues[i].Value;
+                //total2 = total2 + dataValues[i].Value1;
+                //total3 = total3 + dataValues[i].Value2;
+                //total4 = total4 + dataValues[i].Value3;
+                //total5 = total5 + dataValues[i].Value4;
+            }
+
+            //計算高度
+            // set inner height to 30 pixels per row
+            var chartAreaHeight = data.getNumberOfRows() * 40;
+            // add padding to outer height to accomodate title, axis labels, etc
+            var chartHeight = chartAreaHeight + 300;
+
+            //設定圖表選項(Material Bar Charts)
+            var options = {
+                height: chartHeight,
+                legend: { position: 'in' },
+                chart: {
+                    title: titleName
+                    //,subtitle: 'popularity by percentage'
+                },
+                chartArea: { width: '100%', height: chartAreaHeight },
+                bars: 'horizontal' // Required for Material Bar Charts.
+            };
+
+            //設定圖表選項(傳統)
+            //var options = {
+            //    title: titleName,
+            //    height: chartHeight,
+            //    bar: { groupWidth: "95%" }
+            //};
+
+
+            //載入圖表
+            //ref:https://developers.google.com/chart/interactive/docs/gallery/barchart#loading
+            //For Material Bar Charts, the visualization's class name is google.charts.Bar.
+            //var chart = new google.charts.Bar(document.getElementById(chartID));
+            //chart.draw(data, options);
+
+            //一般barchart
+            //new google.visualization.BarChart(document.getElementById(chartID)).
+            //   draw(data, options);
+            new google.charts.Bar(document.getElementById(chartID)).
+               draw(data, options);
+
+            //if (total1 > 0) {
+            //    //新增合計列
+            //    data.addRow(['Total', total1, total2, total3, total4, total5]);
+            //}
+            var table = new google.visualization.Table(document.getElementById('table_' + chartID));
+            table.draw(data, { 'width': '400px' });
+
         }
 
         //-- 繪製圖表 End --
@@ -561,7 +635,7 @@
                             <div id="table_Chart_Pie_byDept_TW"></div>
                         </div>
                     </div>
-                    <div class="bq-callout orange">
+                    <%--<div class="bq-callout orange">
                         <h4>案件數統計(依部門) - 深圳</h4>
                         <div class="form-group">
                             <div id="Chart_Pie_byDept_SZ"></div>
@@ -569,7 +643,7 @@
                         <div class="form-group">
                             <div id="table_Chart_Pie_byDept_SZ"></div>
                         </div>
-                    </div>
+                    </div>--%>
                     <div class="bq-callout green">
                         <h4>案件數統計(依部門) - 上海</h4>
                         <div class="form-group">
@@ -613,7 +687,7 @@
                         </div>
                     </div>
                     <div class="bq-callout red">
-                        <h4>時數統計(結案人) - 台灣</h4>
+                        <h4>時數統計(結案人)</h4>
                         <div class="form-group">
                             <div id="BarChart_byHourWho_TW" style="margin: 20px 20px;"></div>
                         </div>
@@ -621,7 +695,7 @@
                             <div id="table_BarChart_byHourWho_TW"></div>
                         </div>
                     </div>
-                    <div class="bq-callout orange">
+                    <%--<div class="bq-callout orange">
                         <h4>時數統計(結案人) - 深圳</h4>
                         <div class="form-group">
                             <div id="BarChart_byHourWho_SZ" style="margin: 20px 20px;"></div>
@@ -629,8 +703,8 @@
                         <div class="form-group">
                             <div id="table_BarChart_byHourWho_SZ"></div>
                         </div>
-                    </div>
-                    <div class="bq-callout green">
+                    </div>--%>
+                    <%--<div class="bq-callout green">
                         <h4>時數統計(結案人) - 上海</h4>
                         <div class="form-group">
                             <div id="BarChart_byHourWho_SH" style="margin: 20px 20px;"></div>
@@ -638,7 +712,7 @@
                         <div class="form-group">
                             <div id="table_BarChart_byHourWho_SH"></div>
                         </div>
-                    </div>
+                    </div>--%>
                 </div>
 
                 <!-- 滿意度 -->

@@ -67,7 +67,8 @@ public partial class AirMIS_ITHelp_Search : SecurityIn
         int StartRow = (pageIndex - 1) * RecordsPerPage;    //第n筆開始顯示
         int TotalRow = 0;   //總筆數
         int DataCnt = 0;
-        ArrayList PageParam = new ArrayList();  //分類暫存條件參數
+        ArrayList PageParam = new ArrayList();  //暫存條件參數
+
 
         //----- 宣告:資料參數 -----
         MISRepository _data = new MISRepository();
@@ -86,6 +87,7 @@ public partial class AirMIS_ITHelp_Search : SecurityIn
             string _Dept = Req_Dept;
             string _Who = Req_Who;
             string _FinishWho = Req_FinishWho;
+            string _unRate = Req_unRate;
 
 
             //[查詢條件] - 日期選項(放在日期參數前)
@@ -163,6 +165,14 @@ public partial class AirMIS_ITHelp_Search : SecurityIn
                 search.Add("unClose", Req_unClose);
                 PageParam.Add("uc=" + Server.UrlEncode(Req_unClose));
             }
+
+            //[查詢條件] - 已結案未驗收
+            if (!string.IsNullOrWhiteSpace(_unRate))
+            {
+                search.Add("unRate", _unRate);
+                PageParam.Add("ur=" + Server.UrlEncode(_unRate));
+                filter_Rate.SelectedValue = _unRate;
+            }
             #endregion
 
             //----- 原始資料:取得所有資料 -----
@@ -197,7 +207,7 @@ public partial class AirMIS_ITHelp_Search : SecurityIn
                 ph_EmptyData.Visible = false;
                 ph_Data.Visible = true;
 
-                //分頁設定
+                //分頁字串
                 string getPager = CustomExtension.Pagination(TotalRow, RecordsPerPage, pageIndex, 5
                     , thisPage, PageParam, false, true);
 
@@ -209,6 +219,7 @@ public partial class AirMIS_ITHelp_Search : SecurityIn
                     thisPage
                     , pageIndex
                     , (PageParam.Count == 0 ? "" : "&") + string.Join("&", PageParam.ToArray()));
+                
 
                 //暫存頁面Url, 給其他頁使用
                 CustomExtension.setCookie("ITHelp", Server.UrlEncode(reSetPage), 1);
@@ -286,10 +297,17 @@ public partial class AirMIS_ITHelp_Search : SecurityIn
                 //取得資料:Help_Status, Help_StatusName
                 string _helpStatus = DataBinder.Eval(dataItem.DataItem, "Help_Status").ToString();
                 string _helpStatusName = DataBinder.Eval(dataItem.DataItem, "Help_StatusName").ToString();
+                Int32 _unRateDay = Convert.ToInt32(DataBinder.Eval(dataItem.DataItem, "dfDay"));
 
                 //Label文字設定
                 Literal lt_Status = (Literal)e.Item.FindControl("lt_Status");
                 lt_Status.Text = _data.GetITHelp_StatusLabel(_helpStatus, _helpStatusName);
+
+
+                //未驗收天數
+                PlaceHolder ph_unRateDay = (PlaceHolder)e.Item.FindControl("ph_unRateDay");
+                ph_unRateDay.Visible = _unRateDay > 0;
+
 
                 #region >> 權限判斷 <<
 
@@ -356,6 +374,7 @@ public partial class AirMIS_ITHelp_Search : SecurityIn
         string _Dept = Req_Dept;
         string _Who = Req_Who;
         string _FinishWho = Req_FinishWho;
+        string _unRate = Req_unRate;
 
         //[查詢條件] - 日期選項(放在日期參數前)
         if (!string.IsNullOrWhiteSpace(_DateType))
@@ -410,6 +429,12 @@ public partial class AirMIS_ITHelp_Search : SecurityIn
         if (Req_unClose.Equals("Y"))
         {
             search.Add("unClose", Req_unClose);
+        }
+
+        //[查詢條件] - 已結案未驗收
+        if (!string.IsNullOrWhiteSpace(_unRate))
+        {
+            search.Add("unRate", _unRate);
         }
 
         #endregion
@@ -536,6 +561,7 @@ public partial class AirMIS_ITHelp_Search : SecurityIn
         string _dept = this.val_Dept.Text;
         string _who = this.val_Emp.Text;
         string _fwho = this.val_FinishWho.Text;
+        string _unRate = filter_Rate.SelectedValue;
 
         //url string
         StringBuilder url = new StringBuilder();
@@ -589,6 +615,11 @@ public partial class AirMIS_ITHelp_Search : SecurityIn
         if (!string.IsNullOrWhiteSpace(_fwho))
         {
             url.Append("&fwho=" + Server.UrlEncode(_fwho));
+        }
+        //[查詢條件] - 已結案未驗收
+        if (!string.IsNullOrWhiteSpace(_unRate))
+        {
+            url.Append("&ur=" + Server.UrlEncode(_unRate));
         }
 
         return url.ToString();
@@ -786,6 +817,25 @@ public partial class AirMIS_ITHelp_Search : SecurityIn
         }
     }
     private string _Req_unClose;
+
+
+    /// <summary>
+    /// 取得傳遞參數 - 已結案未驗收
+    /// </summary>
+    public string Req_unRate
+    {
+        get
+        {
+            String _data = Request.QueryString["ur"];
+            return (CustomExtension.String_資料長度Byte(_data, "1", "1", out ErrMsg)) ? _data.Trim() : "";
+        }
+        set
+        {
+            this._Req_unRate = value;
+        }
+    }
+    private string _Req_unRate;
+
 
     /// <summary>
     /// 取得傳遞參數 - DateType

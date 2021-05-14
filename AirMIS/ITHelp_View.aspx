@@ -360,8 +360,8 @@
                                         <div class="required field">
                                             <label>請問案件的處理速度?</label>
                                             <asp:RadioButtonList ID="rbl_RateQ1" runat="server" RepeatDirection="Horizontal">
-                                                <asp:ListItem Value="1">&nbsp;A：非常快速&nbsp;&nbsp;</asp:ListItem>
-                                                <asp:ListItem Value="2" Selected="True">&nbsp;B：正常速度&nbsp;&nbsp;</asp:ListItem>
+                                                <asp:ListItem Value="1" Selected="True">&nbsp;A：非常快速&nbsp;&nbsp;</asp:ListItem>
+                                                <asp:ListItem Value="2">&nbsp;B：正常速度&nbsp;&nbsp;</asp:ListItem>
                                                 <asp:ListItem Value="3">&nbsp;C：速度緩慢&nbsp;&nbsp;</asp:ListItem>
                                             </asp:RadioButtonList>
                                         </div>

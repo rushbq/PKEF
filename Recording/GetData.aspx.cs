@@ -166,6 +166,7 @@ public partial class Google_GetData : System.Web.UI.Page
             //[SQL] - SQL Statement
             sbSQL.Append(" SELECT SUM(ISNULL(Base.Finish_Hours, 0)) AS GroupSum");
             sbSQL.Append("  , COUNT(Base.TraceID) AS GroupCnt");
+            sbSQL.Append("  , ROUND((SUM(ISNULL(Base.Finish_Hours, 0)) / COUNT(Base.TraceID)), 2) AS GroupAvg");
             sbSQL.Append("  , ReqClass.Class_Name AS GroupName");
             sbSQL.Append(" FROM IT_Help Base ");
             sbSQL.Append("  INNER JOIN IT_Help_ParamClass ReqClass ON Base.Req_Class = ReqClass.Class_ID ");
@@ -197,16 +198,18 @@ public partial class Google_GetData : System.Web.UI.Page
                 string cat = "";
                 double val = 0;
                 int val1 = 0;
+                double val2 = 0;
                 foreach (DataRow dr in DT.Rows)
                 {
                     //群組數值
-                    val = Convert.ToDouble(dr[0]);
-                    val1 = Convert.ToInt32(dr[1]);
+                    val = Convert.ToDouble(dr[0]); //hour
+                    val1 = Convert.ToInt32(dr[1]); //count
+                    val2 = Convert.ToDouble(dr[2]); //avg
 
                     //群組名稱
-                    cat = dr[2].ToString();
+                    cat = dr[3].ToString(); //name
 
-                    dataList.Add(new Data(cat, val, val1));
+                    dataList.Add(new Data(cat, val, val1, val2));
                 }
                 return dataList;
             }
@@ -236,11 +239,12 @@ public partial class Google_GetData : System.Web.UI.Page
             //[SQL] - 查詢
             sbSQL.Append(" SELECT SUM(Base.Finish_Hours) AS GroupSum");
             sbSQL.Append("  , COUNT(Base.TraceID) AS GroupCnt");
+            sbSQL.Append("  , ROUND((SUM(ISNULL(Base.Finish_Hours, 0)) / COUNT(Base.TraceID)), 2) AS GroupAvg");
             sbSQL.Append("  , Prof.Account_Name + ' (' + Prof.Display_Name + ')' AS GroupName");
             sbSQL.Append(" FROM IT_Help Base");
-            sbSQL.Append("  INNER JOIN PKSYS.dbo.User_Profile Prof ON Base.Update_Who = Prof.Guid");
+            sbSQL.Append("  INNER JOIN PKSYS.dbo.User_Profile Prof ON Base.Finish_Who = Prof.Guid");
             sbSQL.Append("  INNER JOIN PKSYS.dbo.User_Dept Dept ON Prof.DeptID = Dept.DeptID");
-            sbSQL.Append(" WHERE (Base.Update_Who IS NOT NULL) AND (Base.Finish_Hours > 0) AND (Prof.Display = 'Y')");
+            sbSQL.Append(" WHERE (Base.Help_Status = 125) AND (Prof.Display = 'Y') AND (Base.Finish_Hours > 0)");
 
             //[查詢條件] - 開始日期
             if (false == string.IsNullOrEmpty(StartDate))
@@ -255,13 +259,15 @@ public partial class Google_GetData : System.Web.UI.Page
                 cmd.Parameters.AddWithValue("EndDate", string.Format("{0} 23:59:59", EndDate));
             }
             //[查詢條件] - 區域
-            if (false == string.IsNullOrEmpty(AreaCode))
-            {
-                sbSQL.Append(" AND (Dept.Area = @AreaCode)");
-                cmd.Parameters.AddWithValue("AreaCode", AreaCode);
-            }
+            //2021/5/4 取消
+            //if (false == string.IsNullOrEmpty(AreaCode))
+            //{
+            //    sbSQL.Append(" AND (Dept.Area = @AreaCode)");
+            //    cmd.Parameters.AddWithValue("AreaCode", AreaCode);
+            //}
 
             sbSQL.Append(" GROUP BY Prof.Account_Name, Prof.Display_Name");
+            sbSQL.Append(" ORDER BY Prof.Account_Name");
 
             //[SQL] - SQL Source
             cmd.CommandText = sbSQL.ToString();
@@ -274,16 +280,18 @@ public partial class Google_GetData : System.Web.UI.Page
                 string cat = "";
                 double val = 0;
                 int val1 = 0;
+                double val2 = 0;
                 foreach (DataRow dr in DT.Rows)
                 {
-                    //群組數值
+                    //群組數值(x軸)
                     val = Convert.ToDouble(dr[0]);
                     val1 = Convert.ToInt32(dr[1]);
+                    val2 = Convert.ToDouble(dr[2]); //avg
 
-                    //群組名稱
-                    cat = dr[2].ToString();
+                    //群組名稱(y軸)
+                    cat = dr[3].ToString();
 
-                    dataList.Add(new Data(cat, val, val1));
+                    dataList.Add(new Data(cat, val, val1, val2));
                 }
                 return dataList;
             }
@@ -304,58 +312,62 @@ public partial class Google_GetData : System.Web.UI.Page
 
         using (SqlCommand cmd = new SqlCommand())
         {
-            StringBuilder sbSQL = new StringBuilder();
-
-            //[SQL] - Parameters
-            cmd.Parameters.Clear();
-
+            //StringBuilder sbSQL = new StringBuilder();
+            
             //[SQL] - SQL Statement
-            sbSQL.Append(" SELECT");
-            sbSQL.Append(" ISNULL(SUM(CASE WHEN Base.RateScore = 1 THEN 1 ELSE 0 END) ,0) AS '一星'");
-            sbSQL.Append(" , ISNULL(SUM(CASE WHEN Base.RateScore = 2 THEN 1 ELSE 0 END) ,0) AS '二星'");
-            sbSQL.Append(" , ISNULL(SUM(CASE WHEN Base.RateScore = 3 THEN 1 ELSE 0 END) ,0) AS '三星'");
-            sbSQL.Append(" , ISNULL(SUM(CASE WHEN Base.RateScore = 4 THEN 1 ELSE 0 END) ,0) AS '四星'");
-            sbSQL.Append(" , ISNULL(SUM(CASE WHEN Base.RateScore = 5 THEN 1 ELSE 0 END) ,0) AS '五星'");
-            sbSQL.Append(" FROM IT_Help Base");
-            sbSQL.Append(" WHERE (Base.IsRate = 'Y')");
+            string sql = @"SELECT
+                 ISNULL(SUM(CASE WHEN Base.RateScore = 1 THEN 1 ELSE 0 END) ,0) AS '一星'
+                , ISNULL(SUM(CASE WHEN Base.RateScore = 2 THEN 1 ELSE 0 END) ,0) AS '二星'
+                , ISNULL(SUM(CASE WHEN Base.RateScore = 3 THEN 1 ELSE 0 END) ,0) AS '三星'
+                , ISNULL(SUM(CASE WHEN Base.RateScore = 4 THEN 1 ELSE 0 END) ,0) AS '四星'
+                , ISNULL(SUM(CASE WHEN Base.RateScore = 5 THEN 1 ELSE 0 END) ,0) AS '五星'
+                , Prof.Display_Name AS GroupName
+                , Prof.Account_Name
+                FROM IT_Help Base 
+                 INNER JOIN PKSYS.dbo.User_Profile Prof ON Base.Finish_Who = Prof.Guid
+                WHERE (Base.Help_Status = 125) AND (Prof.Display = 'Y') AND (Base.Finish_Hours > 0)
+                 AND (Base.IsRate = 'Y')";
+
 
             //[查詢條件] - 開始日期
             if (false == string.IsNullOrEmpty(StartDate))
             {
-                sbSQL.Append(" AND (Base.Create_Time >= @StartDate) ");
+                sql += " AND (Base.Create_Time >= @StartDate) ";
                 cmd.Parameters.AddWithValue("StartDate", string.Format("{0} 00:00:00", StartDate));
             }
             //[查詢條件] - 結束日期
             if (false == string.IsNullOrEmpty(EndDate))
             {
-                sbSQL.Append(" AND (Base.Create_Time <= @EndDate) ");
+                sql += " AND (Base.Create_Time <= @EndDate) ";
                 cmd.Parameters.AddWithValue("EndDate", string.Format("{0} 23:59:59", EndDate));
             }
 
+            //Group by
+            sql += " GROUP BY Prof.Display_Name, Prof.Account_Name ORDER BY Prof.Account_Name";
+
             //[SQL] - SQL Source
-            cmd.CommandText = sbSQL.ToString();
+            cmd.CommandText = sql;
 
             //取得資料
             using (DataTable DT = dbConn.LookupDT(cmd, out ErrMsg))
             {
                 List<Data> dataList = new List<Data>();
                 string cat = "";
-                int val = 0;
-
+                int val = 0, val1 = 0, val2 = 0, val3 = 0, val4 = 0;
                 foreach (DataRow dr in DT.Rows)
                 {
-                    foreach (DataColumn dc in DT.Columns)
-                    {
-                        //群組名稱
-                        cat = dc.ColumnName.ToString();
+                    //群組數值(x軸)
+                    val = Convert.ToInt32(dr[0]);
+                    val1 = Convert.ToInt32(dr[1]);
+                    val2 = Convert.ToInt32(dr[2]);
+                    val3 = Convert.ToInt32(dr[3]);
+                    val4 = Convert.ToInt32(dr[4]);
 
-                        //群組數值
-                        val = Convert.ToInt32(dr[dc]);
+                    //群組名稱(y軸)
+                    cat = dr[5].ToString();
 
-                        dataList.Add(new Data(cat, val));
-                    }
+                    dataList.Add(new Data(cat, val, val1, val2, val3, val4));
                 }
-
                 return dataList;
             }
         }
@@ -368,6 +380,9 @@ public class Data
     public string ColumnName = "";
     public double Value = 0;
     public double Value1 = 0;
+    public double Value2 = 0;
+    public double Value3 = 0;
+    public double Value4 = 0;
 
     public Data(string columnName, double value)
     {
@@ -380,5 +395,23 @@ public class Data
         ColumnName = columnName;
         Value = value;
         Value1 = value1;
+    }
+
+    public Data(string columnName, double value, double value1, double value2)
+    {
+        ColumnName = columnName;
+        Value = value;
+        Value1 = value1;
+        Value2 = value2;
+    }
+
+    public Data(string columnName, double value, double value1, double value2, double value3, double value4)
+    {
+        ColumnName = columnName;
+        Value = value;
+        Value1 = value1;
+        Value2 = value2;
+        Value3 = value3;
+        Value4 = value4;
     }
 }
