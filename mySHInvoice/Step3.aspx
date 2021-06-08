@@ -1,4 +1,4 @@
-﻿<%@ Page Title="上海-開票平台(內銷)" Language="C#" MasterPageFile="~/SiteMaster.master" AutoEventWireup="true" CodeFile="Step3.aspx.cs" Inherits="mySHInvoice_Step3" %>
+﻿<%@ Page Title="上海會計 | 百旺開票-紙本發票" Language="C#" MasterPageFile="~/SiteMaster.master" AutoEventWireup="true" CodeFile="Step3.aspx.cs" Inherits="mySHInvoice_Step3" %>
 
 <asp:Content ID="myCss" ContentPlaceHolderID="CssContent" runat="Server">
 </asp:Content>
@@ -8,11 +8,11 @@
         <div class="container">
             <div class="row">
                 <div class="col s12 m12 l12">
-                    <h5 class="breadcrumbs-title">Step3 - 轉入完成</h5>
+                    <h5 class="breadcrumbs-title">Step3.轉入完成</h5>
                     <ol class="breadcrumb">
-                        <li><a>上海-開票平台(內銷)</a></li>
-                        <li><a href="<%=fn_Params.WebUrl %>mySHInvoice/List.aspx">紙本發票</a></li>
-                        <li class="active">轉入完成</li>
+                        <li><a>上海會計</a></li>
+                        <li><a href="<%=fn_Params.WebUrl %>mySHInvoice/List.aspx">百旺開票-紙本發票</a></li>
+                        <li class="active">Step3</li>
                     </ol>
                 </div>
             </div>

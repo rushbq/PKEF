@@ -1,4 +1,4 @@
-﻿<%@ Page Title="上海-開票平台(內銷)" Language="C#" MasterPageFile="~/SiteMaster.master" AutoEventWireup="true" CodeFile="List.aspx.cs" Inherits="mySHInvoice_List" %>
+﻿<%@ Page Title="上海會計 | 百旺開票-紙本發票" Language="C#" MasterPageFile="~/SiteMaster.master" AutoEventWireup="true" CodeFile="List.aspx.cs" Inherits="mySHInvoice_List" %>
 
 <%@ Import Namespace="PKLib_Method.Methods" %>
 <asp:Content ID="myCss" ContentPlaceHolderID="CssContent" runat="Server">
@@ -10,8 +10,8 @@
             <div class="row">
                 <div class="col s12 m12 l12">
                     <ol class="breadcrumb">
-                        <li><a>上海-開票平台(內銷)</a></li>
-                        <li class="active">紙本發票</li>
+                        <li><a>上海會計</a></li>
+                        <li class="active">百旺開票-紙本發票</li>
                     </ol>
                 </div>
             </div>

@@ -1,4 +1,4 @@
-﻿<%@ Page Title="上海會計 | 轉出匯款資料" Language="C#" MasterPageFile="~/Site_S_UI.master" AutoEventWireup="true" CodeFile="PayExpStep2.aspx.cs" Inherits="myInvoice_Extend_PayExpStep2" %>
+﻿<%@ Page Title="上海會計 | 付款單-匯出資料" Language="C#" MasterPageFile="~/Site_S_UI.master" AutoEventWireup="true" CodeFile="PayExpStep2.aspx.cs" Inherits="myInvoice_Extend_PayExpStep2" %>
 
 <%@ Import Namespace="PKLib_Method.Methods" %>
 <%@ Register Src="Ascx_PayExpStepMenu.ascx" TagName="Ascx_Menu" TagPrefix="ucMenu" %>
@@ -12,7 +12,7 @@
                 <div class="ui small breadcrumb">
                     <div class="section">上海會計</div>
                     <i class="right angle icon divider"></i>
-                    <div class="section">轉出匯款資料</div>
+                    <div class="section">付款單-匯出資料</div>
                     <i class="right angle icon divider"></i>
                     <div class="active section">
                         Step2.檢查匯款資料

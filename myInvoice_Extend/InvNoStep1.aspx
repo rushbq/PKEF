@@ -1,4 +1,4 @@
-﻿<%@ Page Title="開票平台 | 發票回填ERP" Language="C#" MasterPageFile="~/Site_S_UI.master" AutoEventWireup="true" CodeFile="InvNoStep1.aspx.cs" Inherits="myInvoice_Extend_InvNoStep1" %>
+﻿<%@ Page Title="上海會計 | 發票回填-批次多筆" Language="C#" MasterPageFile="~/Site_S_UI.master" AutoEventWireup="true" CodeFile="InvNoStep1.aspx.cs" Inherits="myInvoice_Extend_InvNoStep1" %>
 
 <%@ Register Src="Ascx_InvNoStepMenu.ascx" TagName="Ascx_Menu" TagPrefix="ucMenu" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="CssContent" runat="Server">
@@ -9,9 +9,9 @@
         <div class="ui small menu toolbar">
             <div class="item">
                 <div class="ui small breadcrumb">
-                    <div class="section">開票平台</div>
+                    <div class="section">上海會計</div>
                     <i class="right angle icon divider"></i>
-                    <div class="section">發票回填ERP</div>
+                    <div class="section">發票回填-批次多筆</div>
                     <i class="right angle icon divider"></i>
                     <div class="active section">
                         Step1.查詢 & 設定基本參數
@@ -91,11 +91,12 @@
                 </div>
 
                 <div class="ui message">
-                    <div class="header">注意事項</div>
+                    <div class="header">功能說明</div>
                     <ul class="list">
                         <li>請慎選<strong class="red-text text-darken-1">公司別</strong></li>
                         <li>已在開票平台上的單號不會顯示。</li>
                         <li>已有發票號碼的結帳單不會顯示。</li>
+                        <li class="orange-text text-darken-4">填入發票號碼/日期，回寫至勾選的結帳單</li>
                     </ul>
                 </div>
 

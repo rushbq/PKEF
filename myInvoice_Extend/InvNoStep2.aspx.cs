@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
-using Invoice.Controllers;
+using Invoice.SH.Controllers;
 using Invoice.Models;
 using PKLib_Method.Methods;
 
@@ -120,7 +120,7 @@ public partial class myInvoice_Extend_InvNoStep2 : SecurityIn
         {
             //----- 原始資料:取得所有資料 -----
             var query = _data.GetErpUnBilledData(compID, custID, startDate, endDate, out ErrMsg);
-   
+
             //----- 資料整理:繫結 ----- 
             lvDataList.DataSource = query;
             lvDataList.DataBind();
@@ -312,7 +312,7 @@ public partial class myInvoice_Extend_InvNoStep2 : SecurityIn
     {
         get
         {
-            return "{0}/InvNoStep1.aspx".FormatThis(FuncPath());
+            return "{0}/InvNoStep1.aspx?dbs={1}".FormatThis(FuncPath(), Req_DBS);
         }
         set
         {

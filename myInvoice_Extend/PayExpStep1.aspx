@@ -1,4 +1,4 @@
-﻿<%@ Page Title="上海會計 | 轉出匯款資料" Language="C#" MasterPageFile="~/Site_S_UI.master" AutoEventWireup="true" CodeFile="PayExpStep1.aspx.cs" Inherits="myInvoice_Extend_PayExpStep1" %>
+﻿<%@ Page Title="上海會計 | 付款單-匯出資料" Language="C#" MasterPageFile="~/Site_S_UI.master" AutoEventWireup="true" CodeFile="PayExpStep1.aspx.cs" Inherits="myInvoice_Extend_PayExpStep1" %>
 
 <%@ Import Namespace="PKLib_Method.Methods" %>
 <%@ Register Src="Ascx_PayExpStepMenu.ascx" TagName="Ascx_Menu" TagPrefix="ucMenu" %>
@@ -12,7 +12,7 @@
                 <div class="ui small breadcrumb">
                     <div class="section">上海會計</div>
                     <i class="right angle icon divider"></i>
-                    <div class="section">轉出匯款資料</div>
+                    <div class="section">付款單-匯出資料</div>
                     <i class="right angle icon divider"></i>
                     <div class="active section">
                         Step1.查詢 & 設定基本參數
@@ -71,16 +71,6 @@
                         <asp:TextBox ID="tb_PayAcc2" runat="server" MaxLength="32" autocomplete="off">452059231369</asp:TextBox>
                     </div>
                 </div>
-
-                <%--<div class="ui message">
-                    <div class="header">注意事項</div>
-                    <ul class="list">
-                        <li>請慎選<strong class="red-text text-darken-1">公司別</strong></li>
-                        <li>已在開票平台上的單號不會顯示。</li>
-                        <li>已有發票號碼的結帳單不會顯示。</li>
-                    </ul>
-                </div>--%>
-
                 <div class="ui grid">
                     <div class="six wide column">
                         <a href="<%=thisPage %>" class="ui button"><i class="undo icon"></i>重置</a>
@@ -96,6 +86,14 @@
                         </asp:PlaceHolder>
                     </div>
                 </div>
+
+            </div>
+            <div class="ui message">
+                <div class="header">功能說明</div>
+                <ul class="list">
+                    <li>資料來源:<strong>ERP付款單未確認單據</strong>。</li>
+                    <li>勾選指定單據，匯出Excel</li>
+                </ul>
             </div>
             <!-- 基本資料 End -->
             <!-- 列表 S -->

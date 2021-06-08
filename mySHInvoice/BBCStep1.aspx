@@ -1,4 +1,4 @@
-﻿<%@ Page Title="上海-開票平台(內銷)" Language="C#" MasterPageFile="~/SiteMaster.master" AutoEventWireup="true" CodeFile="BBCStep1.aspx.cs" Inherits="mySHInvoice_BBCStep1" %>
+﻿<%@ Page Title="上海會計 | 百旺開票-電商發票" Language="C#" MasterPageFile="~/SiteMaster.master" AutoEventWireup="true" CodeFile="BBCStep1.aspx.cs" Inherits="mySHInvoice_BBCStep1" %>
 
 <asp:Content ID="myCss" ContentPlaceHolderID="CssContent" runat="Server">
 </asp:Content>
@@ -10,8 +10,8 @@
                 <div class="col s12 m12 l12">
                     <h5 class="breadcrumbs-title">電商紙本發票 - 資料勾選</h5>
                     <ol class="breadcrumb">
-                        <li><a>上海-開票平台(內銷)</a></li>
-                        <li><a href="<%=fn_Params.WebUrl %>mySHInvoice/BBCList.aspx">電商紙本發票</a></li>
+                        <li><a>上海會計</a></li>
+                        <li><a href="<%=fn_Params.WebUrl %>mySHInvoice/BBCList.aspx">百旺開票-電商發票</a></li>
                         <li class="active">資料勾選</li>
                     </ol>
                 </div>

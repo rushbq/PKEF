@@ -1,4 +1,4 @@
-﻿<%@ Page Title="上海-開票平台" Language="C#" MasterPageFile="~/SiteMaster.master" AutoEventWireup="true" CodeFile="ErpInvStep2.aspx.cs" Inherits="mySHInvoice_ErpInvStep2" %>
+﻿<%@ Page Title="上海會計 | 發票回填-手動逐筆" Language="C#" MasterPageFile="~/SiteMaster.master" AutoEventWireup="true" CodeFile="ErpInvStep2.aspx.cs" Inherits="mySHInvoice_ErpInvStep2" %>
 
 <asp:Content ID="myCss" ContentPlaceHolderID="CssContent" runat="Server">
 </asp:Content>
@@ -10,9 +10,9 @@
                 <div class="col s12 m12 l12">
                     <h5 class="breadcrumbs-title">ERP未開票資料 - Step2</h5>
                     <ol class="breadcrumb">
-                        <li><a>上海-開票平台</a></li>
-                        <li><a href="<%=Application["WebUrl"] %>mySHInvoice/List.aspx">紙本發票</a></li>
-                        <li class="active">手動填發票-Step2</li>
+                        <li><a>上海會計</a></li>
+                        <li><a>發票回填-手動逐筆</a></li>
+                        <li>Step2</li>
                     </ol>
                 </div>
             </div>

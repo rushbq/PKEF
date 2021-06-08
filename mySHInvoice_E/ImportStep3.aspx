@@ -1,4 +1,4 @@
-﻿<%@ Page Title="上海-電子發票 | 匯入Excel" Language="C#" MasterPageFile="~/SiteMaster.master" AutoEventWireup="true" CodeFile="ImportStep3.aspx.cs" Inherits="mySHInvoiceE_ImportStep3" %>
+﻿<%@ Page Title="上海會計 | 電子發票匯入 | Step3" Language="C#" MasterPageFile="~/SiteMaster.master" AutoEventWireup="true" CodeFile="ImportStep3.aspx.cs" Inherits="mySHInvoiceE_ImportStep3" %>
 
 <asp:Content ID="myCss" ContentPlaceHolderID="CssContent" runat="Server">
 </asp:Content>
@@ -8,10 +8,10 @@
         <div class="container">
             <div class="row">
                 <div class="col s12 m12 l12">
-                    <h5 class="breadcrumbs-title">Step3 - 確認匯入資料</h5>
+                    <h5 class="breadcrumbs-title">Step3.確認匯入資料</h5>
                     <ol class="breadcrumb">
-                        <li><a>上海-電子發票</a></li>
-                        <li><a>匯入Excel</a></li>
+                        <li><a>上海會計</a></li>
+                        <li><a>電子發票匯入</a></li>
                         <li class="active">Step3</li>
                     </ol>
                 </div>

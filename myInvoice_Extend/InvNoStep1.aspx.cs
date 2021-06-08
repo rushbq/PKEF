@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Web;
-using Invoice.Controllers;
+using Invoice.SH.Controllers;
 using Invoice.Models;
 using PKLib_Method.Methods;
 
@@ -193,7 +193,7 @@ public partial class myInvoice_Extend_InvNoStep1 : SecurityIn
     {
         get
         {
-            return "{0}/InvNoStep1.aspx".FormatThis(FuncPath());
+            return "{0}/InvNoStep1.aspx?dbs={1}".FormatThis(FuncPath(), Req_DBS);
         }
         set
         {

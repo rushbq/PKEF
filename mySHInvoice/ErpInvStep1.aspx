@@ -1,4 +1,4 @@
-﻿<%@ Page Title="上海-開票平台" Language="C#" MasterPageFile="~/SiteMaster.master" AutoEventWireup="true" CodeFile="ErpInvStep1.aspx.cs" Inherits="mySHInvoice_ErpInvStep1" %>
+﻿<%@ Page Title="上海會計 | 發票回填-手動逐筆" Language="C#" MasterPageFile="~/SiteMaster.master" AutoEventWireup="true" CodeFile="ErpInvStep1.aspx.cs" Inherits="mySHInvoice_ErpInvStep1" %>
 
 <asp:Content ID="myCss" ContentPlaceHolderID="CssContent" runat="Server">
 </asp:Content>
@@ -10,9 +10,9 @@
                 <div class="col s12 m12 l12">
                     <h5 class="breadcrumbs-title">ERP未開票資料 - Step1</h5>
                     <ol class="breadcrumb">
-                        <li><a>上海-開票平台</a></li>
-                        <li><a href="<%=Application["WebUrl"] %>mySHInvoice/List.aspx">紙本發票</a></li>
-                        <li class="active">手動填發票-Step1</li>
+                        <li><a>上海會計</a></li>
+                        <li><a>發票回填-手動逐筆</a></li>
+                        <li class="active">Step1</li>
                     </ol>
                 </div>
             </div>
@@ -53,12 +53,13 @@
                 </div>
                 <div class="section row">
                     <div class="col s12">
-                        <label>注意事項</label>
+                        <label>功能說明</label>
                         <div>
                             <ul class="collection">
                                 <li class="collection-item"><i class="material-icons left">info</i>若查找不到客戶，請確認客戶資料已建立</li>
                                 <li class="collection-item"><i class="material-icons left">info</i>查詢結果僅列出ERP結帳單「發票號碼」為空白的資料</li>
                                 <li class="collection-item"><i class="material-icons left">info</i>發票號碼儲存後將會直接回寫至ERP</li>
+                                <li class="collection-item orange-text text-darken-4"><i class="material-icons left">info</i>列出結帳單，逐筆輸入發票資料</li>
                             </ul>
                         </div>
                     </div>
@@ -73,7 +74,7 @@
         <div class="container">
             <div class="section row">
                 <div class="col s6">
-                    <a href="<%=Application["WebUrl"] %>mySHInvoice/List.aspx" class="btn-large waves-effect waves-light grey">取消，返回列表<i class="material-icons left">arrow_back</i></a>
+                    <%--<a href="<%=Application["WebUrl"] %>mySHInvoice/List.aspx" class="btn-large waves-effect waves-light grey">取消，返回列表<i class="material-icons left">arrow_back</i></a>--%>
                 </div>
                 <div class="col s6 right-align">
                     <div id="showProcess" class="progress" style="display: none;">

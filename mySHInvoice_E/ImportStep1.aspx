@@ -1,4 +1,4 @@
-﻿<%@ Page Title="上海-電子發票 | 匯入Excel" Language="C#" MasterPageFile="~/SiteMaster.master" AutoEventWireup="true" CodeFile="ImportStep1.aspx.cs" Inherits="mySHInvoiceE_ImportStep1" %>
+﻿<%@ Page Title="上海會計 | 電子發票匯入 | Step1" Language="C#" MasterPageFile="~/SiteMaster.master" AutoEventWireup="true" CodeFile="ImportStep1.aspx.cs" Inherits="mySHInvoiceE_ImportStep1" %>
 
 <asp:Content ID="myCss" ContentPlaceHolderID="CssContent" runat="Server">
 </asp:Content>
@@ -8,10 +8,10 @@
         <div class="container">
             <div class="row">
                 <div class="col s12 m12 l12">
-                    <h5 class="breadcrumbs-title">Step1 - 檔案上傳</h5>
+                    <h5 class="breadcrumbs-title">Step1.檔案上傳</h5>
                     <ol class="breadcrumb">
-                        <li><a>上海-電子發票</a></li>
-                        <li><a>匯入Excel</a></li>
+                        <li><a>上海會計</a></li>
+                        <li><a>電子發票匯入</a></li>
                         <li class="active">Step1</li>
                     </ol>
                 </div>
@@ -24,7 +24,7 @@
     <div class="container">
         <asp:PlaceHolder ID="ph_Message" runat="server" Visible="false">
             <div class="card-panel red darken-1 white-text">
-                <h4><i class="material-icons right">error_outline</i>Oops...發生了一點小問題</h4>                
+                <h4><i class="material-icons right">error_outline</i>Oops...發生了一點小問題</h4>
             </div>
         </asp:PlaceHolder>
         <asp:PlaceHolder ID="ph_Content" runat="server">
@@ -46,22 +46,20 @@
                         <asp:Literal ID="lt_UploadMessage" runat="server"></asp:Literal>
                     </div>
                 </div>
-            </div>
-        </asp:PlaceHolder>
-         <div class="row">
-            <div class="col s12 m12 l12">
-                <div class="card-panel">
-                    <div class="section row">
-                        <div class="col s12">
-                            <label>匯入範本</label>
-                            <div class="collection">
-                                <a href="<%=Application["RefUrl"] %>PKEF/SZInvoice_Sample/Sample.xlsx" class="collection-item" target="_blank">範本下載<i class="material-icons right">cloud_download</i></a>
-                            </div>
+                <div class="section row">
+                    <div class="col s12">
+                        <label>功能說明</label>
+                        <div>
+                            <ul class="collection">
+                                <li><a href="<%=Application["RefUrl"] %>PKEF/SZInvoice_Sample/Sample.xlsx" class="collection-item" target="_blank">Excel匯入範本下載<i class="material-icons right">cloud_download</i></a></li>
+                                <li class="collection-item"><i class="material-icons left">info</i>此功能為回寫電商發票資料</li>
+                                <li class="collection-item red-text text-darken-1"><i class="material-icons left">info</i>匯入Excel後，對應「訂單:客戶單號」，將發票號碼、發票日回填至結帳單</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </asp:PlaceHolder>
     </div>
     <!-- Body Content End -->
 </asp:Content>
@@ -80,6 +78,5 @@
     </asp:PlaceHolder>
 </asp:Content>
 <asp:Content ID="myScript" ContentPlaceHolderID="ScriptContent" runat="Server">
-
 </asp:Content>
 

@@ -1,4 +1,4 @@
-﻿<%@ Page Title="上海-電子發票 | 記錄查詢" Language="C#" MasterPageFile="~/SiteMaster.master" AutoEventWireup="true" CodeFile="ImportLog.aspx.cs" Inherits="mySHInvoiceE_ImportLog" %>
+﻿<%@ Page Title="上海會計 | 電子發票匯入 | 記錄查詢" Language="C#" MasterPageFile="~/SiteMaster.master" AutoEventWireup="true" CodeFile="ImportLog.aspx.cs" Inherits="mySHInvoiceE_ImportLog" %>
 
 <asp:Content ID="myCss" ContentPlaceHolderID="CssContent" runat="Server">
 </asp:Content>
@@ -10,7 +10,8 @@
                 <div class="col s12 m12 l12">
                     <h5 class="breadcrumbs-title">記錄查詢</h5>
                     <ol class="breadcrumb">
-                        <li><a href="#!">上海-電子發票</a></li>
+                        <li><a>上海會計</a></li>
+                        <li><a>電子發票匯入</a></li>
                         <li class="active">記錄查詢</li>
                     </ol>
                 </div>
