@@ -321,7 +321,7 @@
                                     </div>
                                     <div class="fields">
                                         <div class="sixteen wide field">
-                                            <asp:TextBox ID="tb_ReplyContent" runat="server" Rows="4" TextMode="MultiLine" MaxLength="1000" placeholder="備註，最多 500 字"></asp:TextBox>
+                                            <asp:TextBox ID="tb_ReplyContent" runat="server" Rows="12" TextMode="MultiLine" MaxLength="3000" placeholder="概要說明，最多 2000 字"></asp:TextBox>
                                         </div>
                                     </div>
                                 </div>
@@ -645,7 +645,7 @@
                         <div class="fields">
                             <div class="sixteen wide field">
                                 <label>內文簡易說明</label>
-                                <textarea id="dia-mailCont" rows="3" maxlength="200" placeholder="最多 100 字"></textarea>
+                                <textarea id="dia-mailCont" rows="3" maxlength="300" placeholder="最多 200 字"></textarea>
                             </div>
                         </div>
                     </div>

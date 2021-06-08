@@ -686,7 +686,7 @@ public partial class AirMIS_ITHelp_Search : SecurityIn
         get
         {
             String _data = Request.QueryString["sDate"];
-            string dt = DateTime.Now.AddDays(-365).ToString().ToDateString("yyyy/MM/dd");
+            string dt = DateTime.Now.AddDays(-270).ToString().ToDateString("yyyy/MM/dd");
             return (CustomExtension.String_資料長度Byte(_data, "1", "10", out ErrMsg)) ? _data.Trim() : dt;
         }
         set

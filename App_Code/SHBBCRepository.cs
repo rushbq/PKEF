@@ -4601,9 +4601,9 @@ namespace SH_BBC.Controllers
 
 
             //----- 更新 SHBBC_ImportData_DT, 價格 -----
-            if (!Update_Price(dataID, dataList.AsQueryable()))
+            if (!Update_Price(dataID, dataList.AsQueryable(), out ErrMsg))
             {
-                ErrMsg = "未正確取得ERP價格.(Check_Step3.Update_Price)";
+                ErrMsg += "未正確取得ERP價格.(Check_Step3.Update_Price)";
                 return false;
             }
 
@@ -4887,10 +4887,11 @@ namespace SH_BBC.Controllers
         /// <remarks>
         /// ERP_Price, ERP_NewPrice
         /// </remarks>
-        private bool Update_Price(string dataID, IQueryable<RefColumn> query)
+        private bool Update_Price(string dataID, IQueryable<RefColumn> query, out string ErrMsg)
         {
             //----- 宣告 -----
             StringBuilder sql = new StringBuilder();
+            ErrMsg = "";
 
             //----- 資料查詢 -----
             using (SqlCommand cmd = new SqlCommand())
@@ -4900,16 +4901,26 @@ namespace SH_BBC.Controllers
                 foreach (var item in query)
                 {
                     sql.AppendLine(" UPDATE SHBBC_ImportData_DT");
-                    sql.AppendLine(" SET ERP_Price = @ERP_Price_{0}, Currency = @Currency_{0}, ERP_NewPrice = @ERP_Price_{0}, inMOQ = @inMOQ_{0}".FormatThis(row));
+
+                    //210603:資料會超出參數上限
+                    //sql.AppendLine(" SET ERP_Price = @ERP_Price_{0}, Currency = @Currency_{0}, ERP_NewPrice = @ERP_Price_{0}, inMOQ = @inMOQ_{0}".FormatThis(row));
+                    sql.AppendLine(" SET ERP_Price = {0}, Currency = '{1}', ERP_NewPrice = {0}, inMOQ = {2}".FormatThis(
+                            item.ERP_Price
+                            , item.Currency
+                            , item.inMOQ == null ? 0 : item.inMOQ
+                        ));
                     sql.AppendLine(" WHERE (Parent_ID = @DataID) AND (IsGift = 'N')");
-                    sql.AppendLine("  AND (ERP_ModelNo = @ModelNo_{0}) AND (BuyCnt = @BuyCnt_{0});".FormatThis(row));
+                    sql.AppendLine("  AND (ERP_ModelNo = N'{0}') AND (BuyCnt = {1});".FormatThis(
+                            item.ERP_ModelNo
+                            , item.BuyCnt
+                        ));
 
 
-                    cmd.Parameters.AddWithValue("ERP_Price_" + row, item.ERP_Price);
-                    cmd.Parameters.AddWithValue("Currency_" + row, item.Currency);
-                    cmd.Parameters.AddWithValue("ModelNo_" + row, item.ERP_ModelNo);
-                    cmd.Parameters.AddWithValue("BuyCnt_" + row, item.BuyCnt);
-                    cmd.Parameters.AddWithValue("inMOQ_" + row, item.inMOQ == null ? 0 : item.inMOQ);
+                    //cmd.Parameters.AddWithValue("ERP_Price_" + row, item.ERP_Price);
+                    //cmd.Parameters.AddWithValue("Currency_" + row, item.Currency);
+                    //cmd.Parameters.AddWithValue("ModelNo_" + row, item.ERP_ModelNo);
+                    //cmd.Parameters.AddWithValue("inMOQ_" + row, item.inMOQ == null ? 0 : item.inMOQ);
+                    //cmd.Parameters.AddWithValue("BuyCnt_" + row, item.BuyCnt);
 
                     row++;
                 }
@@ -4921,6 +4932,7 @@ namespace SH_BBC.Controllers
                 //----- SQL 執行 -----
                 if (string.IsNullOrEmpty(sql.ToString()))
                 {
+                    ErrMsg = "SQL empty";
                     return false;
                 }
                 else

@@ -50,12 +50,19 @@
                             </div>
                         </div>
                     </div>
+                    <div class="ui message">
+                        <div class="header">功能說明</div>
+                        <ul class="list">
+                            <li>當BBC匯入出現客戶品號的問題時，可用此功能檢查。</li>
+                            <li>檢查指定客戶，ERP客戶品號資料是否有重複。</li>
+                        </ul>
+                    </div>
                 </div>
 
-                <div class="ui orange segment" style="display:none;">
+                <div class="ui orange segment" style="display: none;">
                     <h5 class="ui header">台灣資料庫</h5>
                 </div>
-                <div class="ui small form segment" style="display:none;">
+                <div class="ui small form segment" style="display: none;">
                     <div class="sixteen wide field">
                         <label>客戶(台灣)</label>
                         <div class="two fields">
@@ -77,8 +84,7 @@
             <!-- Section End -->
             <div class="ui segments">
                 <div class="ui blue segment">
-                    <h5 class="ui header">
-                        查詢結果&nbsp;<small><asp:Literal ID="lt_CustID" runat="server"></asp:Literal></small>
+                    <h5 class="ui header">查詢結果&nbsp;<small><asp:Literal ID="lt_CustID" runat="server"></asp:Literal></small>
                         &nbsp;<small class="grey-text text-darken-2">(資料來源：ERP客戶品號資料)</small>
                     </h5>
                 </div>
@@ -106,7 +112,7 @@
                             </tr>
                         </ItemTemplate>
                         <EmptyDataTemplate>
-                            <p>目前無重複資料</p>
+                            <strong class="blue-text text-darken-3">檢查完畢：目前查無重複資料</strong>
                         </EmptyDataTemplate>
                     </asp:ListView>
                 </div>

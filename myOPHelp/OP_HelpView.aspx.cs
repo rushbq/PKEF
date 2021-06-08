@@ -23,7 +23,7 @@ public partial class OP_HelpView : SecurityIn
                 string ErrMsg;
 
                 //[權限判斷] - 品號修改需求登記
-                if (fn_CheckAuth.CheckAuth_User("520", out ErrMsg) == false)
+                if (fn_CheckAuth.CheckAuth_User("524", out ErrMsg) == false)
                 {
                     Response.Redirect(string.Format("../Unauthorized.aspx?ErrMsg={0}", HttpUtility.UrlEncode(ErrMsg)), true);
                     return;

@@ -14,7 +14,7 @@ public partial class Main : SecurityIn
         {
             if (!IsPostBack)
             {
-                //[判斷來源參數]
+                //[判斷來源參數] 自動轉址, 停用前需至各程式修改.
                 if (Request.QueryString["t"] != null)
                 {
                     string target = Request.QueryString["t"];
@@ -26,21 +26,6 @@ public partial class Main : SecurityIn
                             //工作日誌
                             Response.Redirect("WorkReport/WR_Write.aspx");
                             break;
-
-                        //case "ithelp_reply":
-                        //    //資訊需求登記 - 回覆連結
-                        //    Response.Redirect("Recording/IT_HelpEdit.aspx?TraceID={0}".FormatThis(Server.UrlEncode(dataID)));
-                        //    break;
-
-                        //case "ithelp_view":
-                        //    //資訊需求登記 - 觀看連結
-                        //    Response.Redirect("Recording/IT_HelpView.aspx?TraceID={0}".FormatThis(Server.UrlEncode(dataID)));
-                        //    break;
-
-                        //case "ithelp":
-                        //    //資訊需求登記 - 查詢頁
-                        //    Response.Redirect("Recording/IT_HelpSearch.aspx");
-                        //    break;
 
                         case "ophelp_reply":
                             //品號需求登記 - 回覆連結

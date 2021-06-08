@@ -496,7 +496,7 @@ public class API_ERPData : System.Web.Services.WebService
             string strDBS = (aryDBS.Count > 0) ? string.Join(",", aryDBS.ToArray()) : "";
             string strQty = (aryQty.Count > 0) ? string.Join(",", aryQty.ToArray()) : "";
 
-            //查詢StoreProcedure (myPrc_GetQuotePrice_v1)
+            //查詢StoreProcedure (myPrc_GetFilterQuotePrice)
             using (SqlCommand cmd = new SqlCommand())
             {
                 cmd.CommandTimeout = 60;
