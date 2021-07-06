@@ -36,6 +36,7 @@
                         <asp:DropDownList ID="filter_dateType" runat="server" CssClass="fluid">
                             <asp:ListItem Value="A">登記日</asp:ListItem>
                             <asp:ListItem Value="B">結案日</asp:ListItem>
+                            <asp:ListItem Value="C">預計完成日</asp:ListItem>
                         </asp:DropDownList>
                     </div>
                     <div class="five wide field">
@@ -68,7 +69,7 @@
                     </div>
                     <div class="four wide field">
                         <label>關鍵字</label>
-                        <asp:TextBox ID="filter_Keyword" runat="server" MaxLength="10" autocomplete="off" placeholder="追蹤編號, 主旨"></asp:TextBox>
+                        <asp:TextBox ID="filter_Keyword" runat="server" MaxLength="20" autocomplete="off" placeholder="追蹤編號, 主旨"></asp:TextBox>
                     </div>
                 </div>
 

@@ -435,15 +435,15 @@ public partial class myTWBBC_Mall_ImportStep2 : SecurityIn
                     /* Linq Join 資料結合(明細檔+出貨檔)
                      * .Join(
                      *  參數1:要加入的資料來源 (query_Ship)
-                     *  參數2:主表要join的值 (pk => pk.ShipmentNo,)
-                     *  參數3:次表要join的值 (fk => fk.ShipmentNo,)
+                     *  參數2:主表要join的值 (pk => pk.ShipmentNo + pk.OrderID,)
+                     *  參數3:次表要join的值 (fk => fk.ShipmentNo + fk.OrderID,)
                      *  參數4:將資料集合起來 ((pk, fk))
                      *  new{ 重新命名欄位 }
                      * )
                      */
                     var dataCombine = query_Xls.Join(query_Ship,
-                         pk => pk.ShipmentNo,
-                         fk => fk.ShipmentNo,
+                         pk => pk.ShipmentNo + pk.OrderID,
+                         fk => fk.ShipmentNo + fk.OrderID,
                          (pk, fk) => new RefColumn
                          {
                              OrderID = pk.OrderID,

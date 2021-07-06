@@ -337,14 +337,29 @@
                                         </div>
                                         <div class="ten wide column right aligned">
                                             <!-- 主管核准 -->
-                                            <asp:LinkButton ID="lbtn_doApprove" runat="server" CssClass="ui orange small button" ToolTip="通知需求部門主管核准" OnClick="lbtn_doApprove_Click" OnClientClick="return confirm('是否通知主管核准?')"><i class="gavel icon"></i>主管核准</asp:LinkButton>
+                                            <asp:LinkButton ID="lbtn_doApprove" runat="server" CssClass="ui orange small button" OnClick="lbtn_doApprove_Click" OnClientClick="return confirm('是否通知主管核准?')"><i class="gavel icon"></i>主管核准</asp:LinkButton>
+                                            <!-- 核准說明 -->
+                                            <div id="desc_Approve" class="ui flowing popup">
+                                                <div class="ui divided left aligned grid">
+                                                    <div class="column">
+                                                        <h4 class="ui header">使用時機</h4>
+                                                        <ol class="ui list">
+                                                            <li>程式開發</li>
+                                                            <li>報表開發</li>
+                                                            <li>權限申請(新增時已執行)</li>
+                                                            <li>資料庫資料修正</li>
+                                                            <li>資料庫資料匯入與匯出</li>
+                                                        </ol>
+                                                    </div>
+                                                </div>
+                                            </div>
 
                                             <!-- 發通知信 -->
                                             <button id="showInform" type="button" class="ui blue small button" title="開窗後選擇類型"><i class="envelope icon"></i>發通知信</button>
                                             <asp:TextBox ID="val_InformType" runat="server" Style="display: none" ToolTip="通知類型"></asp:TextBox>
                                             <asp:TextBox ID="val_MailCont" runat="server" TextMode="MultiLine" Style="display: none" ToolTip="通知內文"></asp:TextBox>
                                             <asp:Button ID="btn_Inform" runat="server" Text="Button" OnClick="btn_Inform_Click" Style="display: none;" />
-                                            
+
                                             <!-- 指結 -->
                                             <asp:LinkButton ID="lbtn_doClose" runat="server" CssClass="ui grey small button" ToolTip="變更狀態為「指定結案」" OnClick="lbtn_doClose_Click" OnClientClick="return confirm('是否設為指定結案?')"><i class="coffee icon"></i>指定結案</asp:LinkButton>
 
@@ -618,7 +633,8 @@
                             <li>提供資料：缺資料或改善效益未填時可使用.</li>
                             <li>測試通知：專案交付測試後通知測試, 發送後狀態會變成「測試中」.</li>
                             <li>驗收通知：結案時會發第一則通知, 後續可繼續手動通知.</li>
-                            <li>內文連結會自動產生.</li>
+                            <li>需求案件連結會自動產生.</li>
+                            <li>若內容要加上超連結，請填上小寫字母 ##url## (ex:##url##http://www.google.com##url##)</li>
                         </ul>
                     </div>
                     <div class="ui form">
@@ -889,6 +905,15 @@
                 $('#tipPage').modal('show');
             });
 
+            //Popup(核准說明)
+            $('#MainContent_lbtn_doApprove').popup({
+                hoverable: true, //彈出視窗在hover時不關閉(true)
+                popup: $('#desc_Approve'), //指定element
+                on: 'hover', //觸發動作
+                inline: true,
+                position: 'top left', //顯示位置
+
+            });
 
             /* --- 結案 --- */
             //結案視窗(Modal)

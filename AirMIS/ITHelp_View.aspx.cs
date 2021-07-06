@@ -103,14 +103,16 @@ public partial class AirMIS_ITHelp_View : SecurityIn
             //需求者
             lb_Emp.Text = query.Req_WhoName + " (" + query.Req_NickName + ") #" + query.Req_TelExt;
 
-            //主管同意按鈕
+            //主管同意按鈕(User按)
             ph_AgreeArea.Visible = (query.IsDeptManager > 0) && query.IsAgree.Equals("N");
-            //主管同意, 權限申請(需求類別=12時顯示)
-            lt_AuthAgree.Text = query.IsAgree.Equals("N") ? "未同意&nbsp;" + query.Agree_Time.ToString().ToDateString("yyyy/MM/dd HH:mm")
+
+            //指定案件主管同意 or 權限申請(需求類別=12 / IsAgree <> 'E'顯示)
+            lt_AuthAgree.Text = query.IsAgree.Equals("N") ? "已通知,未同意&nbsp;" + query.Agree_Time.ToString().ToDateString("yyyy/MM/dd HH:mm")
                 : "{0} 於 {1} 同意申請".FormatThis(
                     query.Agree_WhoName
                     , query.Agree_Time.ToString().ToDateString("yyyy/MM/dd HH:mm")
                 );
+            //主管同意狀態
             ph_Agree.Visible = _currReqCls.Equals("12") || !query.IsAgree.Equals("E");
 
             #endregion

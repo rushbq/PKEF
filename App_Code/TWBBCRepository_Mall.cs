@@ -843,7 +843,7 @@ namespace TWBBC_Mall.Controllers
                 string myBuy_Warehouse = ""; //倉庫
                 string myBuy_Sales = ""; //採購員
                 string myBuy_Time = ""; //訂購時間
-                string myCustOrderID = "";
+                string myCustOrderID = ""; //會員訂單
 
 
                 //資料迴圈
@@ -854,14 +854,14 @@ namespace TWBBC_Mall.Controllers
                     switch (mallID)
                     {
                         case "1":
-                            //Costco
-                            myCustOrderID = val[0]; //會員訂單號
-                            myOrderID = val[8]; //商城訂單號
+                            //Costco訂單檔
+                            myCustOrderID = val[0]; //會員訂單
                             myProdID = val[9]; //商品ID                            
-                            myProdName = val[13]; //商品名
-                            myBuyCnt = string.IsNullOrEmpty(val[14]) ? 1 : Convert.ToInt16(val[14]); //數量
+                            myProdName = val[11]; //商品名
+                            myBuyCnt = string.IsNullOrEmpty(val[12]) ? 1 : Convert.ToInt16(val[12]); //數量
                             myNickName = val[4]; //會員名
-                            myShipNo = val[0]; //出貨單號(與出貨檔關聯)
+                            myShipNo = val[0]; //會員訂單(與出貨檔關聯)
+                            myOrderID = val[8]; //商城訂單號(與出貨檔關聯)
                             myBuy_Time = val[3];
 
                             break;
@@ -875,7 +875,7 @@ namespace TWBBC_Mall.Controllers
                     #endregion
 
 
-                    //加入項目
+                    //加入項目(key = ShipmentNo+OrderID)
                     var data = new RefColumn
                     {
                         OrderID = myOrderID.Trim(),
@@ -942,6 +942,7 @@ namespace TWBBC_Mall.Controllers
                 string myShipWho = "";
                 string myShipAddr = "";
                 string myShipTel = "";
+                string myOrderNo = ""; //訂單號碼
 
                 //資料迴圈
                 foreach (var val in queryVals)
@@ -951,11 +952,12 @@ namespace TWBBC_Mall.Controllers
                     switch (mallID)
                     {
                         case "1":
-                            //Costco
-                            myShipNo = val[0]; //出貨單號(與明細檔關聯)
+                            //Costco出貨檔
+                            myShipNo = val[0]; //出貨單號(會員訂單)(與訂單檔關聯)
                             myShipWho = val[1]; //收貨人
                             myShipTel = val[4]; //電話
                             myShipAddr = val[6] + val[7] + val[8] + val[9]; //收貨地址(區號+路名+街號)
+                            myOrderNo = val[12]; //訂單號碼(與訂單檔關聯)
 
                             break;
 
@@ -967,13 +969,14 @@ namespace TWBBC_Mall.Controllers
                     #endregion
 
 
-                    //加入項目
+                    //加入項目(key = ShipmentNo+OrderID)
                     var data = new RefColumn
                     {
                         ShipmentNo = myShipNo.Trim(),
                         ShipWho = myShipWho.Replace("'", "").Trim(),
                         ShipAddr = myShipAddr.Replace("'", "").Trim(),
-                        ShipTel = myShipTel.Replace("'", "").Trim()
+                        ShipTel = myShipTel.Replace("'", "").Trim(),
+                        OrderID = myOrderNo.Trim()
                     };
 
                     //將項目加入至集合

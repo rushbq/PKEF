@@ -12,7 +12,7 @@ using TWBBC_Mall.Models;
 /// <summary>
 /// 有自訂客戶品號的商城使用
 /// 資料關聯:PKSYS.refCOPMG
-/// 20191218:目前未有自訂客戶品號的商城,故此功能正式無法測試.
+/// 20191218:目前未有自訂客戶品號的商城,故此功能無法測試.
 /// </summary>
 public partial class myTWBBC_Mall_ImportStep3 : SecurityIn
 {

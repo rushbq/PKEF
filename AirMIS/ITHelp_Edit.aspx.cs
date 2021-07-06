@@ -152,13 +152,15 @@ public partial class AirMIS_ITHelp_Edit : SecurityIn
             lb_Emp.Text = query.Req_WhoName + " (" + query.Req_NickName + ") #" + query.Req_TelExt;
             val_Emp.Text = query.Req_Who;
 
-            //主管同意, 權限申請(需求類別=12時顯示)
-            lt_AuthAgree.Text = query.IsAgree.Equals("N") ? "未同意"
+            //指定案件主管同意 or 權限申請(需求類別=12 / IsAgree <> 'E'顯示)
+            lt_AuthAgree.Text = query.IsAgree.Equals("N") ? "已通知,未同意" + query.Agree_Time.ToString().ToDateString("yyyy/MM/dd HH:mm")
                 : "{0} 於 {1} 同意申請".FormatThis(
                     query.Agree_WhoName
                     , query.Agree_Time.ToString().ToDateString("yyyy/MM/dd HH:mm")
                 );
-            ph_Agree.Visible = _currReqCls.Equals("12");
+            //主管同意狀態
+            ph_Agree.Visible = _currReqCls.Equals("12") || !query.IsAgree.Equals("E");
+            //按鈕:通知主管核准 (E才顯示)
             lbtn_doApprove.Visible = query.IsAgree.Equals("E");
 
             #endregion
@@ -1935,7 +1937,7 @@ public partial class AirMIS_ITHelp_Edit : SecurityIn
 
             case "E":
                 //需求核准
-                mailSubject = "[資訊需求][需求核准]";
+                mailSubject = "[案件核示]";
                 break;
 
             default:
@@ -2136,6 +2138,26 @@ public partial class AirMIS_ITHelp_Edit : SecurityIn
                 break;
 
             case "C":
+                /*
+                 * 判斷自訂訊息中是否有超連結, 用##url##包起來的字串
+                 * 自訂url範例：##url##http://www.google.com##url##
+                 */
+                string _checkChar = "##url##"; //指定字串
+                string[] sArray = Regex.Split(_customInfo, _checkChar);
+                foreach (var item in sArray)
+                {
+                    //判斷是否為url
+                    if (item.IsUrl())
+                    {
+                        //組成Url
+                        string _newUrl = "<a href=\"{0}\" target=\"_blank\">{0}</a>".FormatThis(item);
+                        //取代原始字串
+                        string _replaceString = _checkChar + item + _checkChar;
+                        _customInfo = _customInfo.Replace(_replaceString, _newUrl);
+                    }
+                }
+
+
                 msg = _customInfo;
                 pageUrl = editUrl;
                 break;
@@ -2156,6 +2178,7 @@ public partial class AirMIS_ITHelp_Edit : SecurityIn
                 break;
 
         }
+
         html.Replace("#informMessage#", msg);
         html.Replace("#ProcUrl#", pageUrl);
         html.Replace("#今年#", DateTime.Now.Year.ToString());

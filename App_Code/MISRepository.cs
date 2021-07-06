@@ -611,6 +611,10 @@ ORDER BY rn";
                                             filterDateType = "Base.Finish_Time";
                                             break;
 
+                                        case "C":
+                                            filterDateType = "Base.Wish_Time";
+                                            break;
+
                                         default:
                                             filterDateType = "Base.Create_Time";
                                             break;
@@ -723,7 +727,9 @@ ORDER BY rn";
                     SELECT TbAll.*
                     FROM (
                     SELECT Base.SeqNo, Base.DataID, Base.TraceID, CONVERT(VARCHAR(10), Base.Create_Time, 111) AS CreateDay
-                      , Base.Help_Subject, ISNULL(Base.Help_Content, '') Help_Content, ISNULL(Base.Help_Benefit, '') Help_Benefit
+                      , Base.Help_Subject
+                      , ISNULL(Base.Help_Content, '') AS Help_Content
+                      , ISNULL(Base.Help_Benefit, '') AS Help_Benefit
                       , Base.Apply_Type, Help_Way
 
                       /* 處理狀態, 需求類別 */
@@ -813,6 +819,10 @@ ORDER BY rn";
 
                                         case "B":
                                             filterDateType = "Base.Finish_Time";
+                                            break;
+
+                                        case "C":
+                                            filterDateType = "Base.Wish_Time";
                                             break;
 
                                         default:
@@ -944,13 +954,13 @@ ORDER BY rn";
                                 Req_TelExt = item.Field<string>("Req_TelExt"),
                                 Req_Dept = item.Field<string>("Req_Dept"),
                                 Req_DeptName = item.Field<string>("Req_DeptName"),
-                                Help_Subject = item.Field<string>("Help_Subject"),
-                                Help_Content = item.Field<string>("Help_Content"),
+                                Help_Subject = ReplaceLowOrderASCIICharacters(item.Field<string>("Help_Subject")).ToString(),
+                                Help_Content = ReplaceLowOrderASCIICharacters(item.Field<string>("Help_Content")).ToString(),
                                 Help_Benefit = item.Field<string>("Help_Benefit"),
                                 Help_Status = item.Field<Int32>("Help_Status"),
                                 Help_StatusName = item.Field<string>("Help_StatusName"),
                                 Help_Way = item.Field<Int16>("Help_Way"),
-                                Reply_Content = item.Field<string>("Reply_Content"),
+                                Reply_Content = ReplaceLowOrderASCIICharacters(item.Field<string>("Reply_Content")).ToString(),
                                 ProcInfo = item.Field<string>("ProcInfo"),
                                 onTop = item.Field<string>("onTop"),
                                 onTopWho = item.Field<string>("onTopWho"),
@@ -999,6 +1009,23 @@ ORDER BY rn";
             }
         }
 
+        /// <summary>
+        /// Replace (十六進位值 0x08) 無效的字元
+        /// </summary>
+        /// <param name="tmp"></param>
+        /// <returns></returns>
+        private object ReplaceLowOrderASCIICharacters(string tmp)
+        {
+            StringBuilder info = new StringBuilder();
+            foreach (char cc in tmp)
+            {
+                int ss = (int)cc;
+                if (((ss >= 0) && (ss <= 8)) || ((ss >= 11) && (ss <= 12)) || ((ss >= 14) && (ss <= 32)))
+                    info.AppendFormat(" ", ss);//&#x{0:X};
+                else info.Append(cc);
+            }
+            return info.ToString();
+        }
 
         /// <summary>
         /// [資訊需求] 取得類別

@@ -997,8 +997,8 @@ namespace SH_Invoice.Controllers
                     sql.Append(" , (CASE Rel.InvType WHEN '2' THEN '004' ELSE '007' END) AS FPLXDM"); //InvType(1:普/2:專)
                     sql.Append(" , Rel.vendeename AS GHFMC"); //客戶全名 = 购货方名称
                     sql.Append(" , Rel.vendeetax AS NSRSBH"); //銀行帳號(一) = 购货方税号
-                    sql.Append(" , Rel.vendeeadress AS GHFDZDH"); //發票地址(一) = 购货方地址电话
-                    sql.Append(" , Rel.vendeebnkno AS GHFYHZH"); //客戶英文全名 = 购货方银行账号
+                    sql.Append(" , LEFT(Rel.vendeeadress, 100) AS GHFDZDH"); //發票地址(一) = 购货方地址电话
+                    sql.Append(" , LEFT(Rel.vendeebnkno, 100) AS GHFYHZH"); //客戶英文全名 = 购货方银行账号
                     sql.Append(" , @TotalAmt AS JSHJ"); //开票总金额 (销货单建立作业-本币合计)
                     sql.Append(" , GETDATE() AS DJRQ, GETDATE() AS SCRQ");
                     sql.Append(" , '0' AS KPZT "); //0-未开票；1-已开票
