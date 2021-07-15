@@ -83,6 +83,10 @@
                             <a href="<%=fn_Params.RefUrl %>PKEF/TWBBC_Mall_Sample/Costco_Ship.xlsx">好市多出貨明細</a>、
                             <%--<a href="<%=fn_Params.RefUrl %>PKEF/TWBBC_Mall_Sample/PChome.xlsx">PChome</a>--%>
                         </li>
+                        <li>欄位對應規則<br />
+                            <div>* 好市多：會員訂單+訂單號碼</div>
+                            
+                        </li>
                     </ul>
                 </div>
 

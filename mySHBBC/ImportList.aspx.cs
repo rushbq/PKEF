@@ -263,6 +263,11 @@ public partial class mySHBBC_ImportList : SecurityIn
     }
 
 
+    /// <summary>
+    /// 變更狀態顏色
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
     public string GetStatusColor(string value)
     {
         switch (value)
@@ -271,6 +276,24 @@ public partial class mySHBBC_ImportList : SecurityIn
             case "11":
             case "12":
                 return "orange";
+
+            default:
+                return "grey";
+        }
+    }
+
+    /// <summary>
+    /// 變更匯入模式顏色
+    /// </summary>
+    /// <param name="value"></param>
+    /// <returns></returns>
+    public string GetTypeColor(string value)
+    {
+        switch (value)
+        {
+            case "2":
+                //退貨
+                return "red";
 
             default:
                 return "grey";

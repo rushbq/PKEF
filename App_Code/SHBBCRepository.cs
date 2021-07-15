@@ -1223,12 +1223,12 @@ namespace SH_BBC.Controllers
                             {
                                 case "3":
                                     //京東VC
-                                    myProdID = val[2];
-                                    myBuyCnt = 1;
-                                    myBuyPrice = Convert.ToDouble(val[7]);
-                                    myTotalPrice = Convert.ToDouble(val[7]);
-                                    myRemarkTitle = val[5]; //出庫單號
-                                    myRemarkID = val[10].ToString().Left(2);
+                                    myProdID = val[2]; //商品編號
+                                    myBuyCnt = !val[1].ToString().IsNumeric() ? 1 : Convert.ToInt16(val[1]); //退貨數量
+                                    myBuyPrice = Convert.ToDouble(val[7]); //退貨單價
+                                    myTotalPrice = Convert.ToDouble(val[7]); //退貨總額
+                                    myRemarkTitle = val[5]; //出庫單號(單頭備註)
+                                    myRemarkID = val[10].ToString().Left(2); //單身備註代號
 
                                     break;
 
@@ -1655,6 +1655,44 @@ namespace SH_BBC.Controllers
             //回傳集合
             return dataList.AsQueryable();
         }
+
+
+
+        /// <summary>
+        /// 取得銷退原因代號對應表
+        /// </summary>
+        /// <param name="ErrMsg"></param>
+        /// <returns></returns>
+        public DataTable GetRemarkList(out string ErrMsg)
+        {
+            try
+            {
+                //----- 宣告 -----
+                string sql = "";
+
+                //----- 資料查詢 -----
+                using (SqlCommand cmd = new SqlCommand())
+                {
+                    sql = @"SELECT ID, Label FROM SHBBC_RefRemark ORDER BY Sort";
+
+                    //----- SQL 執行 -----
+                    cmd.CommandText = sql.ToString();
+
+
+                    //----- 資料取得 -----
+                    return dbConn.LookupDT(cmd, out ErrMsg);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrMsg = ex.Message.ToString();
+                return null;
+
+            }
+
+        }
+
 
         #endregion
 
@@ -3518,8 +3556,8 @@ namespace SH_BBC.Controllers
                 sql.AppendLine(" , LEFT(DT.ProdID, 30) AS XA026"); //SKU碼
                 sql.AppendLine(" , '2' AS XA027"); //是否開發票(預設值)
                 sql.AppendLine(" , '1' AS XA028"); //折讓或銷退(預設值)
-                sql.AppendLine(" , LEFT(DT.RemarkTitle, 250) AS XA031");
-                sql.AppendLine(" , LEFT(DT.Remark, 250) XA032");
+                sql.AppendLine(" , LEFT(DT.RemarkTitle, 250) AS XA031"); //銷(退)貨單頭備註
+                sql.AppendLine(" , LEFT(DT.Remark, 250) XA032"); //銷(退)貨單身備註
                 sql.AppendLine(" , (CASE WHEN Base.Data_Type = 2 THEN 'A001' ELSE '' END) AS XA033"); //銷退原因
                 sql.AppendLine("  , RIGHT(('000' + CAST(DT.Data_ID AS VARCHAR(4))), 4) AS XA034"); //自訂序號
                 sql.AppendLine(" , DT.StockNum"); //預交日計算用欄位

@@ -131,8 +131,8 @@
                                     <%#Eval("StatusName") %>
                                 </div>
                             </div>
-                            <div>
-                                <div class="ui grey basic fluid label">
+                            <div style="padding-top: 2px;">
+                                <div class="ui <%#GetTypeColor(Eval("Data_Type").ToString()) %> basic fluid label" style="padding-top: 2px;">
                                     <%#Eval("Data_TypeName") %>
                                 </div>
                             </div>
@@ -143,7 +143,7 @@
                                     建立<div class="detail"><%#Eval("Create_Time") %></div>
                                 </div>
                             </div>
-                            <div>
+                            <div style="padding-top: 2px;">
                                 <div class="ui basic fluid label">
                                     匯入<div class="detail"><%#Eval("Import_Time") %></div>
                                 </div>
@@ -155,7 +155,7 @@
                                     建立<div class="detail"><%#Eval("Create_Name") %></div>
                                 </div>
                             </div>
-                            <div>
+                            <div style="padding-top: 2px;">
                                 <div class="ui basic fluid label">
                                     更新<div class="detail"><%#Eval("Update_Name") %></div>
                                 </div>

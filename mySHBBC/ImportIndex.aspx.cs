@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using PKLib_Method.Methods;
+using SH_BBC.Controllers;
 
 public partial class mySHBBC_ImportIndex : SecurityIn
 {
@@ -22,6 +23,8 @@ public partial class mySHBBC_ImportIndex : SecurityIn
                     return;
                 }
 
+                //get remark list
+                LookupData_Remark();
             }
         }
         catch (Exception)
@@ -29,6 +32,28 @@ public partial class mySHBBC_ImportIndex : SecurityIn
 
             throw;
         }
+    }
+
+
+    /// <summary>
+    /// 銷退代號
+    /// </summary>
+    private void LookupData_Remark()
+    {
+        //----- 宣告:資料參數 -----
+        SHBBCRepository _data = new SHBBCRepository();
+
+        //----- 原始資料:取得基本資料 -----
+        var query = _data.GetRemarkList(out ErrMsg);
+        
+        //----- 資料整理:繫結 ----- 
+        this.lv_RemarkList.DataSource = query;
+        this.lv_RemarkList.DataBind();
+        
+        //release
+        query = null;
+        _data = null;
+
     }
 
 
